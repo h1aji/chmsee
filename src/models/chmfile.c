@@ -769,7 +769,7 @@ void chmfile_dispose(GObject* object) {
 
 ChmIndex* chmfile_get_index(ChmFile* self) {
 	if(selfp->index == NULL && self->hhk != NULL) {
-		selfp->index = chmindex_new(self->hhk);
+		selfp->index = chmindex_new(self->hhk, self->encoding);
 	}
 	return selfp->index;
 }

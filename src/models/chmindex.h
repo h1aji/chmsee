@@ -36,6 +36,6 @@ GType chmindex_get_type(void);
 /**
  * @return NULL if open or parse indexFname failed.
  */
-ChmIndex *chmindex_new(const gchar* indexFname);
+ChmIndex *chmindex_new(const gchar* indexFname, const gchar* encoding);
 
 #endif /* CHMINDEX_H_ */
