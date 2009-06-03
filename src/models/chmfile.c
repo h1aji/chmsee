@@ -42,14 +42,16 @@
 #include "utils/utils.h"
 #include "models/hhc.h"
 #include "models/ichmfile.h"
+#include "models/chmindex.h"
 
 #define UINT16ARRAY(x) ((unsigned char)(x)[0] | ((u_int16_t)(x)[1] << 8))
 #define UINT32ARRAY(x) (UINT16ARRAY(x) | ((u_int32_t)(x)[2] << 16)      \
                         | ((u_int32_t)(x)[3] << 24))
+#define selfp self->priv
 
 
 struct _ChmFilePriv {
-
+	ChmIndex* index;
 };
 
 struct extract_context
@@ -63,6 +65,7 @@ static GObjectClass *parent_class = NULL;
 
 static void chmfile_class_init(ChmFileClass *);
 static void chmfile_init(ChmFile *);
+static void chmfile_dispose(GObject *);
 static void chmfile_finalize(GObject *);
 static void chmfile_file_info(ChmFile *);
 static void chmfile_system_info(struct chmFile *, ChmFile *);
@@ -94,20 +97,22 @@ chmfile_class_init(ChmFileClass *klass)
   object_class = G_OBJECT_CLASS(klass);
 
   object_class->finalize = chmfile_finalize;
+  object_class->dispose = chmfile_dispose;
 }
 
 static void
-chmfile_init(ChmFile *chmfile)
+chmfile_init(ChmFile *self)
 {
-  chmfile->filename = NULL;
-  chmfile->home = NULL;
-  chmfile->hhc = NULL;
-  chmfile->hhk = NULL;
-  chmfile->title = NULL;
-  chmfile->encoding = g_strdup("UTF-8");
-  chmfile->variable_font = g_strdup("Sans 12");
-  chmfile->fixed_font = g_strdup("Monospace 12");
-  chmfile->priv = G_TYPE_INSTANCE_GET_PRIVATE(chmfile, TYPE_CHMFILE, ChmFilePriv);
+	self->filename = NULL;
+	self->home = NULL;
+	self->hhc = NULL;
+	self->hhk = NULL;
+	self->title = NULL;
+	self->encoding = g_strdup("UTF-8");
+	self->variable_font = g_strdup("Sans 12");
+	self->fixed_font = g_strdup("Monospace 12");
+	self->priv = G_TYPE_INSTANCE_GET_PRIVATE(self, TYPE_CHMFILE, ChmFilePriv);
+	selfp->index = NULL;
 }
 
 static void
@@ -752,4 +757,12 @@ void chmfile_set_encoding(ChmFile* self, const char* encoding) {
 		g_free(self->encoding);
 	}
 	self->encoding = g_strdup(encoding);
+}
+
+void chmfile_dispose(GObject* object) {
+	ChmFile* self = CHMFILE(object);
+	if(selfp->index) {
+		g_object_unref(selfp->index);
+		selfp->index = NULL;
+	}
 }
