@@ -63,6 +63,7 @@ static void chmfile_finalize(GObject *);
 static void chmfile_file_info(ChmFile *);
 static void chmfile_system_info(struct chmFile *, ChmFile *);
 static void chmfile_windows_info(struct chmFile *, ChmFile *);
+static void chmfile_set_encoding(ChmFile* self, const char* encoding);
 
 static int dir_exists(const char *);
 static int rmkdir(char *);
@@ -97,7 +98,7 @@ chmfile_init(ChmFile *chmfile)
   chmfile->hhc = NULL;
   chmfile->hhk = NULL;
   chmfile->title = NULL;
-  chmfile->encoding = "UTF-8";
+  chmfile->encoding = g_strdup("UTF-8");
   chmfile->variable_font = g_strdup("Sans 12");
   chmfile->fixed_font = g_strdup("Monospace 12");
 }
@@ -112,6 +113,7 @@ chmfile_finalize(GObject *object)
   g_message("chmfile finalize");
 
   save_fileinfo(chmfile);
+  g_free(chmfile->encoding);
   g_free(chmfile->filename);
   g_free(chmfile->hhc);
   g_free(chmfile->hhk);
@@ -476,7 +478,7 @@ chmfile_system_info(struct chmFile *cfd, ChmFile *chmfile)
 
       lcid = UINT32ARRAY(buffer + index + 2);
       g_debug("lcid %x", lcid);
-      chmfile->encoding = get_encoding_by_lcid(lcid);
+      chmfile_set_encoding(chmfile, get_encoding_by_lcid(lcid));
       break;
 
     case 6:
@@ -736,4 +738,11 @@ static void chmsee_ichmfile_interface_init (ChmseeIchmfileInterface* iface)
   iface->get_bookmarks_list = chmfile_get_bookmarks_list;
   iface->set_fixed_font = chmfile_set_fixed_font;
   iface->set_variable_font = chmfile_set_variable_font;
+}
+
+void chmfile_set_encoding(ChmFile* self, const char* encoding) {
+	if(self->encoding) {
+		g_free(self->encoding);
+	}
+	self->encoding = g_strdup(encoding);
 }

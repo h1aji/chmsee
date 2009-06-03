@@ -53,7 +53,7 @@ struct _ChmFile
         gchar          *hhc;
         gchar          *hhk;
         gchar          *title;
-        const gchar    *encoding;
+        gchar    	   *encoding;
         gchar          *variable_font;
         gchar          *fixed_font;
 
