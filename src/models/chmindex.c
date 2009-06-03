@@ -22,3 +22,9 @@ chmindex_init(ChmIndex* self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE(self, TYPE_CHMINDEX, ChmIndexPriv);
 }
 
+/**
+ * TODO:
+ */
+ChmIndex* chmindex_new(const char* indexFname) {
+	return NULL;
+}

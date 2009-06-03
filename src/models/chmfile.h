@@ -26,6 +26,7 @@
 
 #include "models/bookmarks.h"
 #include "models/hhc.h"
+#include "models/chmindex.h"
 
 typedef struct _ChmFile       ChmFile;
 typedef struct _ChmFileClass  ChmFileClass;
@@ -70,5 +71,10 @@ struct _ChmFileClass
 
 GType chmfile_get_type(void);
 ChmFile *chmfile_new(const gchar *);
+
+/**
+ * @return NULL if no index or open index failed.
+ */
+ChmIndex* chmfile_get_index(ChmFile* self);
 
 #endif /* !__CHMFILE_H__ */

@@ -766,3 +766,10 @@ void chmfile_dispose(GObject* object) {
 		selfp->index = NULL;
 	}
 }
+
+ChmIndex* chmfile_get_index(ChmFile* self) {
+	if(selfp->index == NULL && self->hhk != NULL) {
+		selfp->index = chmindex_new(self->hhk);
+	}
+	return selfp->index;
+}

@@ -33,6 +33,9 @@ struct _ChmIndexClass
 };
 
 GType chmindex_get_type(void);
-ChmIndex *chmindex_new(const gchar *);
+/**
+ * @return NULL if open or parse indexFname failed.
+ */
+ChmIndex *chmindex_new(const gchar* indexFname);
 
 #endif /* CHMINDEX_H_ */
