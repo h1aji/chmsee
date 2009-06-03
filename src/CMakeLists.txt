@@ -42,6 +42,7 @@ set(CHMSEE_SRCS
   models/link.h models/link.c
   models/ichmfile.h models/ichmfile.c
   models/chmfile-factory.h models/chmfile-factory.c
+  models/chmindex.h models/chmindex.c
   )
 
 add_library(chmseelib STATIC ${CHMSEE_SRCS})
