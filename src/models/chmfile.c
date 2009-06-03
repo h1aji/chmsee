@@ -48,6 +48,10 @@
                         | ((u_int32_t)(x)[3] << 24))
 
 
+struct _ChmFilePriv {
+
+};
+
 struct extract_context
 {
   const char *base_path;
@@ -82,6 +86,8 @@ G_DEFINE_TYPE_WITH_CODE (ChmFile, chmfile, G_TYPE_OBJECT,
 static void
 chmfile_class_init(ChmFileClass *klass)
 {
+	g_type_class_add_private(klass, sizeof(ChmFilePriv));
+
   GObjectClass *object_class;
 
   parent_class = g_type_class_peek_parent(klass);
@@ -101,6 +107,7 @@ chmfile_init(ChmFile *chmfile)
   chmfile->encoding = g_strdup("UTF-8");
   chmfile->variable_font = g_strdup("Sans 12");
   chmfile->fixed_font = g_strdup("Monospace 12");
+  chmfile->priv = G_TYPE_INSTANCE_GET_PRIVATE(chmfile, TYPE_CHMFILE, ChmFilePriv);
 }
 
 static void

@@ -29,6 +29,7 @@
 
 typedef struct _ChmFile       ChmFile;
 typedef struct _ChmFileClass  ChmFileClass;
+typedef struct _ChmFilePriv   ChmFilePriv;
 
 #define TYPE_CHMFILE \
         (chmfile_get_type ())
@@ -59,6 +60,7 @@ struct _ChmFile
 
         Bookmarks      *bookmarks_list;
         Hhc            *link_tree;
+        ChmFilePriv    *priv;
 };
 
 struct _ChmFileClass
