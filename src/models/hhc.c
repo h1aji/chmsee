@@ -77,16 +77,6 @@ static xmlSAXHandler hhSAXHandlerStruct = {
 
 static xmlSAXHandlerPtr hhSAXHandler = &hhSAXHandlerStruct;
 
-static const gchar* get_attr(const gchar** attrs, const gchar* key) {
-	while(*attrs) {
-		if(g_ascii_strcasecmp(*attrs, key) == 0) {
-			return *(attrs+1);
-		}
-		attrs += 2;
-	}
-	return NULL;
-}
-
 static void
 startDocumentHH(void *ctx)
 {

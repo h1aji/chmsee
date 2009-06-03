@@ -105,6 +105,11 @@ void set_data_dir(const gchar* datadir);
 
 const gchar* get_resource_path(const gchar* resouce_name);
 
+/**
+ * a helper function for SAX, get attr value by the key
+ */
+const gchar* get_attr(const gchar** attrs, const gchar* key);
+
 G_END_DECLS
 
 #endif
