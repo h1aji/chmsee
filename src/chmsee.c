@@ -73,6 +73,7 @@ struct _ChmSeePrivate {
     gint             hpaned_position;
     gint             lang;
     gboolean         fullscreen;
+    gboolean         expect_fullscreen;
 
     ChmseeIchmfile  *book;
 
@@ -206,6 +207,7 @@ chmsee_init(ChmSee* self)
 	selfp->has_toc = FALSE;
 	selfp->has_index = FALSE;
 	selfp->fullscreen = FALSE;
+	selfp->expect_fullscreen = FALSE;
 
 	gtk_widget_add_events(GTK_WIDGET(self),
 			GDK_STRUCTURE_MASK | GDK_BUTTON_PRESS_MASK );
@@ -304,6 +306,7 @@ on_configure_event(GtkWidget *widget, GdkEventConfigure *event, ChmSee *self)
 static gboolean
 on_keypress_event(GtkWidget *widget, GdkEventKey *event, ChmSee *self)
 {
+	g_debug("enter on_keypress_event with event->keyval = %d", event->keyval);
 	if (event->keyval == GDK_Escape) {
 		if(selfp->fullscreen) {
                   chmsee_set_fullscreen(self, FALSE);
@@ -314,11 +317,13 @@ on_keypress_event(GtkWidget *widget, GdkEventKey *event, ChmSee *self)
 	} else if(event->keyval == GDK_F11) {
 		if(selfp->fullscreen) {
                   chmsee_set_fullscreen(self, FALSE);
+                  return TRUE;
 		}
 	} else if(event->keyval == GDK_F9) {
 		if(selfp->fullscreen) {
 			set_sidepane_state(self,
 					!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(get_widget(self, "menu_sidepane"))));
+			return TRUE;
 		}
 	}
 
@@ -1716,7 +1721,8 @@ void on_fullscreen_toggled(ChmSee* self, GtkWidget* menu) {
 	g_object_get(G_OBJECT(menu),
 			"active", &active,
 			NULL);
-        chmsee_set_fullscreen(self, active);
+	g_debug("enter on_fullscreen_toggled with menu.active = %d", active);
+	chmsee_set_fullscreen(self, active);
 }
 
 void on_sidepane_toggled(ChmSee* self, GtkWidget* menu) {
@@ -1784,35 +1790,54 @@ void on_map(ChmSee* self) {
 
 
 static void on_fullscreen(ChmSee* self) {
+	g_debug("enter on_fullscreen");
+	selfp->fullscreen = TRUE;
 	gtk_widget_hide(get_widget(self, "handlebox_menu"));
 	gtk_widget_hide(get_widget(self, "handlebox_toolbar"));
 	gtk_widget_hide(get_widget(self, "statusbar"));
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(get_widget(self, "menu_fullscreen")),
                                        TRUE);
-	selfp->fullscreen = TRUE;
 }
 
 static void on_unfullscreen(ChmSee* self) {
+	g_debug("enter on_unfullscreen");
+	selfp->fullscreen = FALSE;
 	gtk_widget_show(get_widget(self, "handlebox_menu"));
 	gtk_widget_show(get_widget(self, "handlebox_toolbar"));
 	gtk_widget_show(get_widget(self, "statusbar"));
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(get_widget(self, "menu_fullscreen")),
                                        FALSE);
-	selfp->fullscreen = FALSE;
 }
 
 gboolean on_window_state_event(ChmSee* self, GdkEventWindowState* event) {
 	g_return_val_if_fail(IS_CHMSEE(self), FALSE);
 	g_return_val_if_fail(event->type == GDK_WINDOW_STATE, FALSE);
 
+	g_debug("enter on_window_state_event with event->changed_mask = %d and event->new_window_state = %d",
+			event->changed_mask,
+			event->new_window_state
+			);
+
 	if(!(event->changed_mask & GDK_WINDOW_STATE_FULLSCREEN)) {
 		return FALSE;
 	}
 
 	if(event->new_window_state & GDK_WINDOW_STATE_FULLSCREEN) {
-		on_fullscreen(self);
+		if(selfp->expect_fullscreen) {
+			on_fullscreen(self);
+		} else {
+			g_warning("expect not fullscreen but got a fullscreen event, restored");
+			chmsee_set_fullscreen(self, FALSE);
+			return TRUE;
+		}
 	} else {
-		on_unfullscreen(self);
+		if(!selfp->expect_fullscreen) {
+			on_unfullscreen(self);
+		} else {
+			g_warning("expect fullscreen but got an unfullscreen event, restored");
+			chmsee_set_fullscreen(self, TRUE);
+			return TRUE;
+		}
 	}
 
 	return FALSE;
@@ -1871,6 +1896,7 @@ gboolean chmsee_has_book(ChmSee* self) {
 void
 chmsee_load_config(ChmSee *self)
 {
+	g_debug("enter chmsee_load_config");
 	GList *pairs, *list;
 	gchar *path;
 
@@ -1962,13 +1988,14 @@ chmsee_save_config(ChmSee *self)
 }
 
 void chmsee_set_fullscreen(ChmSee* self, gboolean fullscreen) {
-  if(fullscreen == selfp->fullscreen) {
-    return;
-  }
+	g_debug("enter chmsee_set_fullscreen with fullscreen = %d", fullscreen);
+	selfp->expect_fullscreen = fullscreen;
 
   if(fullscreen) {
+	  g_debug("call gtk_window_fullscreen");
     gtk_window_fullscreen(GTK_WINDOW(self));
   } else {
+	  g_debug("call gtk_window_unfullscreen");
     gtk_window_unfullscreen(GTK_WINDOW(self));
   }
 }
