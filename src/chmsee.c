@@ -265,11 +265,6 @@ static void chmsee_dispose(GObject* gobject)
 		selfp->book = NULL;
 	}
 
-	if(selfp->html_notebook) {
-		g_object_unref(selfp->html_notebook);
-		selfp->html_notebook = NULL;
-	}
-
 	G_OBJECT_CLASS(chmsee_parent_class)->dispose(gobject);
 }
 
