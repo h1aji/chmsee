@@ -317,16 +317,28 @@ on_keypress_event_when_fullscreen(GtkWidget *widget, GdkEventKey *event, ChmSee 
 		return TRUE;
 		break;
 	case GDK_Left:
-		/* TODO */
+		if(event->state & GDK_MOD1_MASK) {
+			on_back(NULL, self);
+			return TRUE;
+		}
 		break;
 	case GDK_Right:
-		/* TODO */
+		if(event->state & GDK_MOD1_MASK) {
+			on_forward(NULL, self);
+			return TRUE;
+		}
 		break;
 	case GDK_minus:
-		/* TODO */
+		if(event->state & GDK_CONTROL_MASK) {
+			on_zoom_out(NULL, self);
+			return TRUE;
+		}
 		break;
 	case GDK_plus:
-		/* TODO */
+		if(event->state & GDK_CONTROL_MASK) {
+			on_zoom_in(NULL, self);
+			return TRUE;
+		}
 		break;
 	default:
 		break;
