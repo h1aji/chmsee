@@ -1,0 +1,20 @@
+<HTML>
+<HEAD>
+  <!-- HTML Help Index File -->
+  <!-- Generated: April-06-2007 with jd2chm.py -->
+  <!-- http://www.burgaud.com -->
+</HEAD>
+<BODY>
+<UL>
+<LI><OBJECT type="text/sitemap">
+  <param name="Local" value="a2">
+  <param name="Name" value="a">
+</OBJECT>
+<LI><OBJECT type="text/sitemap">
+  <param name="Local" value="a1">
+  <param name="Name" value="a">
+  <param name="Name" value="b">
+</OBJECT>
+</UL>
+</BODY>
+</HTML>

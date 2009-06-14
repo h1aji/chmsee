@@ -4,8 +4,13 @@
 #include <libxml/parser.h>
 #include <libxml/HTMLparser.h>
 
-struct _ChmIndexPriv {
+#include "utils/utils.h"
+#include "models/link.h"
 
+#define selfp (self->priv)
+
+struct _ChmIndexPriv {
+	GList* data; /* GList<Link> */
 };
 
 G_DEFINE_TYPE(ChmIndex, chmindex, G_TYPE_OBJECT);
@@ -25,24 +30,107 @@ chmindex_init(ChmIndex* self)
 	self->priv = G_TYPE_INSTANCE_GET_PRIVATE(self, TYPE_CHMINDEX, ChmIndexPriv);
 }
 
-typedef struct {
+enum {
+	STATE_OUT,
+	STATE_IN_SITEMAP
+};
 
+
+typedef struct {
+	int state;
+	GList* names; /* GList<gchar*> */
+	char* local;
+
+	GList* res; /* GList<Link> */
 } SAXContext;
 
-/**
- * TODO
- */
-static void chm_index_start_element (void *ctx,
-		const xmlChar *name,
-		const xmlChar **atts) {
+SAXContext* saxcontext_new() {
+	return g_new0(SAXContext, 1);
 }
 
-/**
- * TODO
- */
-static void chm_index_end_element (void *ctx,
-		const xmlChar *name) {
+void saxcontext_free(SAXContext* self) {
+	g_list_foreach(self->names, (GFunc)g_free, NULL);
+	g_list_free(self->names);
 
+	g_free(self->local);
+
+	g_list_foreach(self->res, (GFunc)g_free, NULL);
+	g_list_free(self->res);
+
+	g_free(self);
+}
+
+
+static void chm_index_start_element (void *ctx,
+		const xmlChar *name_,
+		const xmlChar **attrs_) {
+	const char* name = (const char*) name_;
+	const char** attrs = (const char**) attrs_;
+	SAXContext* context = (SAXContext*) ctx;
+
+	switch(context->state) {
+	case STATE_OUT:
+		if(g_ascii_strcasecmp(name, "object") == 0) {
+			const char* type = get_attr(attrs, "type");
+			if(g_ascii_strcasecmp(type, "text/sitemap") == 0) {
+				context->state = STATE_IN_SITEMAP;
+			}
+		}
+		break;
+	case STATE_IN_SITEMAP:
+		if(g_ascii_strcasecmp(name, "param") == 0) {
+			const char* name = get_attr(attrs, "name");
+			const char* value = get_attr(attrs, "value");
+
+			if(name != NULL && value != NULL) {
+				if(g_ascii_strcasecmp(name, "name") == 0) {
+					context->names = g_list_append(context->names, g_strdup(value));
+				} else if(g_ascii_strcasecmp(name, "local") == 0) {
+					if(context->local != NULL) {
+						g_warning("more than one local in one sitemap");
+						g_free(context->local);
+					}
+					context->local = g_strdup(value);
+				}
+			} else {
+				g_warning("name or value is null");
+			}
+		}
+		break;
+	default:
+		g_return_if_reached();
+	}
+
+}
+
+static void chm_index_end_element (void *ctx,
+		const xmlChar *name_) {
+	const char* name = (const char*) name_;
+	SAXContext* context = (SAXContext*) ctx;
+
+	switch(context->state) {
+	case STATE_OUT:
+		break;
+	case STATE_IN_SITEMAP:
+		if(g_ascii_strcasecmp(name, "object") == 0) {
+			if(context->local != NULL && context->names != NULL) {
+				GList* iter;
+				for(iter = context->names; iter; iter = iter->next) {
+					Link* link = link_new(LINK_TYPE_PAGE, iter->data, context->local);
+					context->res = g_list_append(context->res, link);
+				}
+			}
+
+			g_free(context->local);
+			context->local = NULL;
+			g_list_foreach(context->names, (GFunc)g_free, NULL);
+			g_list_free(context->names);
+			context->names = NULL;
+		}
+		break;
+	default:
+		g_return_if_reached();
+	}
 }
 
 
@@ -82,22 +170,39 @@ static htmlSAXHandler hhSAXHandler = {
   NULL  /* xmlStructuredErrorFunc */
 };
 
+static gint data_sort_func(gconstpointer lhs_, gconstpointer rhs_) {
+	Link* lhs = (Link*)lhs_;
+	Link* rhs = (Link*)rhs_;
 
-/**
- * TODO:
- */
+	gint res = ncase_compare_utf8_string(lhs->name, rhs->name);
+	if(res == 0) {
+		res = ncase_compare_utf8_string(lhs->uri, rhs->uri);
+	}
+	return res;
+}
+
 ChmIndex* chmindex_new(const char* filename, const char* encoding) {
-	SAXContext context;
+	SAXContext* context = saxcontext_new();
 
 	if(htmlSAXParseFile(filename,
 			encoding,
 			&hhSAXHandler,
-			&context) != NULL) {
+			context) != NULL) {
 		g_error("parse %s with encoding %s failed.", filename, encoding);
 		return NULL;
 	}
 
 	ChmIndex* self = g_object_new(TYPE_CHMINDEX, NULL);
+	selfp->data = g_list_sort(context->res, data_sort_func);
+	context->res = NULL;
+
+	saxcontext_free(context);
 	return self;
 
 }
+
+GList* chmindex_get_data(ChmIndex* self) {
+	g_return_val_if_fail(IS_CHMINDEX(self), NULL);
+	return selfp->data;
+}
+
