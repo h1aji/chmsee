@@ -770,7 +770,11 @@ void chmfile_dispose(GObject* object) {
 
 ChmIndex* chmfile_get_index(ChmFile* self) {
 	if(selfp->index == NULL && self->hhk != NULL) {
-		selfp->index = chmindex_new(self->hhk, self->encoding);
+		gchar* path = g_strconcat(self->dir, self->hhk, NULL);
+		gchar* path2 = correct_filename(path);
+		selfp->index = chmindex_new(path2, self->encoding);
+		g_free(path);
+		g_free(path2);
 	}
 	return selfp->index;
 }

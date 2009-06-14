@@ -182,6 +182,7 @@ static gint data_sort_func(gconstpointer lhs_, gconstpointer rhs_) {
 }
 
 ChmIndex* chmindex_new(const char* filename, const char* encoding) {
+	g_debug("enter chmindex_new with filename=%s and encoding=%s", filename, encoding);
 	SAXContext* context = saxcontext_new();
 
 	if(htmlSAXParseFile(filename,

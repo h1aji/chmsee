@@ -47,6 +47,7 @@
 #include "html-factory.h"
 #include "booktree.h"
 #include "ui_bookmarks.h"
+#include "ui_index.h"
 #include "setup.h"
 #include "link.h"
 #include "utils/utils.h"
@@ -65,7 +66,9 @@ struct _ChmSeePrivate {
 
     GtkWidget       *booktree;
     GtkWidget       *bookmark_tree;
-    GtkWidget       *index_tree;
+
+    GtkWidget* uiIndex; /* the gtktreeview */
+    GtkWidget* indexPage; /* the index tab under control_notebook */
 
     GtkWidget       *statusbar;
     guint            scid_default;
@@ -99,6 +102,8 @@ static void chmsee_dispose(GObject* self);
 static void chmsee_load_config(ChmSee *self);
 static void chmsee_save_config(ChmSee *self);
 static void chmsee_set_fullscreen(ChmSee* self, gboolean fullscreen);
+static void chmsee_refresh_index(ChmSee* self);
+static GtkWidget* chmsee_new_index_page(ChmSee* self);
 
 static gboolean delete_cb(GtkWidget *, GdkEvent *, ChmSee *);
 static void destroy_cb(GtkWidget *, ChmSee *);
@@ -204,6 +209,7 @@ chmsee_init(ChmSee* self)
 	selfp->lang = 0;
 	selfp->last_dir = g_strdup(g_get_home_dir());
 
+	selfp->uiIndex = NULL;
 	selfp->book = NULL;
 	selfp->html_notebook = NULL;
 	selfp->pos_x = -100;
@@ -1211,6 +1217,10 @@ display_book(ChmSee* self, ChmseeIchmfile *book)
 
 	/* Book contents TreeView widget */
 	selfp->control_notebook = gtk_notebook_new();
+	gtk_notebook_append_page(GTK_NOTEBOOK (selfp->control_notebook),
+			chmsee_new_index_page(self),
+			gtk_label_new(_("Index")));
+	chmsee_refresh_index(self);
 
 	gtk_box_pack_start(GTK_BOX (control_vbox),
 			GTK_WIDGET (selfp->control_notebook),
@@ -2056,3 +2066,34 @@ void chmsee_set_fullscreen(ChmSee* self, gboolean fullscreen) {
     gtk_window_unfullscreen(GTK_WINDOW(self));
   }
 }
+
+void chmsee_refresh_index(ChmSee* self) {
+	ChmIndex* chmIndex = NULL;
+	if(selfp->book) {
+		chmIndex = chmsee_ichmfile_get_index(selfp->book);
+	}
+	chmsee_ui_index_set_model(CHMSEE_UI_INDEX(selfp->uiIndex), chmIndex);
+	if(chmIndex != NULL) {
+		gtk_widget_show(selfp->indexPage);
+	} else {
+		gtk_widget_hide(selfp->indexPage);
+	}
+}
+
+static GtkWidget* chmsee_new_index_page(ChmSee* self) {
+	GtkWidget* booktree_sw = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW (booktree_sw),
+			GTK_POLICY_NEVER,
+			GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW (booktree_sw),
+			GTK_SHADOW_IN);
+	gtk_container_set_border_width(GTK_CONTAINER (booktree_sw), 2);
+
+	GtkWidget* uiIndex = chmsee_ui_index_new(NULL);
+	gtk_container_add(GTK_CONTAINER (booktree_sw), uiIndex);
+
+	selfp->indexPage = booktree_sw;
+	selfp->uiIndex = uiIndex;
+	return GTK_WIDGET(booktree_sw);
+}
+
