@@ -30,6 +30,7 @@ set(CHMSEE_SRCS
   marshal.h marshal.c
   ihtml.h ihtml.c
   html-factory.h html-factory.c
+  ui_index.h ui_index.c
   )
 set(CHMSEE_SRCS
   ${CHMSEE_SRCS}
