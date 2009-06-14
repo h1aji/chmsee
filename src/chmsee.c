@@ -53,6 +53,12 @@
 
 #include "models/chmfile-factory.h"
 
+enum {
+	CHMSEE_STATE_INIT,    /* init state, no book is loaded */
+	CHMSEE_STATE_LOADING, /* loading state, don't pop up an error window when open homepage failed */
+	CHMSEE_STATE_NORMAL   /* normal state, one book is loaded */
+};
+
 struct _ChmSeePrivate {
     GtkWidget       *control_notebook;
     GtkWidget       *html_notebook;
@@ -80,6 +86,7 @@ struct _ChmSeePrivate {
     gchar           *home;
     gchar           *cache_dir;
     gchar           *last_dir;
+    gint            state; /* see enum CHMSEE_STATE_* */
 };
 
 #define selfp (self->priv)
@@ -208,6 +215,7 @@ chmsee_init(ChmSee* self)
 	selfp->has_index = FALSE;
 	selfp->fullscreen = FALSE;
 	selfp->expect_fullscreen = FALSE;
+	selfp->state = CHMSEE_STATE_INIT;
 
 	gtk_widget_add_events(GTK_WIDGET(self),
 			GDK_STRUCTURE_MASK | GDK_BUTTON_PRESS_MASK );
@@ -473,6 +481,7 @@ html_location_changed_cb(ChmseeIhtml *html, const gchar *location, ChmSee *chmse
 static gboolean
 html_open_uri_cb(ChmseeIhtml* html, const gchar *uri, ChmSee *self)
 {
+	g_debug("enter html_open_uri_cb with uri = %s", uri);
   static const char* prefix = "file://";
   static int prefix_len = 7;
 
@@ -484,12 +493,17 @@ html_open_uri_cb(ChmseeIhtml* html, const gchar *uri, ChmSee *self)
     }
 
     if(g_access(uri+prefix_len, R_OK) < 0) {
+    	g_debug("%s:%d:html_open_uri_cb:%s does not exist", __FILE__, __LINE__, uri+prefix_len);
       gchar* newfname = correct_filename(uri+prefix_len);
       if(newfname) {
         g_message(_("URI redirect: \"%s\" -> \"%s\""), uri, newfname);
         chmsee_ihtml_open_uri(html, newfname);
         g_free(newfname);
         return TRUE;
+      }
+
+      if(selfp->state == CHMSEE_STATE_LOADING) {
+    	  return TRUE;
       }
     }
   }
@@ -1185,6 +1199,7 @@ display_book(ChmSee* self, ChmseeIchmfile *book)
 	GtkWidget *control_vbox;
 
 	g_debug("display book");
+	selfp->state = CHMSEE_STATE_LOADING;
 
 	/* Close currently opened book */
 	if (selfp->book)
@@ -1285,6 +1300,24 @@ display_book(ChmSee* self, ChmseeIchmfile *book)
 	toolbar_button = get_widget(self, "toolbar_zoom_out");
 	gtk_widget_set_sensitive(toolbar_button, TRUE);
 
+	/* Window title */
+	gchar *window_title;
+
+	if (chmsee_ichmfile_get_title(selfp->book) != NULL
+			&& g_ascii_strcasecmp(chmsee_ichmfile_get_title(selfp->book), "(null)") != 0 ) {
+		window_title = g_strdup_printf("%s - ChmSee", chmsee_ichmfile_get_title(selfp->book));
+	} else {
+		window_title = g_strdup("ChmSee");
+	}
+
+	gtk_window_set_title(GTK_WINDOW (self), window_title);
+	g_free(window_title);
+
+	chmsee_ihtml_set_variable_font(get_active_html(self),
+			chmsee_ichmfile_get_variable_font(selfp->book));
+	chmsee_ihtml_set_fixed_font(get_active_html(self),
+			chmsee_ichmfile_get_fixed_font(selfp->book));
+
 	if (chmsee_ichmfile_get_home(selfp->book)) {
 		GtkWidget *menu_item;
 
@@ -1304,24 +1337,7 @@ display_book(ChmSee* self, ChmseeIchmfile *book)
 		toolbar_button = get_widget(self, "toolbar_home");
 		gtk_widget_set_sensitive(toolbar_button, TRUE);
 	}
-
-	/* Window title */
-	gchar *window_title;
-
-	if (chmsee_ichmfile_get_title(selfp->book) != NULL
-			&& g_ascii_strcasecmp(chmsee_ichmfile_get_title(selfp->book), "(null)") != 0 ) {
-		window_title = g_strdup_printf("%s - ChmSee", chmsee_ichmfile_get_title(selfp->book));
-	} else {
-		window_title = g_strdup("ChmSee");
-	}
-
-	gtk_window_set_title(GTK_WINDOW (self), window_title);
-	g_free(window_title);
-
-	chmsee_ihtml_set_variable_font(get_active_html(self),
-			chmsee_ichmfile_get_variable_font(selfp->book));
-	chmsee_ihtml_set_fixed_font(get_active_html(self),
-			chmsee_ichmfile_get_fixed_font(selfp->book));
+	selfp->state = CHMSEE_STATE_NORMAL;
 }
 
 static void
@@ -1337,6 +1353,7 @@ close_current_book(ChmSee *self)
   selfp->book = NULL;
   selfp->control_notebook = NULL;
   selfp->html_notebook = NULL;
+  selfp->state = CHMSEE_STATE_INIT;
 }
 
 static GtkWidget*
@@ -1471,12 +1488,12 @@ open_homepage(ChmSee *self)
 
         html = get_active_html(self);
 
-        g_signal_handlers_block_by_func(html, html_open_uri_cb, self);
+        /* g_signal_handlers_block_by_func(html, html_open_uri_cb, self); */
 
         chmsee_ihtml_open_uri(html, g_build_filename(chmsee_ichmfile_get_dir(selfp->book),
                                              chmsee_ichmfile_get_home(selfp->book), NULL));
 
-        g_signal_handlers_unblock_by_func(html, html_open_uri_cb, self);
+        /* g_signal_handlers_unblock_by_func(html, html_open_uri_cb, self); */
 
         if (selfp->has_toc) {
           booktree_select_uri(BOOKTREE (selfp->booktree),
