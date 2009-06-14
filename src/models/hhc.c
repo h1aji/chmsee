@@ -31,7 +31,6 @@ static gint prev_depth = -1;
 static gboolean tree_item = FALSE;
 static gchar *title = NULL;
 static gchar *local = NULL;
-
 static GNode *parent = NULL;
 static GNode *prev_node = NULL;
 
@@ -95,7 +94,7 @@ startElementHH(void *ctx, const xmlChar *name_, const xmlChar **atts_)
 	const gchar* name = (const gchar*) name_;
 	const gchar** atts = (const gchar**) atts_;
 
-	g_debug("SAX.startElement(%s)", name);
+	/* g_debug("SAX.startElement(%s)", name); */
 
 	if (g_ascii_strcasecmp("ul", name) == 0) {
 		depth++;
@@ -131,7 +130,7 @@ endElementHH(void *ctx, const xmlChar *name_)
 	GNode *node;
 	Link *link;
 
-	g_debug("SAX.endElement(%s)", name);
+	/* g_debug("SAX.endElement(%s)", name); */
 
 	if (g_ascii_strcasecmp("ul", name) == 0) {
 		depth--;
@@ -143,11 +142,11 @@ endElementHH(void *ctx, const xmlChar *name_)
 			local = g_strdup(CHMSEE_NO_LINK);
 		}
 
-		g_debug("prev_depth = %d", prev_depth);
-		g_debug("depth = %d", depth);
+		/* g_debug("prev_depth = %d", prev_depth); */
+		/* g_debug("depth = %d", depth); */
 
-		g_debug("title = %s", title);
-		g_debug("local = %s", local);
+		/* g_debug("title = %s", title); */
+		/* g_debug("local = %s", local); */
 
 		link = link_new(LINK_TYPE_PAGE,
 				title ? title : "default title",

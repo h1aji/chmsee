@@ -32,12 +32,12 @@ typedef struct _ChmseeUiIndexClass ChmseeUiIndexClass;
 typedef struct _ChmseeUiIndexPrivate ChmseeUiIndexPrivate;
 
 struct _ChmseeUiIndex {
-	GtkTreeView parent_instance;
+	GtkViewport parent_instance;
 	ChmseeUiIndexPrivate* priv;
 };
 
 struct _ChmseeUiIndexClass {
-	GtkTreeViewClass parent_class;
+	GtkViewportClass parent_class;
 };
 
 GType chmsee_ui_index_get_type(void);

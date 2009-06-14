@@ -20,6 +20,7 @@
 #include "ui_index.h"
 #include "config.h"
 
+#include "booktree.h"
 #include "models/link.h"
 
 #define selfp (self->priv)
@@ -32,14 +33,13 @@ enum {
 
 struct _ChmseeUiIndexPrivate {
 	ChmIndex* chmIndex;
-	GtkListStore* store;
 };
 
-static GtkTreeViewClass* parent_class;
+static GtkViewportClass* parent_class;
 
 #define CHMSEE_UI_INDEX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), CHMSEE_TYPE_UI_INDEX, ChmseeUiIndexPrivate))
 
-G_DEFINE_TYPE(ChmseeUiIndex, chmsee_ui_index, GTK_TYPE_TREE_VIEW);
+G_DEFINE_TYPE(ChmseeUiIndex, chmsee_ui_index, GTK_TYPE_VIEWPORT);
 
 static void chmsee_ui_index_dispose(GObject* object);
 static void chmsee_ui_index_finalize(GObject* object);
@@ -58,17 +58,6 @@ static void
 chmsee_ui_index_init(ChmseeUiIndex* self) {
 	self->priv = CHMSEE_UI_INDEX_GET_PRIVATE(self);
 	selfp->chmIndex = NULL;
-	selfp->store = gtk_list_store_new(N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(self), GTK_TREE_MODEL(selfp->store));
-	GtkCellRenderer* renderer = gtk_cell_renderer_text_new();
-	g_object_set(renderer,
-			"ellipsize", PANGO_ELLIPSIZE_END,
-	        NULL);
-    gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW (self),
-                                                -1,
-                                                "Index Title", renderer,
-                                                "text", COL_TITLE,
-                                                NULL);
 }
 
 GtkWidget* chmsee_ui_index_new(ChmIndex* chmIndex) {
@@ -82,10 +71,6 @@ static void chmsee_ui_index_dispose(GObject* object) {
 	if(selfp->chmIndex) {
 		g_object_unref(selfp->chmIndex);
 		selfp->chmIndex = NULL;
-	}
-	if(selfp->store) {
-		g_object_unref(selfp->store);
-		selfp->store = NULL;
 	}
 	G_OBJECT_CLASS(parent_class)->dispose(object);
 }
@@ -109,21 +94,23 @@ void chmsee_ui_index_set_model(ChmseeUiIndex* self, ChmIndex* chmIndex) {
 
 
 void chmsee_ui_index_refresh(ChmseeUiIndex* self) {
-	gtk_list_store_clear(selfp->store);
-	if(selfp->chmIndex == NULL) {
-		return;
+	GtkWidget* widget = NULL;
+	if(selfp->chmIndex != NULL) {
+		GNode* node = chmindex_get_data(selfp->chmIndex);
+		if(node != NULL) {
+			widget = booktree_new(node);
+		}
 	}
 
-	GList* data = chmindex_get_data(selfp->chmIndex);
+	GtkWidget* child = gtk_bin_get_child(GTK_BIN(self));
+	if(child != NULL) {
+		gtk_widget_destroy(child);
+	}
 
-	GtkTreeIter iter;
-	for(; data; data = data->next) {
-		Link* link = data->data;
-		gtk_list_store_append(selfp->store, &iter);
-		gtk_list_store_set(selfp->store, &iter,
-				COL_TITLE, link->name,
-				COL_URI, link->uri,
-				-1);
+	if(widget != NULL) {
+		gtk_container_add(GTK_CONTAINER(self), widget);
+	} else {
+		gtk_container_add(GTK_CONTAINER(self), gtk_tree_view_new());
 	}
 }
 
