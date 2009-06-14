@@ -24,6 +24,7 @@
 
 #include "models/bookmarks.h"
 #include "models/hhc.h"
+#include "models/chmindex.h"
 
 #define CHMSEE_TYPE_ICHMFILE                (chmsee_ichmfile_get_type())
 #define CHMSEE_ICHMFILE(obj)                (G_TYPE_CHECK_INSTANCE_CAST((obj), CHMSEE_TYPE_ICHMFILE, ChmseeIchmfile))
@@ -44,9 +45,10 @@ struct _ChmseeIchmfileInterface
   const gchar* (*get_fixed_font) (ChmseeIchmfile* self);
   Hhc* (*get_link_tree) (ChmseeIchmfile* self);
   Bookmarks* (*get_bookmarks_list) (ChmseeIchmfile* self);
+  ChmIndex* (*get_index) (ChmseeIchmfile* self);
 
   void (*set_variable_font) (ChmseeIchmfile* self, const gchar* font);
-  void (*set_fixed_font) (ChmseeIchmfile* self, const gchar* font);  
+  void (*set_fixed_font) (ChmseeIchmfile* self, const gchar* font);
 };
 
 GType chmsee_ichmfile_get_type(void);
@@ -54,6 +56,7 @@ const gchar* chmsee_ichmfile_get_dir(ChmseeIchmfile* self);
 const gchar* chmsee_ichmfile_get_home(ChmseeIchmfile* self);
 Hhc* chmsee_ichmfile_get_link_tree(ChmseeIchmfile* self);
 Bookmarks* chmsee_ichmfile_get_bookmarks_list(ChmseeIchmfile* self);
+ChmIndex* chmsee_ichmfile_get_index(ChmseeIchmfile* self);
 const gchar* chmsee_ichmfile_get_title(ChmseeIchmfile* self);
 const gchar* chmsee_ichmfile_get_variable_font(ChmseeIchmfile* self);
 const gchar* chmsee_ichmfile_get_fixed_font(ChmseeIchmfile* self);

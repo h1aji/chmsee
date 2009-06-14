@@ -750,6 +750,7 @@ static void chmsee_ichmfile_interface_init (ChmseeIchmfileInterface* iface)
   iface->get_bookmarks_list = chmfile_get_bookmarks_list;
   iface->set_fixed_font = chmfile_set_fixed_font;
   iface->set_variable_font = chmfile_set_variable_font;
+  iface->get_index = chmfile_get_index;
 }
 
 void chmfile_set_encoding(ChmFile* self, const char* encoding) {

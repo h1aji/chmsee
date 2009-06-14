@@ -104,4 +104,7 @@ void chmsee_ichmfile_set_fixed_font(ChmseeIchmfile* self, const gchar* font)
   return CHMSEE_ICHMFILE_GET_INTERFACE(self)->set_fixed_font(self, font);
 }
 
-
+ChmIndex* chmsee_ichmfile_get_index(ChmseeIchmfile* self) {
+	g_return_val_if_fail(CHMSEE_IS_ICHMFILE(self), NULL);
+	return CHMSEE_ICHMFILE_GET_INTERFACE(self)->get_index(self);
+}
