@@ -21,7 +21,9 @@
 #define _CHMSEE_UI_INDEX_H_
 
 #include <gtk/gtk.h>
+
 #include "models/chmindex.h"
+#include "models/link.h"
 
 #define CHMSEE_TYPE_UI_INDEX (chmsee_ui_index_get_type())
 #define CHMSEE_UI_INDEX(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), CHMSEE_TYPE_UI_INDEX, ChmseeUiIndex))
@@ -38,6 +40,8 @@ struct _ChmseeUiIndex {
 
 struct _ChmseeUiIndexClass {
 	GtkViewportClass parent_class;
+    /* Signals */
+    void (*link_selected) (ChmseeUiIndex* self, Link *link);
 };
 
 GType chmsee_ui_index_get_type(void);

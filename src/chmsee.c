@@ -104,6 +104,7 @@ static void chmsee_save_config(ChmSee *self);
 static void chmsee_set_fullscreen(ChmSee* self, gboolean fullscreen);
 static void chmsee_refresh_index(ChmSee* self);
 static GtkWidget* chmsee_new_index_page(ChmSee* self);
+static void chmsee_on_ui_index_link_selected(ChmSee* self, Link* link);
 
 static gboolean delete_cb(GtkWidget *, GdkEvent *, ChmSee *);
 static void destroy_cb(GtkWidget *, ChmSee *);
@@ -1217,10 +1218,6 @@ display_book(ChmSee* self, ChmseeIchmfile *book)
 
 	/* Book contents TreeView widget */
 	selfp->control_notebook = gtk_notebook_new();
-	gtk_notebook_append_page(GTK_NOTEBOOK (selfp->control_notebook),
-			chmsee_new_index_page(self),
-			gtk_label_new(_("Index")));
-	chmsee_refresh_index(self);
 
 	gtk_box_pack_start(GTK_BOX (control_vbox),
 			GTK_WIDGET (selfp->control_notebook),
@@ -1263,6 +1260,12 @@ display_book(ChmSee* self, ChmseeIchmfile *book)
 		g_debug("chmsee has toc");
 		selfp->has_toc = TRUE;
 	}
+
+	/* Index */
+	gtk_notebook_append_page(GTK_NOTEBOOK (selfp->control_notebook),
+			chmsee_new_index_page(self),
+			gtk_label_new(_("Index")));
+	chmsee_refresh_index(self);
 
 	/* Bookmarks */
 	bookmarks_list = chmsee_ichmfile_get_bookmarks_list(selfp->book);
@@ -2074,8 +2077,10 @@ void chmsee_refresh_index(ChmSee* self) {
 	}
 	chmsee_ui_index_set_model(CHMSEE_UI_INDEX(selfp->uiIndex), chmIndex);
 	if(chmIndex != NULL) {
+		g_debug("chmIndex != NULL");
 		gtk_widget_show(selfp->indexPage);
 	} else {
+		g_debug("chmIndex == NULL");
 		gtk_widget_hide(selfp->indexPage);
 	}
 }
@@ -2091,9 +2096,16 @@ static GtkWidget* chmsee_new_index_page(ChmSee* self) {
 
 	GtkWidget* uiIndex = chmsee_ui_index_new(NULL);
 	gtk_container_add(GTK_CONTAINER (booktree_sw), uiIndex);
+	g_signal_connect_swapped(uiIndex,
+			"link-selected",
+			G_CALLBACK (chmsee_on_ui_index_link_selected),
+			self);
 
 	selfp->indexPage = booktree_sw;
 	selfp->uiIndex = uiIndex;
 	return GTK_WIDGET(booktree_sw);
 }
 
+void chmsee_on_ui_index_link_selected(ChmSee* self, Link* link) {
+	booktree_link_selected_cb(NULL, link, self);
+}

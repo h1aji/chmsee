@@ -25,11 +25,13 @@
 
 #define selfp (self->priv)
 
+/* Signals */
 enum {
-        COL_TITLE,
-        COL_URI,
-        N_COLUMNS
+        LINK_SELECTED,
+        LAST_SIGNAL
 };
+
+static gint              signals[LAST_SIGNAL] = { 0 };
 
 struct _ChmseeUiIndexPrivate {
 	ChmIndex* chmIndex;
@@ -43,7 +45,7 @@ G_DEFINE_TYPE(ChmseeUiIndex, chmsee_ui_index, GTK_TYPE_VIEWPORT);
 
 static void chmsee_ui_index_dispose(GObject* object);
 static void chmsee_ui_index_finalize(GObject* object);
-
+static void chmsee_ui_index_on_link_selected(ChmseeUiIndex* self, Link* link);
 
 static void
 chmsee_ui_index_class_init(ChmseeUiIndexClass* klass) {
@@ -52,6 +54,18 @@ chmsee_ui_index_class_init(ChmseeUiIndexClass* klass) {
 	G_OBJECT_CLASS(klass)->finalize = chmsee_ui_index_finalize;
 
 	parent_class = g_type_class_peek_parent(klass);
+
+    signals[LINK_SELECTED] =
+            g_signal_new ("link_selected",
+                          G_TYPE_FROM_CLASS (klass),
+                          G_SIGNAL_RUN_LAST,
+                          G_STRUCT_OFFSET (ChmseeUiIndexClass, link_selected),
+                          NULL,
+                          NULL,
+                          g_cclosure_marshal_VOID__POINTER,
+                          G_TYPE_NONE,
+                          1,
+                          G_TYPE_POINTER);
 }
 
 static void
@@ -109,9 +123,13 @@ void chmsee_ui_index_refresh(ChmseeUiIndex* self) {
 
 	if(widget != NULL) {
 		gtk_container_add(GTK_CONTAINER(self), widget);
+		g_signal_connect_swapped(widget, "link_selected", (GCallback)chmsee_ui_index_on_link_selected, self);
 	} else {
 		gtk_container_add(GTK_CONTAINER(self), gtk_tree_view_new());
 	}
 }
 
+void chmsee_ui_index_on_link_selected(ChmseeUiIndex* self, Link* link) {
+	g_signal_emit(self, signals[LINK_SELECTED], 0, link);
+}
 
