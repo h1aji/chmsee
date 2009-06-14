@@ -304,30 +304,58 @@ on_configure_event(GtkWidget *widget, GdkEventConfigure *event, ChmSee *self)
 }
 
 static gboolean
+on_keypress_event_when_fullscreen(GtkWidget *widget, GdkEventKey *event, ChmSee *self) {
+	switch(event->keyval) {
+	case GDK_Escape:
+	case GDK_F11:
+        chmsee_set_fullscreen(self, FALSE);
+        return TRUE;
+		break;
+	case GDK_F9:
+		set_sidepane_state(self,
+				!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(get_widget(self, "menu_sidepane"))));
+		return TRUE;
+		break;
+	case GDK_Left:
+		/* TODO */
+		break;
+	case GDK_Right:
+		/* TODO */
+		break;
+	case GDK_minus:
+		/* TODO */
+		break;
+	case GDK_plus:
+		/* TODO */
+		break;
+	default:
+		break;
+	}
+	return FALSE;
+}
+
+static gboolean
+on_keypress_event_when_unfullscreen(GtkWidget *widget, GdkEventKey *event, ChmSee *self) {
+	switch(event->keyval) {
+	case GDK_Escape:
+		gtk_window_iconify(GTK_WINDOW (self));
+		return TRUE;
+		break;
+	default:
+		break;
+	}
+	return FALSE;
+}
+
+static gboolean
 on_keypress_event(GtkWidget *widget, GdkEventKey *event, ChmSee *self)
 {
-	g_debug("enter on_keypress_event with event->keyval = %d", event->keyval);
-	if (event->keyval == GDK_Escape) {
-		if(selfp->fullscreen) {
-                  chmsee_set_fullscreen(self, FALSE);
-		} else {
-			gtk_window_iconify(GTK_WINDOW (self));
-			return TRUE;
-		}
-	} else if(event->keyval == GDK_F11) {
-		if(selfp->fullscreen) {
-                  chmsee_set_fullscreen(self, FALSE);
-                  return TRUE;
-		}
-	} else if(event->keyval == GDK_F9) {
-		if(selfp->fullscreen) {
-			set_sidepane_state(self,
-					!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(get_widget(self, "menu_sidepane"))));
-			return TRUE;
-		}
+	g_debug("enter on_keypress_event with event->keyval = %d and event->state = %d", event->keyval, event->state);
+	if(selfp->fullscreen) {
+		return on_keypress_event_when_fullscreen(widget, event, self);
+	} else {
+		return on_keypress_event_when_unfullscreen(widget, event, self);
 	}
-
-	return FALSE;
 }
 
 static void

@@ -36,10 +36,10 @@ add_custom_target(report
 	DEPENDS test
 	VERBATIM)
 add_custom_target(love
-	COMMAND src/chmsee -vvv --g-fatal-warnings --datadir=data
+	COMMAND src/chmsee -vvv --datadir=data
 	DEPENDS chmsee
 	)
 add_custom_target(love-gdb
-	COMMAND gdb --args src/chmsee -vvv --g-fatal-warnings --datadir=data
+	COMMAND gdb --args src/chmsee -vvv --datadir=data
 	DEPENDS chmsee
 	)
