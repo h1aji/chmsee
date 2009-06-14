@@ -37,7 +37,7 @@ GType chmindex_get_type(void);
  * @return NULL if open or parse indexFname failed.
  */
 ChmIndex *chmindex_new(const gchar* indexFname, const gchar* encoding);
-/** @return GList<Link> */
-GList* chmindex_get_data(ChmIndex* self);
+/** @return GNode<Link> */
+GNode* chmindex_get_data(ChmIndex* self);
 
 #endif /* CHMINDEX_H_ */
