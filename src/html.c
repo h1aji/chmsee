@@ -66,7 +66,7 @@ G_DEFINE_TYPE_WITH_CODE (Html, html, G_TYPE_OBJECT,
 static void
 html_class_init(HtmlClass *klass)
 {
-        signals[TITLE_CHANGED] = 
+        signals[TITLE_CHANGED] =
                 g_signal_new ("title-changed",
                               G_TYPE_FROM_CLASS (klass),
                               G_SIGNAL_RUN_LAST,
@@ -126,7 +126,7 @@ html_class_init(HtmlClass *klass)
                              G_TYPE_NONE,
                              1, G_TYPE_STRING);
 
-        signals[LINK_MESSAGE] = 
+        signals[LINK_MESSAGE] =
                 g_signal_new("link-message",
                              G_TYPE_FROM_CLASS (klass),
                              G_SIGNAL_RUN_LAST,
@@ -147,11 +147,11 @@ html_init(Html *html)
                          "title",
                          G_CALLBACK (html_title_cb),
                          html);
-        g_signal_connect(G_OBJECT (html->gecko), 
+        g_signal_connect(G_OBJECT (html->gecko),
                          "location",
                          G_CALLBACK (html_location_cb),
                          html);
-        g_signal_connect(G_OBJECT (html->gecko), 
+        g_signal_connect(G_OBJECT (html->gecko),
                          "open-uri",
                          G_CALLBACK (html_open_uri_cb),
                          html);
@@ -159,15 +159,15 @@ html_init(Html *html)
                          "dom_mouse_click",
                          G_CALLBACK (html_mouse_click_cb),
                          html);
-        g_signal_connect(G_OBJECT (html->gecko), 
+        g_signal_connect(G_OBJECT (html->gecko),
                          "link_message",
                          G_CALLBACK (html_link_message_cb),
                          html);
-        g_signal_connect(G_OBJECT (html->gecko), 
+        g_signal_connect(G_OBJECT (html->gecko),
                          "add",
                          G_CALLBACK (html_child_add_cb),
                          html);
-        g_signal_connect(G_OBJECT (html->gecko), 
+        g_signal_connect(G_OBJECT (html->gecko),
                          "remove",
                          G_CALLBACK (html_child_remove_cb),
                          html);
@@ -220,7 +220,7 @@ html_mouse_click_cb(GtkMozEmbed *widget, gpointer dom_event, Html *html)
 {
         gint button;
         gint mask;
-        
+
         button = gecko_utils_get_mouse_event_button(dom_event);
         mask = gecko_utils_get_mouse_event_modifiers(dom_event);
 
@@ -261,7 +261,7 @@ html_link_message_cb(GtkMozEmbed *widget, Html *html)
 static void
 html_child_add_cb(GtkMozEmbed *embed, GtkWidget *child, Html *html)
 {
-        g_signal_connect(G_OBJECT (child), 
+        g_signal_connect(G_OBJECT (child),
                          "grab-focus",
                          G_CALLBACK (html_child_grab_focus_cb),
                          html);
@@ -302,28 +302,30 @@ void
 html_clear(Html *html)
 {
         static const char *data = "<html><body bgcolor=\"white\"></body></html>";
-        
+
         g_return_if_fail(IS_HTML (html));
 
         gtk_moz_embed_render_data(html->gecko, data, strlen(data), "file:///", "text/html");
 }
 
 void
-html_open_uri(Html *html, const gchar *str_uri)
+html_open_uri(Html *self, const gchar *str_uri)
 {
-        gchar *full_uri;
-        
-        g_return_if_fail(IS_HTML (html));
-        g_return_if_fail(str_uri != NULL);
+	gchar *full_uri;
 
-        if (str_uri[0] == '/')
-                full_uri = g_strdup_printf("file://%s", str_uri);
-        else
-                full_uri = g_strdup(str_uri);
-        
-        g_debug("Open uri %s", full_uri);
-        gtk_moz_embed_load_url(html->gecko, full_uri);
-        g_free(full_uri);
+	g_return_if_fail(IS_HTML (self));
+	g_return_if_fail(str_uri != NULL);
+
+	if (str_uri[0] == '/')
+		full_uri = g_strdup_printf("file://%s", str_uri);
+	else
+		full_uri = g_strdup(str_uri);
+
+	if(g_strcmp0(full_uri, html_get_location(self)) != 0) {
+		g_debug("Open uri %s", full_uri);
+		gtk_moz_embed_load_url(self->gecko, full_uri);
+	}
+	g_free(full_uri);
 }
 
 GtkWidget *
