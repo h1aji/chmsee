@@ -156,7 +156,7 @@ static void chmsee_open_uri(ChmSee *chmsee, const gchar *uri);
 static void chmsee_open_file(ChmSee *self, const gchar *filename);
 static GtkWidget *get_widget(ChmSee *, gchar *);
 static void populate_window(ChmSee *);
-static void display_book(ChmSee *, ChmseeIchmfile *);
+static void display_book(ChmSee *, ChmseeIchmfile *, const gchar *);
 static void close_current_book(ChmSee *);
 static void new_tab(ChmSee *, const gchar *);
 static ChmseeIhtml *get_active_html(ChmSee *);
@@ -1197,7 +1197,7 @@ populate_window(ChmSee *self)
 }
 
 static void
-display_book(ChmSee* self, ChmseeIchmfile *book)
+display_book(ChmSee* self, ChmseeIchmfile *book, const gchar *filename)
 {
 	GNode *link_tree;
 	GList *bookmarks_list;
@@ -1320,7 +1320,7 @@ display_book(ChmSee* self, ChmseeIchmfile *book)
 			&& g_ascii_strcasecmp(chmsee_ichmfile_get_title(selfp->book), "(null)") != 0 ) {
 		window_title = g_strdup_printf("%s - ChmSee", chmsee_ichmfile_get_title(selfp->book));
 	} else {
-		window_title = g_strdup("ChmSee");
+		window_title = g_strdup_printf("%s - ChmSee", filename);
 	}
 
 	gtk_window_set_title(GTK_WINDOW (self), window_title);
@@ -1705,7 +1705,7 @@ chmsee_open_file(ChmSee *self, const gchar *filename)
         book = chmsee_chmfile_new(filename);
 
         if (book) {
-                display_book(self, book);
+                display_book(self, book, g_path_get_basename(filename));
 
                 selfp->last_dir = g_strdup_printf("%s", g_path_get_dirname(filename));
         } else {
