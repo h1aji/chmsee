@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-10 22:47+0800\n"
+"POT-Creation-Date: 2009-07-04 13:15+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -188,62 +188,66 @@ msgstr ""
 msgid "HTML Help(CHM) viewer"
 msgstr ""
 
-#: ../src/chmsee.c:449
+#: ../src/chmsee.c:506
 #, c-format
 msgid "URI redirect: \"%s\" -> \"%s\""
 msgstr ""
 
-#: ../src/chmsee.c:610
+#: ../src/chmsee.c:671
 msgid "CHM Files"
 msgstr ""
 
-#: ../src/chmsee.c:615
+#: ../src/chmsee.c:676
 msgid "All Files"
 msgstr ""
 
-#: ../src/chmsee.c:1135
+#: ../src/chmsee.c:1196
 msgid "Ready!"
 msgstr ""
 
-#: ../src/chmsee.c:1191
+#: ../src/chmsee.c:1253
 msgid "Topics"
 msgstr ""
 
-#: ../src/chmsee.c:1208
+#: ../src/chmsee.c:1267
+msgid "Index"
+msgstr ""
+
+#: ../src/chmsee.c:1276
 msgid "Bookmarks"
 msgstr ""
 
 #. Custom label widget, with a close button
-#: ../src/chmsee.c:1370 ../src/chmsee.c:1545
+#: ../src/chmsee.c:1440 ../src/chmsee.c:1615
 msgid "No Title"
 msgstr ""
 
-#: ../src/chmsee.c:1649
+#: ../src/chmsee.c:1719
 #, c-format
 msgid "Error loading file '%s'"
 msgstr ""
 
-#: ../src/models/chmfile.c:239
+#: ../src/models/chmfile.c:253
 #, c-format
 msgid "cannot open chmfile: %s"
 msgstr ""
 
-#: ../src/models/chmfile.c:246
+#: ../src/models/chmfile.c:260
 #, c-format
 msgid "Extract chmfile failed: %s"
 msgstr ""
 
-#: ../src/models/chmfile.c:272
+#: ../src/models/chmfile.c:286
 #, c-format
 msgid "open \"%s\" failed: %s"
 msgstr ""
 
-#: ../src/models/chmfile.c:322
+#: ../src/models/chmfile.c:336
 #, c-format
 msgid "Can not open chm file %s."
 msgstr ""
 
-#: ../src/models/chmfile.c:580
+#: ../src/models/chmfile.c:594
 msgid "Can't found hhc file."
 msgstr ""
 
@@ -251,19 +255,19 @@ msgstr ""
 msgid "Bookmark"
 msgstr ""
 
-#: ../src/main.cpp:88
+#: ../src/main.cpp:107
 msgid "Display the version and exit"
 msgstr ""
 
-#: ../src/main.cpp:93
+#: ../src/main.cpp:112
 msgid "be verbose, repeat 3 times to get all info"
 msgstr ""
 
-#: ../src/main.cpp:98
+#: ../src/main.cpp:117
 msgid "be quiet, repeat 2 times to disable all info"
 msgstr ""
 
-#: ../src/main.cpp:135
+#: ../src/main.cpp:154
 #, c-format
 msgid "more than 1 argument\n"
 msgstr ""
