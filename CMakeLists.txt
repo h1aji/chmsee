@@ -11,6 +11,11 @@ set(CHMSEE_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/chmsee")
 set(GECKO_FLAVOUR "libxul")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/src/config.h)
 
+find_program(INTLTOOL_MERGE intltool-merge)
+if(${INTLTOOL_MERGE} STREQUAL "INTLTOOL_MERGE-NOTFOUND")
+  message(FATAL_ERROR "intltool-merge not found, you can find one in http://ftp.gnome.org/pub/gnome/sources/intltool/")
+endif()
+
 find_program(GLIB_GENMARSHAL glib-genmarshal)
 if(${GLIB_GENMARSHAL} STREQUAL "GLIB_GENMARSHAL-NOTFOUND")
   message(FATAL_ERROR "glib-genmarshal not found, check your glib-2.0 development environment")
