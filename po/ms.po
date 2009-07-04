@@ -1,4 +1,4 @@
-# Norwegian Bokmal translation for chmsee
+# Malay translation for chmsee
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the chmsee package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
@@ -6,11 +6,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: chmsee\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-05-10 22:47+0800\n"
-"PO-Revision-Date: 2009-03-06 14:09+0000\n"
-"Last-Translator: Mikal Krogstad <mikal.krogstad@gmail.com>\n"
-"Language-Team: Norwegian Bokmal <nb@li.org>\n"
+"PO-Revision-Date: 2009-06-21 17:11+0000\n"
+"Last-Translator: abuyop <Unknown>\n"
+"Language-Team: Malay <ms@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,31 +19,31 @@ msgstr ""
 
 #: ../data/chmsee.glade.h:1
 msgid "<b>Cache</b>"
-msgstr "<b>Hurtiglager</b>"
+msgstr "<b>Cecikut</b>"
 
 #: ../data/chmsee.glade.h:2
 msgid "<b>Charset</b>"
-msgstr "<b>Tegnkoding</b>"
+msgstr "<b>Charset</b>"
 
 #: ../data/chmsee.glade.h:3
 msgid "<b>Font</b>"
-msgstr "<b>Skrift</b>"
+msgstr "<b>Fon</b>"
 
 #: ../data/chmsee.glade.h:4
 msgid "About"
-msgstr "Om"
+msgstr "Perihal"
 
 #: ../data/chmsee.glade.h:5
 msgid "About..."
-msgstr "Om..."
+msgstr "Perihal..."
 
 #: ../data/chmsee.glade.h:6
 msgid "Auto-Detect:"
-msgstr "Autogjenkjenn:"
+msgstr "Auto-Kenalpasti"
 
 #: ../data/chmsee.glade.h:7
 msgid "Back"
-msgstr "Tilbake"
+msgstr "Kembali"
 
 #: ../data/chmsee.glade.h:8
 msgid ""
@@ -52,10 +52,11 @@ msgid ""
 "\n"
 "NOTE: If you are viewing a CHM file, you need reopen it after cleaning."
 msgstr ""
-"CHM-filer pakkes ut til dette hurtiglageret. Du kan trykke Tøm-knappen for å "
-"frigjøre diskplass.\n"
-"\n"
-"Har du en CHM-fil åpen, må du åpne den på nytt etter tømming."
+"Fail CHM diekstrak didalam folder cecikut, anda boleh menekan butang "
+"Kosongkan untuk bebaskan ruang cakera./n\n"
+"/n\n"
+"NOTA: Jika anda sedang membaca fail CHM, anda perlu membukanya semula "
+"selepas pembersihan."
 
 #: ../data/chmsee.glade.h:11 ../data/chmsee.desktop.in.h:1
 msgid "ChmSee"
@@ -63,19 +64,19 @@ msgstr "ChmSee"
 
 #: ../data/chmsee.glade.h:12
 msgid "Copy Page _Location"
-msgstr "Kopier side_plassering"
+msgstr "Salin Lokasi _Halaman"
 
 #: ../data/chmsee.glade.h:13
 msgid "Fixed Width:"
-msgstr "Fastsatt bredde:"
+msgstr "Lebar Tetap:"
 
 #: ../data/chmsee.glade.h:14
 msgid "Forward"
-msgstr "Fremover"
+msgstr "Hadapan"
 
 #: ../data/chmsee.glade.h:15
 msgid "Home"
-msgstr "Hjem"
+msgstr "Runah"
 
 #: ../data/chmsee.glade.h:16
 msgid "Normal"
@@ -83,11 +84,11 @@ msgstr "Normal"
 
 #: ../data/chmsee.glade.h:17
 msgid "Open File"
-msgstr "Åpne fil"
+msgstr "Buka Fail"
 
 #: ../data/chmsee.glade.h:18
 msgid "Open Link in New _Tab"
-msgstr "Åpne lenke i ny _fane"
+msgstr "Buka Pautan pada _Tab Baru"
 
 #: ../data/chmsee.glade.h:19
 msgid "Panel"
@@ -95,19 +96,23 @@ msgstr "Panel"
 
 #: ../data/chmsee.glade.h:20
 msgid "Select _All"
-msgstr "Velg _alt"
+msgstr "Pilih _Semua"
 
 #: ../data/chmsee.glade.h:21
 msgid "Setup"
-msgstr "Brukervalg"
+msgstr "Tetapan"
 
 #: ../data/chmsee.glade.h:22
 msgid "Show/Hide Panel"
-msgstr "Vis/gjem panel"
+msgstr "Papar/Sembunyi Panel"
+
+#: ../data/chmsee.glade.h:23
+msgid "Side _Pane"
+msgstr "_Pane Sisi"
 
 #: ../data/chmsee.glade.h:24
 msgid "The HTML Help(CHM) viewer for Unix/Linux"
-msgstr "Framviser for HTML-hjelp (CHM) for Unix/Linux"
+msgstr "Pelihat Bantuan HTML (CHM) untuk Unix/Linux"
 
 #: ../data/chmsee.glade.h:25
 msgid ""
@@ -119,65 +124,69 @@ msgid ""
 "Russian\n"
 "Ukrainain"
 msgstr ""
-"Universell\n"
-"Forenklet kinesisk\n"
-"Tradisjonell kinesisk\n"
-"Japanesk\n"
-"Koreansk\n"
-"Russisk\n"
-"Ukrainsk"
+"Universal/n\n"
+"China Mudah/n\n"
+"China Tradisional/n\n"
+"Jepun/n\n"
+"Korea/n\n"
+"Rusia/n\n"
+"Ukraine"
 
 #: ../data/chmsee.glade.h:32
 msgid "Variable Width:"
-msgstr "Variabel bredde:"
+msgstr "Lebar Boleh Ubah"
 
 #: ../data/chmsee.glade.h:33
 msgid "Zoom In"
-msgstr "Forstørr"
+msgstr "Zum masuk"
 
 #: ../data/chmsee.glade.h:34
 msgid "Zoom Out"
-msgstr "Forminsk"
+msgstr "Zum Keluar"
 
 #: ../data/chmsee.glade.h:35
 msgid "_Back"
-msgstr "Til_bake"
+msgstr "_Kembali"
 
 #: ../data/chmsee.glade.h:36
 msgid "_Close Tab"
-msgstr "_Lukk fane"
+msgstr "_Tutup Tab"
 
 #: ../data/chmsee.glade.h:37
 msgid "_Copy"
-msgstr "_Kopier"
+msgstr "_Salin"
 
 #: ../data/chmsee.glade.h:38
 msgid "_Copy Link Location"
-msgstr "_Kopier lenkemål"
+msgstr "_Salin Lokasi Pautan"
 
 #: ../data/chmsee.glade.h:39
 msgid "_Edit"
-msgstr "R_ediger"
+msgstr "_Sunting"
 
 #: ../data/chmsee.glade.h:40
 msgid "_File"
-msgstr "_Fil"
+msgstr "_Fail"
 
 #: ../data/chmsee.glade.h:41
 msgid "_Forward"
-msgstr "_Fremover"
+msgstr "_Hadapan"
+
+#: ../data/chmsee.glade.h:42
+msgid "_Full Screen"
+msgstr "Skrin Penuh"
 
 #: ../data/chmsee.glade.h:43
 msgid "_Help"
-msgstr "_Hjelp"
+msgstr "_Bantuan"
 
 #: ../data/chmsee.glade.h:44
 msgid "_New Tab"
-msgstr "_Ny fane"
+msgstr "Tab _Baru"
 
 #: ../data/chmsee.glade.h:45
 msgid "_View"
-msgstr "_Vis"
+msgstr "_Papar"
 
 #: ../data/chmsee.glade.h:46
 msgid "http://code.google.com/p/chmsee"
@@ -188,105 +197,88 @@ msgstr "http://code.google.com/p/chmsee"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Mikal Krogstad https://launchpad.net/~mikal-krogstad\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Mikal Krogstad https://launchpad.net/~mikal-krogstad"
+"  abuyop https://launchpad.net/~abuyop"
 
 #: ../data/chmsee.desktop.in.h:2
 msgid "HTML Help(CHM) viewer"
-msgstr "Framviser for HTML-hjelp (CHM)"
-
-#: ../src/chmsee.c:610
-msgid "CHM Files"
-msgstr "CHM-filer"
-
-#: ../src/chmsee.c:615
-msgid "All Files"
-msgstr "Alle filer"
-
-#: ../src/chmsee.c:1135
-msgid "Ready!"
-msgstr "Klar!"
-
-#: ../src/chmsee.c:1191
-msgid "Topics"
-msgstr "Emner"
-
-#: ../src/chmsee.c:1208
-msgid "Bookmarks"
-msgstr "Bokmerker"
-
-#. Custom label widget, with a close button
-#: ../src/chmsee.c:1370 ../src/chmsee.c:1545
-msgid "No Title"
-msgstr "Ingen tittel"
-
-#: ../src/chmsee.c:1649
-#, c-format
-msgid "Error loading file '%s'"
-msgstr "Feil ved lesing av '%s'"
-
-#: ../src/models/chmfile.c:239
-#, c-format
-msgid "cannot open chmfile: %s"
-msgstr "kan ikke åpne chm-fil: %s"
-
-#: ../src/models/chmfile.c:246
-#, c-format
-msgid "Extract chmfile failed: %s"
-msgstr "Utpakking av chm-fil mislyktes: %s"
-
-#: ../src/models/chmfile.c:272
-#, c-format
-msgid "open \"%s\" failed: %s"
-msgstr "lesing av \"%s\" mislyktes: %s"
-
-#: ../src/ui_bookmarks.c:315
-msgid "Bookmark"
-msgstr "Legg til bokmerke"
-
-#: ../src/main.cpp:88
-msgid "Display the version and exit"
-msgstr "Vis versjon og avslutt"
-
-#: ../src/main.cpp:135
-#, c-format
-msgid "more than 1 argument\n"
-msgstr "mer enn ett argument\n"
-
-#~ msgid "_Home"
-#~ msgstr "_Hjem"
-
-#~ msgid "_Setup"
-#~ msgstr "Opp_sett"
-
-#: ../data/chmsee.glade.h:23
-msgid "Side _Pane"
-msgstr ""
-
-#: ../data/chmsee.glade.h:42
-msgid "_Full Screen"
-msgstr ""
+msgstr "Pelihat Bantuan HTML(CHM)"
 
 #: ../src/chmsee.c:449
 #, c-format
 msgid "URI redirect: \"%s\" -> \"%s\""
 msgstr ""
 
+#: ../src/chmsee.c:610
+msgid "CHM Files"
+msgstr "Fail CHM"
+
+#: ../src/chmsee.c:615
+msgid "All Files"
+msgstr "Semua Fail"
+
+#: ../src/chmsee.c:1135
+msgid "Ready!"
+msgstr "Sedia!"
+
+#: ../src/chmsee.c:1191
+msgid "Topics"
+msgstr "Topik"
+
+#: ../src/chmsee.c:1208
+msgid "Bookmarks"
+msgstr "Tanda Buku"
+
+#. Custom label widget, with a close button
+#: ../src/chmsee.c:1370 ../src/chmsee.c:1545
+msgid "No Title"
+msgstr "Tiada Tajuk"
+
+#: ../src/chmsee.c:1649
+#, c-format
+msgid "Error loading file '%s'"
+msgstr "Ralat memuatkan fail '%s'"
+
+#: ../src/models/chmfile.c:239
+#, c-format
+msgid "cannot open chmfile: %s"
+msgstr "Tidak dapat membuka failchm: '%s'"
+
+#: ../src/models/chmfile.c:246
+#, c-format
+msgid "Extract chmfile failed: %s"
+msgstr "Ekstrak failchm gagal: '%s'"
+
+#: ../src/models/chmfile.c:272
+#, c-format
+msgid "open \"%s\" failed: %s"
+msgstr "buka '%s' gagal: %s"
+
 #: ../src/models/chmfile.c:322
 #, c-format
 msgid "Can not open chm file %s."
-msgstr ""
+msgstr "Tidak dapat membuka fail chm: %s"
 
 #: ../src/models/chmfile.c:580
 msgid "Can't found hhc file."
-msgstr ""
+msgstr "Tidak jumpa fail hhc."
+
+#: ../src/ui_bookmarks.c:315
+msgid "Bookmark"
+msgstr "Tanda Buku"
+
+#: ../src/main.cpp:88
+msgid "Display the version and exit"
+msgstr "Papar versi dan keluar"
 
 #: ../src/main.cpp:93
 msgid "be verbose, repeat 3 times to get all info"
-msgstr ""
+msgstr "panjang berjela, ulang 3 kali untuk dapatkan semua info"
 
 #: ../src/main.cpp:98
 msgid "be quiet, repeat 2 times to disable all info"
-msgstr ""
+msgstr "senyap, ulang 2 kali untuk lumpuhkan semua info"
+
+#: ../src/main.cpp:135
+#, c-format
+msgid "more than 1 argument\n"
+msgstr "lebih dari 1 argumen/n\n"

@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: chmsee\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-05 22:07+0800\n"
-"PO-Revision-Date: 2009-01-26 10:09+0000\n"
+"POT-Creation-Date: 2009-05-10 22:47+0800\n"
+"PO-Revision-Date: 2009-03-06 14:09+0000\n"
 "Last-Translator: Jen Ockwell <jenfraggleubuntu@googlemail.com>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-03-05 12:04+0000\n"
+"X-Launchpad-Export-Date: 2009-07-04 04:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../data/chmsee.glade.h:1
@@ -69,10 +69,6 @@ msgstr "Copy Page _Location"
 msgid "Fixed Width:"
 msgstr "Fixed Width:"
 
-#: ../data/chmsee.glade.h:14
-msgid "Forward"
-msgstr ""
-
 #: ../data/chmsee.glade.h:15
 msgid "Home"
 msgstr "Home"
@@ -105,11 +101,11 @@ msgstr "Setup"
 msgid "Show/Hide Panel"
 msgstr "Show/Hide Panel"
 
-#: ../data/chmsee.glade.h:23
+#: ../data/chmsee.glade.h:24
 msgid "The HTML Help(CHM) viewer for Unix/Linux"
 msgstr "The HTML Help(CHM) viewer for Unix/Linux"
 
-#: ../data/chmsee.glade.h:24
+#: ../data/chmsee.glade.h:25
 msgid ""
 "Universal\n"
 "Simplified Chinese\n"
@@ -127,61 +123,49 @@ msgstr ""
 "Russian\n"
 "Ukrainain"
 
-#: ../data/chmsee.glade.h:31
+#: ../data/chmsee.glade.h:32
 msgid "Variable Width:"
 msgstr "Variable Width:"
 
-#: ../data/chmsee.glade.h:32
+#: ../data/chmsee.glade.h:33
 msgid "Zoom In"
 msgstr "Zoom In"
 
-#: ../data/chmsee.glade.h:33
+#: ../data/chmsee.glade.h:34
 msgid "Zoom Out"
 msgstr "Zoom Out"
 
-#: ../data/chmsee.glade.h:34
+#: ../data/chmsee.glade.h:35
 msgid "_Back"
 msgstr "_Back"
 
-#: ../data/chmsee.glade.h:35
+#: ../data/chmsee.glade.h:36
 msgid "_Close Tab"
 msgstr "_Close Tab"
 
-#: ../data/chmsee.glade.h:36
+#: ../data/chmsee.glade.h:37
 msgid "_Copy"
 msgstr "_Copy"
 
-#: ../data/chmsee.glade.h:37
+#: ../data/chmsee.glade.h:38
 msgid "_Copy Link Location"
 msgstr "_Copy Link Location"
 
-#: ../data/chmsee.glade.h:38
+#: ../data/chmsee.glade.h:39
 msgid "_Edit"
 msgstr "_Edit"
 
-#: ../data/chmsee.glade.h:39
+#: ../data/chmsee.glade.h:40
 msgid "_File"
 msgstr "_File"
 
-#: ../data/chmsee.glade.h:40
-msgid "_Forward"
-msgstr ""
-
-#: ../data/chmsee.glade.h:41
+#: ../data/chmsee.glade.h:43
 msgid "_Help"
 msgstr "_Help"
 
-#: ../data/chmsee.glade.h:42
-msgid "_Home"
-msgstr "_Home"
-
-#: ../data/chmsee.glade.h:43
+#: ../data/chmsee.glade.h:44
 msgid "_New Tab"
 msgstr "_New Tab"
-
-#: ../data/chmsee.glade.h:44
-msgid "_Setup"
-msgstr "_Setup"
 
 #: ../data/chmsee.glade.h:45
 msgid "_View"
@@ -196,88 +180,113 @@ msgstr "http://code.google.com/p/chmsee"
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
+"  Jen Ockwell https://launchpad.net/~rj-ockwell\n"
+"\n"
+"Launchpad Contributions:\n"
 "  Jen Ockwell https://launchpad.net/~rj-ockwell"
 
 #: ../data/chmsee.desktop.in.h:2
 msgid "HTML Help(CHM) viewer"
 msgstr "HTML Help(CHM) viewer"
 
-#: ../src/chmsee.c:362
-#, c-format
-msgid "URI redirect: \"%s\" -> \"%s\""
-msgstr ""
-
-#: ../src/chmsee.c:523
+#: ../src/chmsee.c:610
 msgid "CHM Files"
 msgstr "CHM Files"
 
-#: ../src/chmsee.c:528
+#: ../src/chmsee.c:615
 msgid "All Files"
 msgstr "All Files"
 
-#: ../src/chmsee.c:1055
+#: ../src/chmsee.c:1135
 msgid "Ready!"
 msgstr "Ready!"
 
-#: ../src/chmsee.c:1107
+#: ../src/chmsee.c:1191
 msgid "Topics"
 msgstr "Topics"
 
-#: ../src/chmsee.c:1124
+#: ../src/chmsee.c:1208
 msgid "Bookmarks"
 msgstr "Bookmarks"
 
 #. Custom label widget, with a close button
-#: ../src/chmsee.c:1272 ../src/chmsee.c:1439
+#: ../src/chmsee.c:1370 ../src/chmsee.c:1545
 msgid "No Title"
 msgstr "No Title"
 
-#: ../src/chmsee.c:1541
+#: ../src/chmsee.c:1649
 #, c-format
 msgid "Error loading file '%s'"
 msgstr "Error loading file '%s'"
 
-#: ../src/models/chmfile.c:257
+#: ../src/models/chmfile.c:239
 #, c-format
 msgid "cannot open chmfile: %s"
 msgstr "cannot open chmfile: %s"
 
-#: ../src/models/chmfile.c:264
+#: ../src/models/chmfile.c:246
 #, c-format
 msgid "Extract chmfile failed: %s"
 msgstr "Extract chmfile failed: %s"
 
-#: ../src/models/chmfile.c:290
+#: ../src/models/chmfile.c:272
 #, c-format
 msgid "open \"%s\" failed: %s"
 msgstr "open \"%s\" failed: %s"
-
-#: ../src/models/chmfile.c:492
-#, fuzzy, c-format
-msgid "Can not open chm file %s."
-msgstr "cannot open chmfile: %s"
-
-#: ../src/models/chmfile.c:750
-msgid "Can't found hhc file."
-msgstr ""
 
 #: ../src/ui_bookmarks.c:315
 msgid "Bookmark"
 msgstr "Bookmark"
 
-#: ../src/main.c:88
+#: ../src/main.cpp:88
 msgid "Display the version and exit"
 msgstr "Display the version and exit"
 
-#: ../src/main.c:93
-msgid "be verbose, repeat 3 times to get all info"
-msgstr ""
-
-#: ../src/main.c:97
-msgid "be quiet, repeat 2 times to disable all info"
-msgstr ""
-
-#: ../src/main.c:120
+#: ../src/main.cpp:135
 #, c-format
 msgid "more than 1 argument\n"
 msgstr "more than 1 argument\n"
+
+#~ msgid "_Home"
+#~ msgstr "_Home"
+
+#~ msgid "_Setup"
+#~ msgstr "_Setup"
+
+#: ../data/chmsee.glade.h:14
+msgid "Forward"
+msgstr ""
+
+#: ../data/chmsee.glade.h:23
+msgid "Side _Pane"
+msgstr ""
+
+#: ../data/chmsee.glade.h:41
+msgid "_Forward"
+msgstr ""
+
+#: ../data/chmsee.glade.h:42
+msgid "_Full Screen"
+msgstr ""
+
+#: ../src/chmsee.c:449
+#, c-format
+msgid "URI redirect: \"%s\" -> \"%s\""
+msgstr ""
+
+#: ../src/models/chmfile.c:322
+#, c-format
+msgid "Can not open chm file %s."
+msgstr ""
+
+#: ../src/models/chmfile.c:580
+msgid "Can't found hhc file."
+msgstr ""
+
+#: ../src/main.cpp:93
+msgid "be verbose, repeat 3 times to get all info"
+msgstr ""
+
+#: ../src/main.cpp:98
+msgid "be quiet, repeat 2 times to disable all info"
+msgstr ""

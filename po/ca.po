@@ -1,4 +1,4 @@
-# Norwegian Bokmal translation for chmsee
+# Catalan translation for chmsee
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the chmsee package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
@@ -6,11 +6,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: chmsee\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-05-10 22:47+0800\n"
-"PO-Revision-Date: 2009-03-06 14:09+0000\n"
-"Last-Translator: Mikal Krogstad <mikal.krogstad@gmail.com>\n"
-"Language-Team: Norwegian Bokmal <nb@li.org>\n"
+"PO-Revision-Date: 2009-06-07 00:29+0000\n"
+"Last-Translator: el_libre XDDDDDDDDDDDDDDDDDDDDDDDDDDD <el.libre@gmail.com>\n"
+"Language-Team: Catalan <ca@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,31 +19,31 @@ msgstr ""
 
 #: ../data/chmsee.glade.h:1
 msgid "<b>Cache</b>"
-msgstr "<b>Hurtiglager</b>"
+msgstr ""
 
 #: ../data/chmsee.glade.h:2
 msgid "<b>Charset</b>"
-msgstr "<b>Tegnkoding</b>"
+msgstr ""
 
 #: ../data/chmsee.glade.h:3
 msgid "<b>Font</b>"
-msgstr "<b>Skrift</b>"
+msgstr "<b>Font</b>"
 
 #: ../data/chmsee.glade.h:4
 msgid "About"
-msgstr "Om"
+msgstr "Sobre"
 
 #: ../data/chmsee.glade.h:5
 msgid "About..."
-msgstr "Om..."
+msgstr "Sobre..."
 
 #: ../data/chmsee.glade.h:6
 msgid "Auto-Detect:"
-msgstr "Autogjenkjenn:"
+msgstr ""
 
 #: ../data/chmsee.glade.h:7
 msgid "Back"
-msgstr "Tilbake"
+msgstr "Torna"
 
 #: ../data/chmsee.glade.h:8
 msgid ""
@@ -52,10 +52,6 @@ msgid ""
 "\n"
 "NOTE: If you are viewing a CHM file, you need reopen it after cleaning."
 msgstr ""
-"CHM-filer pakkes ut til dette hurtiglageret. Du kan trykke Tøm-knappen for å "
-"frigjøre diskplass.\n"
-"\n"
-"Har du en CHM-fil åpen, må du åpne den på nytt etter tømming."
 
 #: ../data/chmsee.glade.h:11 ../data/chmsee.desktop.in.h:1
 msgid "ChmSee"
@@ -63,19 +59,19 @@ msgstr "ChmSee"
 
 #: ../data/chmsee.glade.h:12
 msgid "Copy Page _Location"
-msgstr "Kopier side_plassering"
+msgstr ""
 
 #: ../data/chmsee.glade.h:13
 msgid "Fixed Width:"
-msgstr "Fastsatt bredde:"
+msgstr ""
 
 #: ../data/chmsee.glade.h:14
 msgid "Forward"
-msgstr "Fremover"
+msgstr "Endavant"
 
 #: ../data/chmsee.glade.h:15
 msgid "Home"
-msgstr "Hjem"
+msgstr "Inici"
 
 #: ../data/chmsee.glade.h:16
 msgid "Normal"
@@ -83,31 +79,35 @@ msgstr "Normal"
 
 #: ../data/chmsee.glade.h:17
 msgid "Open File"
-msgstr "Åpne fil"
+msgstr "Obre Arxiu"
 
 #: ../data/chmsee.glade.h:18
 msgid "Open Link in New _Tab"
-msgstr "Åpne lenke i ny _fane"
+msgstr ""
 
 #: ../data/chmsee.glade.h:19
 msgid "Panel"
-msgstr "Panel"
+msgstr "Panell"
 
 #: ../data/chmsee.glade.h:20
 msgid "Select _All"
-msgstr "Velg _alt"
+msgstr ""
 
 #: ../data/chmsee.glade.h:21
 msgid "Setup"
-msgstr "Brukervalg"
+msgstr "Configuració"
 
 #: ../data/chmsee.glade.h:22
 msgid "Show/Hide Panel"
-msgstr "Vis/gjem panel"
+msgstr ""
+
+#: ../data/chmsee.glade.h:23
+msgid "Side _Pane"
+msgstr ""
 
 #: ../data/chmsee.glade.h:24
 msgid "The HTML Help(CHM) viewer for Unix/Linux"
-msgstr "Framviser for HTML-hjelp (CHM) for Unix/Linux"
+msgstr ""
 
 #: ../data/chmsee.glade.h:25
 msgid ""
@@ -119,159 +119,126 @@ msgid ""
 "Russian\n"
 "Ukrainain"
 msgstr ""
-"Universell\n"
-"Forenklet kinesisk\n"
-"Tradisjonell kinesisk\n"
-"Japanesk\n"
-"Koreansk\n"
-"Russisk\n"
-"Ukrainsk"
 
 #: ../data/chmsee.glade.h:32
 msgid "Variable Width:"
-msgstr "Variabel bredde:"
+msgstr ""
 
 #: ../data/chmsee.glade.h:33
 msgid "Zoom In"
-msgstr "Forstørr"
+msgstr "Amplia"
 
 #: ../data/chmsee.glade.h:34
 msgid "Zoom Out"
-msgstr "Forminsk"
+msgstr "Redueix"
 
 #: ../data/chmsee.glade.h:35
 msgid "_Back"
-msgstr "Til_bake"
+msgstr ""
 
 #: ../data/chmsee.glade.h:36
 msgid "_Close Tab"
-msgstr "_Lukk fane"
+msgstr ""
 
 #: ../data/chmsee.glade.h:37
 msgid "_Copy"
-msgstr "_Kopier"
+msgstr "_Copia"
 
 #: ../data/chmsee.glade.h:38
 msgid "_Copy Link Location"
-msgstr "_Kopier lenkemål"
+msgstr ""
 
 #: ../data/chmsee.glade.h:39
 msgid "_Edit"
-msgstr "R_ediger"
+msgstr "_Edita"
 
 #: ../data/chmsee.glade.h:40
 msgid "_File"
-msgstr "_Fil"
+msgstr "_Arxiu"
 
 #: ../data/chmsee.glade.h:41
 msgid "_Forward"
-msgstr "_Fremover"
+msgstr "_Endavant"
+
+#: ../data/chmsee.glade.h:42
+msgid "_Full Screen"
+msgstr ""
 
 #: ../data/chmsee.glade.h:43
 msgid "_Help"
-msgstr "_Hjelp"
+msgstr "_Ajut"
 
 #: ../data/chmsee.glade.h:44
 msgid "_New Tab"
-msgstr "_Ny fane"
+msgstr ""
 
 #: ../data/chmsee.glade.h:45
 msgid "_View"
-msgstr "_Vis"
+msgstr "_Veu"
 
 #: ../data/chmsee.glade.h:46
 msgid "http://code.google.com/p/chmsee"
-msgstr "http://code.google.com/p/chmsee"
+msgstr ""
 
 #. TRANSLATORS: Replace this string with your names, one name per line.
 #: ../data/chmsee.glade.h:48
 msgid "translator-credits"
 msgstr ""
 "Launchpad Contributions:\n"
-"  Mikal Krogstad https://launchpad.net/~mikal-krogstad\n"
-"\n"
-"Launchpad Contributions:\n"
-"  Mikal Krogstad https://launchpad.net/~mikal-krogstad"
+"  el_libre XDDDDDDDDDDDDDDDDDDDDDDDDDDD https://launchpad.net/~el-libre"
 
 #: ../data/chmsee.desktop.in.h:2
 msgid "HTML Help(CHM) viewer"
-msgstr "Framviser for HTML-hjelp (CHM)"
-
-#: ../src/chmsee.c:610
-msgid "CHM Files"
-msgstr "CHM-filer"
-
-#: ../src/chmsee.c:615
-msgid "All Files"
-msgstr "Alle filer"
-
-#: ../src/chmsee.c:1135
-msgid "Ready!"
-msgstr "Klar!"
-
-#: ../src/chmsee.c:1191
-msgid "Topics"
-msgstr "Emner"
-
-#: ../src/chmsee.c:1208
-msgid "Bookmarks"
-msgstr "Bokmerker"
-
-#. Custom label widget, with a close button
-#: ../src/chmsee.c:1370 ../src/chmsee.c:1545
-msgid "No Title"
-msgstr "Ingen tittel"
-
-#: ../src/chmsee.c:1649
-#, c-format
-msgid "Error loading file '%s'"
-msgstr "Feil ved lesing av '%s'"
-
-#: ../src/models/chmfile.c:239
-#, c-format
-msgid "cannot open chmfile: %s"
-msgstr "kan ikke åpne chm-fil: %s"
-
-#: ../src/models/chmfile.c:246
-#, c-format
-msgid "Extract chmfile failed: %s"
-msgstr "Utpakking av chm-fil mislyktes: %s"
-
-#: ../src/models/chmfile.c:272
-#, c-format
-msgid "open \"%s\" failed: %s"
-msgstr "lesing av \"%s\" mislyktes: %s"
-
-#: ../src/ui_bookmarks.c:315
-msgid "Bookmark"
-msgstr "Legg til bokmerke"
-
-#: ../src/main.cpp:88
-msgid "Display the version and exit"
-msgstr "Vis versjon og avslutt"
-
-#: ../src/main.cpp:135
-#, c-format
-msgid "more than 1 argument\n"
-msgstr "mer enn ett argument\n"
-
-#~ msgid "_Home"
-#~ msgstr "_Hjem"
-
-#~ msgid "_Setup"
-#~ msgstr "Opp_sett"
-
-#: ../data/chmsee.glade.h:23
-msgid "Side _Pane"
-msgstr ""
-
-#: ../data/chmsee.glade.h:42
-msgid "_Full Screen"
 msgstr ""
 
 #: ../src/chmsee.c:449
 #, c-format
 msgid "URI redirect: \"%s\" -> \"%s\""
+msgstr ""
+
+#: ../src/chmsee.c:610
+msgid "CHM Files"
+msgstr ""
+
+#: ../src/chmsee.c:615
+msgid "All Files"
+msgstr ""
+
+#: ../src/chmsee.c:1135
+msgid "Ready!"
+msgstr ""
+
+#: ../src/chmsee.c:1191
+msgid "Topics"
+msgstr "Temes"
+
+#: ../src/chmsee.c:1208
+msgid "Bookmarks"
+msgstr "Favorits"
+
+#. Custom label widget, with a close button
+#: ../src/chmsee.c:1370 ../src/chmsee.c:1545
+msgid "No Title"
+msgstr ""
+
+#: ../src/chmsee.c:1649
+#, c-format
+msgid "Error loading file '%s'"
+msgstr ""
+
+#: ../src/models/chmfile.c:239
+#, c-format
+msgid "cannot open chmfile: %s"
+msgstr ""
+
+#: ../src/models/chmfile.c:246
+#, c-format
+msgid "Extract chmfile failed: %s"
+msgstr ""
+
+#: ../src/models/chmfile.c:272
+#, c-format
+msgid "open \"%s\" failed: %s"
 msgstr ""
 
 #: ../src/models/chmfile.c:322
@@ -283,10 +250,23 @@ msgstr ""
 msgid "Can't found hhc file."
 msgstr ""
 
+#: ../src/ui_bookmarks.c:315
+msgid "Bookmark"
+msgstr "Favorit"
+
+#: ../src/main.cpp:88
+msgid "Display the version and exit"
+msgstr ""
+
 #: ../src/main.cpp:93
 msgid "be verbose, repeat 3 times to get all info"
 msgstr ""
 
 #: ../src/main.cpp:98
 msgid "be quiet, repeat 2 times to disable all info"
+msgstr ""
+
+#: ../src/main.cpp:135
+#, c-format
+msgid "more than 1 argument\n"
 msgstr ""
