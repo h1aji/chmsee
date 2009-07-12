@@ -2,7 +2,7 @@ project(chmsee)
 cmake_minimum_required(VERSION 2.6.2 FATAL_ERROR)
 set(PACKAGE_VERSION "1.0.6pre1" )
 find_package(PkgConfig)
-pkg_check_modules (CHMSEE REQUIRED gthread-2.0 glib-2.0 libxml-2.0 gtk+-2.0 libglade-2.0 libxul-embedding-unstable)
+pkg_check_modules (CHMSEE REQUIRED gthread-2.0 glib-2.0 libxml-2.0 gtk+-2.0 libglade-2.0 libxul-embedding-unstable>=1.9 libxul-embedding-unstable<=1.9.0.999)
 
 set(CHMSEE_BOOKMARK_FILE "chmsee_bookmarks")
 set(CHMSEE_BOOKINFO_FILE "chmsee_bookinfo")

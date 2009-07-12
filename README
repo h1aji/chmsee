@@ -13,7 +13,7 @@ Compile ChmSee from source you need following packages:
  * cmake >= 2.6
  * libgtk2.0-dev >= 2.8
  * libglade2-dev >= 2.4
- * xulrunner-dev >= 1.9
+ * xulrunner-dev >= 1.9 < 1.9.1
  * libchm-dev
  * libgcrypt-dev
 

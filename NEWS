@@ -16,6 +16,7 @@ Bugs
 * issue 35: fix segmentation fault when closing.
 * issue 40: keep html page position when switch between fullscreen and normal mode.
 * issue 41: when chm file has no title, show the filename in the title.
+* issue 42: conflict with xulrunner 1.9.1.
 
 l10n
 ~~~~
