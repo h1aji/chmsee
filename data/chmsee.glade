@@ -183,7 +183,6 @@
             <child>
               <widget class="GtkToolbar" id="main_toolbar">
                 <property name="visible">True</property>
-                <property name="toolbar_style">icons</property>
                 <child>
                   <widget class="GtkToolButton" id="toolbar_open">
                     <property name="visible">True</property>
