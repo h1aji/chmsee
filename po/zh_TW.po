@@ -1,0 +1,281 @@
+# Traditional Chinese translation for chmsee.
+# Copyright (C) 2006 Free Software Foundation, Inc.
+# This file is distributed under the same license as the chmsee package.
+# Wei-Lun Chao <chaoweilun@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: chmsee 1.0.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-04 13:15+0800\n"
+"PO-Revision-Date: 2009-07-13 22:25+0800\n"
+"Last-Translator: Wei-Lun Chao <chaoweilun@gmail.com>\n"
+"Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../data/chmsee.glade.h:1
+msgid "<b>Cache</b>"
+msgstr "<b>快取</b>"
+
+#: ../data/chmsee.glade.h:2
+msgid "<b>Charset</b>"
+msgstr "<b>字元集</b>"
+
+#: ../data/chmsee.glade.h:3
+msgid "<b>Font</b>"
+msgstr "<b>字型</b>"
+
+#: ../data/chmsee.glade.h:4
+msgid "About"
+msgstr "關於"
+
+#: ../data/chmsee.glade.h:5
+msgid "About..."
+msgstr "關於…"
+
+#: ../data/chmsee.glade.h:6
+msgid "Auto-Detect:"
+msgstr "自動偵測："
+
+#: ../data/chmsee.glade.h:7
+msgid "Back"
+msgstr "向後"
+
+#: ../data/chmsee.glade.h:8
+msgid ""
+"CHM files extracted in this cache folder, you can press Clear button to free disk space.\n\n"
+"NOTE: If you are viewing a CHM file, you need reopen it after cleaning."
+msgstr ""
+"CHM 檔案在這個快取資料夾中被擷取出來，您可以按下清空按鈕以釋放磁碟空間。\n\n"
+"註：如果您正在觀看 CHM 檔案，您需要在清理之後重新開啟它。"
+
+#: ../data/chmsee.glade.h:11 ../data/chmsee.desktop.in.h:1
+msgid "ChmSee"
+msgstr "檢視 CHM"
+
+#: ../data/chmsee.glade.h:12
+msgid "Copy Page _Location"
+msgstr "複製頁面位置(_L)"
+
+#: ../data/chmsee.glade.h:13
+msgid "Fixed Width:"
+msgstr "固定寬度："
+
+#: ../data/chmsee.glade.h:14
+msgid "Forward"
+msgstr "向前"
+
+#: ../data/chmsee.glade.h:15
+msgid "Home"
+msgstr "首頁"
+
+#: ../data/chmsee.glade.h:16
+msgid "Normal"
+msgstr "原始大小"
+
+#: ../data/chmsee.glade.h:17
+msgid "Open File"
+msgstr "開啟檔案"
+
+#: ../data/chmsee.glade.h:18
+msgid "Open Link in New _Tab"
+msgstr "在新分頁中開啟鏈結(_T)"
+
+#: ../data/chmsee.glade.h:19
+msgid "Panel"
+msgstr "面板"
+
+#: ../data/chmsee.glade.h:20
+msgid "Select _All"
+msgstr "全選(_A)"
+
+#: ../data/chmsee.glade.h:21
+msgid "Setup"
+msgstr "設定"
+
+#: ../data/chmsee.glade.h:22
+msgid "Show/Hide Panel"
+msgstr "顯示/隱藏面板"
+
+#: ../data/chmsee.glade.h:23
+msgid "Side _Pane"
+msgstr "側邊窗格(_P)"
+
+#: ../data/chmsee.glade.h:24
+msgid "The HTML Help(CHM) viewer for Unix/Linux"
+msgstr "用於 Unix/Linux 的 HTML 說明檔(CHM) 檢視器"
+
+#: ../data/chmsee.glade.h:25
+msgid ""
+"Universal\n"
+"Simplified Chinese\n"
+"Tradtional Chinese\n"
+"Japanese\n"
+"Korean\n"
+"Russian\n"
+"Ukrainain"
+msgstr ""
+"通用\n"
+"簡體中文\n"
+"繁體中文\n"
+"日語\n"
+"韓語\n"
+"俄語\n"
+"烏克蘭語"
+
+#: ../data/chmsee.glade.h:32
+msgid "Variable Width:"
+msgstr "可變寬度："
+
+#: ../data/chmsee.glade.h:33
+msgid "Zoom In"
+msgstr "放大"
+
+#: ../data/chmsee.glade.h:34
+msgid "Zoom Out"
+msgstr "縮小"
+
+#: ../data/chmsee.glade.h:35
+msgid "_Back"
+msgstr "向後(_B)"
+
+#: ../data/chmsee.glade.h:36
+msgid "_Close Tab"
+msgstr "關閉分頁(_C)"
+
+#: ../data/chmsee.glade.h:37
+msgid "_Copy"
+msgstr "複製(_C)"
+
+#: ../data/chmsee.glade.h:38
+msgid "_Copy Link Location"
+msgstr "複製鏈結位置(_C)"
+
+#: ../data/chmsee.glade.h:39
+msgid "_Edit"
+msgstr "編輯(_E)"
+
+#: ../data/chmsee.glade.h:40
+msgid "_File"
+msgstr "檔案(_F)"
+
+#: ../data/chmsee.glade.h:41
+msgid "_Forward"
+msgstr "向前(_F)"
+
+#: ../data/chmsee.glade.h:42
+msgid "_Full Screen"
+msgstr "全螢幕(_F)"
+
+#: ../data/chmsee.glade.h:43
+msgid "_Help"
+msgstr "求助(_H)"
+
+#: ../data/chmsee.glade.h:44
+msgid "_New Tab"
+msgstr "新分頁(_N)"
+
+#: ../data/chmsee.glade.h:45
+msgid "_View"
+msgstr "檢視(_V)"
+
+#: ../data/chmsee.glade.h:46
+msgid "http://code.google.com/p/chmsee"
+msgstr "http://code.google.com/p/chmsee"
+
+#. TRANSLATORS: Replace this string with your names, one name per line.
+#: ../data/chmsee.glade.h:48
+msgid "translator-credits"
+msgstr ""
+"趙惟倫 <chaoweilun@gmail.com>"
+
+#: ../data/chmsee.desktop.in.h:2
+msgid "HTML Help(CHM) viewer"
+msgstr "HTML 說明檔(CHM) 檢視器"
+
+#: ../src/chmsee.c:506
+#, c-format
+msgid "URI redirect: \"%s\" -> \"%s\""
+msgstr "URI 重新導向：「%s」->「%s」"
+
+#: ../src/chmsee.c:671
+msgid "CHM Files"
+msgstr "CHM 檔案"
+
+#: ../src/chmsee.c:676
+msgid "All Files"
+msgstr "所有檔案"
+
+#: ../src/chmsee.c:1196
+msgid "Ready!"
+msgstr "就緒！"
+
+#: ../src/chmsee.c:1253
+msgid "Topics"
+msgstr "主題"
+
+#: ../src/chmsee.c:1267
+msgid "Index"
+msgstr "索引"
+
+#: ../src/chmsee.c:1276
+msgid "Bookmarks"
+msgstr "書籤"
+
+#. Custom label widget, with a close button
+#: ../src/chmsee.c:1440 ../src/chmsee.c:1615
+msgid "No Title"
+msgstr "無標題"
+
+#: ../src/chmsee.c:1719
+#, c-format
+msgid "Error loading file '%s'"
+msgstr "載入檔案「%s」時發生錯誤"
+
+#: ../src/models/chmfile.c:253
+#, c-format
+msgid "cannot open chmfile: %s"
+msgstr "無法開啟 chm 檔案：%s"
+
+#: ../src/models/chmfile.c:260
+#, c-format
+msgid "Extract chmfile failed: %s"
+msgstr "擷取 chm 檔案時失敗：%s"
+
+#: ../src/models/chmfile.c:286
+#, c-format
+msgid "open \"%s\" failed: %s"
+msgstr "開啟「%s」時失敗：%s"
+
+#: ../src/models/chmfile.c:336
+#, c-format
+msgid "Can not open chm file %s."
+msgstr "無法開啟 chm 檔案 %s。"
+
+#: ../src/models/chmfile.c:594
+msgid "Can't found hhc file."
+msgstr "無法找到 hhc 檔案。"
+
+#: ../src/ui_bookmarks.c:315
+msgid "Bookmark"
+msgstr "加入書籤"
+
+#: ../src/main.cpp:107
+msgid "Display the version and exit"
+msgstr "顯示版本然後離開"
+
+#: ../src/main.cpp:112
+msgid "be verbose, repeat 3 times to get all info"
+msgstr "細節模式，重複三次以取得所有資訊"
+
+#: ../src/main.cpp:117
+msgid "be quiet, repeat 2 times to disable all info"
+msgstr "安靜模式，重複兩次以停用全部資訊"
+
+#: ../src/main.cpp:154
+#, c-format
+msgid "more than 1 argument\n"
+msgstr "多於一項引數\n"
