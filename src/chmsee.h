@@ -71,6 +71,7 @@ struct _ChmSeeClass {
 
 GType chmsee_get_type(void);
 ChmSee * chmsee_new(const gchar* fname);
+gboolean chmsee_jump_index_by_name(ChmSee* self, const gchar* name);
 /* void chmsee_open_file(ChmSee *, const gchar *); */
 int chmsee_get_hpaned_position(ChmSee* self);
 void chmsee_set_hpaned_position(ChmSee* self, int hpaned_position);

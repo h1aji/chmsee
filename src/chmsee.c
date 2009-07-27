@@ -2109,3 +2109,18 @@ static GtkWidget* chmsee_new_index_page(ChmSee* self) {
 void chmsee_on_ui_index_link_selected(ChmSee* self, Link* link) {
 	booktree_link_selected_cb(NULL, link, self);
 }
+
+
+gboolean chmsee_jump_index_by_name(ChmSee* self, const gchar* name) {
+	g_return_val_if_fail(IS_CHMSEE(self), FALSE);
+
+	gboolean res = chmsee_ui_index_select_link_by_name(
+			CHMSEE_UI_INDEX(self->priv->uiIndex),
+			name);
+
+	if(res) {
+		/* TODO: hard-code page num 1 */
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(self->priv->control_notebook), 1);
+	}
+	return res;
+}

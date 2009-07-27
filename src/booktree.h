@@ -75,4 +75,9 @@ GtkWidget *booktree_new(GNode *);
 void booktree_select_uri(BookTree *, const gchar *);
 const gchar *booktree_get_selected_book_title(BookTree *);
 
+/**
+ * @return true if successful. else return false.
+ */
+gboolean booktree_select_link_by_name(BookTree* self, const gchar* name);
+
 #endif /* !__BOOKTREE_H__ */

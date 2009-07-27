@@ -49,5 +49,10 @@ GtkWidget* chmsee_ui_index_new(ChmIndex* chmIndex);
 void chmsee_ui_index_set_model(ChmseeUiIndex* self, ChmIndex* chmIndex);
 void chmsee_ui_index_refresh(ChmseeUiIndex* self);
 
+/**
+ * @return true if successful. else return false.
+ */
+gboolean chmsee_ui_index_select_link_by_name(ChmseeUiIndex* self, const gchar* name);
+
 
 #endif /* UI_INDEX_H_ */

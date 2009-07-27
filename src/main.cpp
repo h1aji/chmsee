@@ -85,6 +85,7 @@ main(int argc, char** argv)
   ChmSee *chmsee;
   const gchar* filename = NULL;
   const gchar* datadir = NULL;
+  const gchar* index = NULL;
   GError* error = NULL;
   gboolean option_version = FALSE;
 
@@ -102,6 +103,11 @@ main(int argc, char** argv)
 
 
   GOptionEntry options[] = {
+		  {"index", 'i',
+				  0, G_OPTION_ARG_STRING, &index,
+				  _("Specify index"),
+				  _("INDEX")
+		  },
 		  {"version", 0,
 				  0, G_OPTION_ARG_NONE, &option_version,
 				  _("Display the version and exit"),
@@ -120,7 +126,7 @@ main(int argc, char** argv)
 		  {"datadir", 0,
 				  G_OPTION_FLAG_FILENAME, G_OPTION_ARG_FILENAME, &datadir,
 				  "choose data dir, default is " CHMSEE_DATA_DIR_DEFAULT,
-				  "PATH"
+				  _("PATH")
 		  },
 		  {NULL}
   };
@@ -165,6 +171,9 @@ main(int argc, char** argv)
 
   /* Create main window */
   chmsee = chmsee_new(filename);
+  if(index != NULL) {
+	  chmsee_jump_index_by_name(chmsee, index);
+  }
 
   gtk_widget_show(GTK_WIDGET (chmsee));
 

@@ -269,6 +269,23 @@ booktree_find_uri_foreach(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *i
         return data->found;
 }
 
+static gboolean
+booktree_find_name_foreach(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, FindURIData *data)
+{
+        Link *link;
+
+        gtk_tree_model_get(model, iter, COL_LINK, &link, -1);
+
+        if (g_strcmp0(data->uri, link->name) == 0) {
+                data->found = TRUE;
+                data->iter = *iter;
+                data->path = gtk_tree_path_copy(path);
+        }
+
+        return data->found;
+}
+
+
 /* callbacks */
 
 static void
@@ -384,3 +401,32 @@ void on_row_activated(BookTree* self, GtkTreePath* path) {
 		gtk_tree_view_expand_row(GTK_TREE_VIEW(self), path, FALSE);
 	}
 }
+
+gboolean booktree_select_link_by_name(BookTree* self, const gchar* name) {
+    GtkTreeSelection *selection;
+    FindURIData data;
+
+    g_return_val_if_fail(IS_BOOKTREE (self), FALSE);
+
+    data.found = FALSE;
+    data.uri = name;
+
+    gtk_tree_model_foreach(GTK_TREE_MODEL (self->store),
+                           (GtkTreeModelForeachFunc) booktree_find_name_foreach,
+                           &data);
+
+    if (!data.found) {
+            g_debug("booktree select uri: cannot found data");
+            return FALSE;
+    }
+
+    selection = gtk_tree_view_get_selection(GTK_TREE_VIEW (self));
+
+    gtk_tree_view_expand_to_path(GTK_TREE_VIEW (self), data.path);
+    gtk_tree_selection_select_iter(selection, &data.iter);
+    gtk_tree_view_set_cursor(GTK_TREE_VIEW (self), data.path, NULL, 0);
+
+    gtk_tree_path_free(data.path);
+    return TRUE;
+}
+

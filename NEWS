@@ -1,6 +1,11 @@
 ChmSee X.X.X
 ------------
 
+Features
+~~~~~~~~
+
+* issue 47: jump to specify index page from command line.
+
 l10n
 ~~~~
 

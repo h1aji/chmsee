@@ -133,3 +133,11 @@ void chmsee_ui_index_on_link_selected(ChmseeUiIndex* self, Link* link) {
 	g_signal_emit(self, signals[LINK_SELECTED], 0, link);
 }
 
+gboolean chmsee_ui_index_select_link_by_name(ChmseeUiIndex* self, const gchar* name) {
+	GtkWidget* child = gtk_bin_get_child(GTK_BIN(self));
+	if(!IS_BOOKTREE(child)) {
+		return FALSE;
+	}
+
+	return booktree_select_link_by_name(BOOKTREE(child), name);
+}
