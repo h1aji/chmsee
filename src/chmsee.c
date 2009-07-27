@@ -92,6 +92,8 @@ struct _ChmSeePrivate {
     gint            state; /* see enum CHMSEE_STATE_* */
 };
 
+
+
 #define selfp (self->priv)
 #define CHMSEE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TYPE_CHMSEE, ChmSeePrivate))
 
@@ -145,8 +147,8 @@ static void on_open_new_tab(GtkWidget *, ChmSee *);
 static void on_close_current_tab(GtkWidget *, ChmSee *);
 static void on_context_new_tab(GtkWidget *, ChmSee *);
 static void on_context_copy_link(GtkWidget *, ChmSee *);
-static void on_fullscreen_toggled(ChmSee* self, GtkWidget* menu);
-static void on_sidepane_toggled(ChmSee* self, GtkWidget* menu);
+static void on_fullscreen_toggled(GtkWidget*, ChmSee* self);
+static void on_sidepane_toggled(GtkWidget*, ChmSee* self);
 static void on_map(ChmSee* self);
 static gboolean on_window_state_event(ChmSee* self, GdkEventWindowState* event);
 static gboolean on_scroll_event(ChmSee* self, GdkEventScroll* event);
@@ -179,6 +181,85 @@ static gchar *context_menu_link = NULL;
 static const GtkTargetEntry view_drop_targets[] = {
 	{ "text/uri-list", 0, 0 }
 };
+
+/* Normal items */
+static const GtkActionEntry entries[] = {
+  { "FileMenu", NULL, "_File" },
+  { "EditMenu", NULL, "_Edit" },
+  { "ViewMenu", NULL, "_View" },
+  { "HelpMenu", NULL, "_Help" },
+
+  { "Open", GTK_STOCK_OPEN, "_Open", "<control>O", "Open a file", G_CALLBACK(on_open)},
+  { "NewTab", NULL, "_New Tab", "<control>T", NULL, G_CALLBACK(on_open_new_tab)},
+  { "CloseTab", NULL, "_Close Tab", "<control>W", NULL, G_CALLBACK(on_close_current_tab)},
+  { "Exit", GTK_STOCK_QUIT, "E_xit", "<control>Q", "Exit the program", G_CALLBACK(destroy_cb)},
+
+  { "Copy", GTK_STOCK_COPY, "_Copy", "<control>C", NULL, G_CALLBACK(on_copy)},
+  { "Preferences", GTK_STOCK_PREFERENCES, "_Preferences", NULL, NULL, G_CALLBACK(on_setup)},
+
+  { "Home", GTK_STOCK_HOME, "_Home", NULL, NULL, G_CALLBACK(on_home)},
+  { "Back", GTK_STOCK_GO_BACK, "_Back", NULL, NULL, G_CALLBACK(on_back)},
+  { "Forward", GTK_STOCK_GO_FORWARD, "_Forward", NULL, NULL, G_CALLBACK(on_forward)},
+
+  { "About", GTK_STOCK_ABOUT, "_About", NULL, NULL, G_CALLBACK(on_about)},
+
+  { "ZoomIn", GTK_STOCK_ZOOM_IN, "Zoom _In", "plus", "Zoom into the image", G_CALLBACK(on_zoom_in)},
+  { "ZoomReset", GTK_STOCK_ZOOM_100, "Normal Size", NULL, NULL, G_CALLBACK(on_zoom_reset)},
+  { "ZoomOut", GTK_STOCK_ZOOM_OUT, "Zoom _Out", "minus", "Zoom away from the image", G_CALLBACK(on_zoom_out)},
+};
+
+/* Toggle items */
+static const GtkToggleActionEntry toggle_entries[] = {
+  { "FullScreen", NULL, "_Full Screen", "F11", "Switch between full screen and windowed mode", G_CALLBACK(on_fullscreen_toggled), FALSE },
+  { "SidePane", NULL, "Side _Pane", "F9", NULL, G_CALLBACK(on_sidepane_toggled), TRUE }
+};
+
+/* Radio items */
+static const GtkRadioActionEntry radio_entries[] = {
+};
+
+static const char *ui_description =
+		"<ui>"
+		"  <menubar name='MainMenu'>"
+		"    <menu action='FileMenu'>"
+		"      <menuitem action='Open'/>"
+		"      <menuitem action='NewTab'/>"
+		"      <menuitem action='CloseTab'/>"
+		"      <separator/>"
+		"      <menuitem action='Exit'/>"
+		"    </menu>"
+		"    <menu action='EditMenu'>"
+		"      <menuitem action='Copy'/>"
+		"      <separator/>"
+		"      <menuitem action='Preferences'/>"
+		"    </menu>"
+		"    <menu action='ViewMenu'>"
+		"      <menuitem action='Home'/>"
+		"      <menuitem action='Back'/>"
+		"      <menuitem action='Forward'/>"
+		"      <separator/>"
+		"      <menuitem action='FullScreen'/>"
+		"      <menuitem action='SidePane'/>"
+		"    </menu>"
+		"    <menu action='HelpMenu'>"
+		"      <menuitem action='About'/>"
+		"    </menu>"
+		"  </menubar>"
+		"	<toolbar name='toolbar'>"
+		"		<toolitem action='Open'/>"
+		"		<separator/>"
+		"		<toolitem action='SidePane' name='sidepane'/>"
+		"		<toolitem action='Back'/>"
+		"		<toolitem action='Forward'/>"
+		"		<toolitem action='Home'/>"
+		"		<toolitem action='ZoomIn'/>"
+		"		<toolitem action='ZoomReset'/>"
+		"		<toolitem action='ZoomOut'/>"
+		"		<toolitem action='Preferences'/>"
+		"		<toolitem action='About'/>"
+		"	</toolbar>"
+		"</ui>";
+
 
 G_DEFINE_TYPE (ChmSee, chmsee, GTK_TYPE_WINDOW);
 
@@ -942,6 +1023,8 @@ get_widget(ChmSee *chmsee, gchar *widget_name)
 static void
 populate_window(ChmSee *self)
 {
+	GtkWidget* vbox = gtk_vbox_new(FALSE, 0);
+
         GladeXML *glade;
 
         glade = glade_xml_new(get_resource_path(GLADE_FILE), "main_vbox", NULL);
@@ -955,9 +1038,50 @@ populate_window(ChmSee *self)
 
         GtkWidget *main_vbox;
         main_vbox = get_widget(self, "main_vbox");
-        gtk_container_add(GTK_CONTAINER (self), main_vbox);
+        gtk_container_add(GTK_CONTAINER (self), vbox);
 
-        GtkAccelGroup *accel_group;
+        GtkActionGroup* action_group = gtk_action_group_new ("MenuActions");
+        gtk_action_group_add_actions (action_group, entries, G_N_ELEMENTS (entries), self);
+        gtk_action_group_add_toggle_actions (action_group, toggle_entries, G_N_ELEMENTS (toggle_entries), self);
+
+        gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "NewTab"), FALSE);
+        gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "CloseTab"), FALSE);
+        gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "Home"), FALSE);
+        gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "Back"), FALSE);
+        gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "Forward"), FALSE);
+        gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "SidePane"), FALSE);
+        gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "ZoomIn"), FALSE);
+        gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "ZoomOut"), FALSE);
+        gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "ZoomReset"), FALSE);
+
+        GtkUIManager* ui_manager = gtk_ui_manager_new ();
+        gtk_ui_manager_insert_action_group (ui_manager, action_group, 0);
+
+        GtkAccelGroup* accel_group = gtk_ui_manager_get_accel_group (ui_manager);
+        gtk_window_add_accel_group (GTK_WINDOW (self), accel_group);
+
+        GError* error = NULL;
+        if (!gtk_ui_manager_add_ui_from_string (ui_manager, ui_description, -1, &error))
+          {
+            g_message ("building menus failed: %s", error->message);
+            g_error_free (error);
+            exit (EXIT_FAILURE);
+          }
+
+        GtkWidget* menubar = gtk_handle_box_new();
+        gtk_container_add(GTK_CONTAINER(menubar), gtk_ui_manager_get_widget (ui_manager, "/MainMenu"));
+        gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
+
+        GtkWidget* toolbar = gtk_handle_box_new();
+        gtk_container_add(GTK_CONTAINER(toolbar), gtk_ui_manager_get_widget(ui_manager, "/toolbar"));
+        gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 0);
+
+        gtk_tool_button_set_icon_widget(
+        		GTK_TOOL_BUTTON(gtk_ui_manager_get_widget(ui_manager, "/toolbar/sidepane")),
+        		gtk_image_new_from_file(get_resource_path("show-pane.png")));
+
+        gtk_box_pack_start (GTK_BOX (vbox), main_vbox, TRUE, TRUE, 0);
+        gtk_widget_show_all(vbox);
 
         accel_group = g_object_new(GTK_TYPE_ACCEL_GROUP, NULL);
         gtk_window_add_accel_group(GTK_WINDOW (self), accel_group);
@@ -1785,7 +1909,7 @@ void chmsee_set_hpaned_position(ChmSee* self, int hpaned_position) {
 			*/
 }
 
-void on_fullscreen_toggled(ChmSee* self, GtkWidget* menu) {
+void on_fullscreen_toggled(GtkWidget* menu, ChmSee* self) {
 	g_return_if_fail(IS_CHMSEE(self));
 	gboolean active;
 	g_object_get(G_OBJECT(menu),
@@ -1795,7 +1919,7 @@ void on_fullscreen_toggled(ChmSee* self, GtkWidget* menu) {
 	chmsee_set_fullscreen(self, active);
 }
 
-void on_sidepane_toggled(ChmSee* self, GtkWidget* menu) {
+void on_sidepane_toggled(GtkWidget* menu, ChmSee* self) {
 	g_return_if_fail(IS_CHMSEE(self));
 	gboolean active;
 	g_object_get(G_OBJECT(menu),
