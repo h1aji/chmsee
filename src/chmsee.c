@@ -71,6 +71,10 @@ struct _ChmSeePrivate {
     GtkWidget* indexPage; /* the index tab under control_notebook */
 
     GtkWidget       *statusbar;
+
+
+    GtkActionGroup* action_group;
+    GtkUIManager* ui_manager;
     guint            scid_default;
 
     gboolean         has_toc;
@@ -158,7 +162,6 @@ static void chmsee_open_uri(ChmSee *chmsee, const gchar *uri);
 static void chmsee_open_file(ChmSee *self, const gchar *filename);
 static GtkWidget *get_widget(ChmSee *, gchar *);
 static void populate_window(ChmSee *);
-static void display_book(ChmSee *, ChmseeIchmfile *, const gchar *);
 static void close_current_book(ChmSee *);
 static void new_tab(ChmSee *, const gchar *);
 static ChmseeIhtml *get_active_html(ChmSee *);
@@ -329,6 +332,38 @@ chmsee_init(ChmSee* self)
 			view_drop_targets,
 			G_N_ELEMENTS (view_drop_targets),
 			GDK_ACTION_COPY);
+    /* Quit event handle */
+    g_signal_connect(G_OBJECT (self),
+                     "delete_event",
+                     G_CALLBACK (delete_cb),
+                     self);
+    g_signal_connect(G_OBJECT (self),
+                     "destroy",
+                     G_CALLBACK (destroy_cb),
+                     self);
+
+    /* Widget size changed event handle */
+    g_signal_connect(G_OBJECT (self),
+                     "configure-event",
+                     G_CALLBACK (on_configure_event),
+                     self);
+
+    /* Init gecko */
+    chmsee_html_init_system();
+    chmsee_html_set_default_lang(selfp->lang);
+
+    populate_window(self);
+    chmsee_load_config(self);
+    if (selfp->pos_x >= 0 && selfp->pos_y >= 0)
+            gtk_window_move(GTK_WINDOW (self), selfp->pos_x, selfp->pos_y);
+
+    if (selfp->width > 0 && selfp->height > 0)
+            gtk_window_resize(GTK_WINDOW (self), selfp->width, selfp->height);
+    else
+            gtk_window_resize(GTK_WINDOW (self), 800, 600);
+
+    gtk_window_set_title(GTK_WINDOW (self), "ChmSee");
+    gtk_window_set_icon_from_file(GTK_WINDOW (self), get_resource_path("chmsee-icon.png"), NULL);
 
 }
 
@@ -361,6 +396,16 @@ static void chmsee_dispose(GObject* gobject)
 	if(selfp->book) {
 		g_object_unref(selfp->book);
 		selfp->book = NULL;
+	}
+
+	if(selfp->action_group) {
+		g_object_unref(selfp->action_group);
+		selfp->action_group = NULL;
+	}
+
+	if(selfp->ui_manager) {
+		g_object_unref(selfp->ui_manager);
+		selfp->ui_manager = NULL;
 	}
 
 	G_OBJECT_CLASS(chmsee_parent_class)->dispose(gobject);
@@ -923,14 +968,6 @@ on_about(GtkWidget *widget)
 }
 
 static void
-hpanes_toggled_cb(GtkToggleToolButton *widget, ChmSee *self)
-{
-        gboolean state;
-        g_object_get(widget, "active", &state, NULL);
-        set_sidepane_state(self, state);
-}
-
-static void
 on_open_new_tab(GtkWidget *widget, ChmSee *self)
 {
         ChmseeIhtml *html;
@@ -1041,6 +1078,7 @@ populate_window(ChmSee *self)
         gtk_container_add(GTK_CONTAINER (self), vbox);
 
         GtkActionGroup* action_group = gtk_action_group_new ("MenuActions");
+        selfp->action_group = action_group;
         gtk_action_group_add_actions (action_group, entries, G_N_ELEMENTS (entries), self);
         gtk_action_group_add_toggle_actions (action_group, toggle_entries, G_N_ELEMENTS (toggle_entries), self);
 
@@ -1055,6 +1093,7 @@ populate_window(ChmSee *self)
         gtk_action_set_sensitive(gtk_action_group_get_action(action_group, "ZoomReset"), FALSE);
 
         GtkUIManager* ui_manager = gtk_ui_manager_new ();
+        selfp->ui_manager = ui_manager;
         gtk_ui_manager_insert_action_group (ui_manager, action_group, 0);
 
         GtkAccelGroup* accel_group = gtk_ui_manager_get_accel_group (ui_manager);
@@ -1086,228 +1125,6 @@ populate_window(ChmSee *self)
         accel_group = g_object_new(GTK_TYPE_ACCEL_GROUP, NULL);
         gtk_window_add_accel_group(GTK_WINDOW (self), accel_group);
 
-        /* menu item */
-        GtkWidget *menu_item;
-
-        menu_item = get_widget(self, "menu_open");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_open),
-                         self);
-        gtk_widget_add_accelerator(menu_item,
-                                   "activate",
-                                   accel_group,
-                                   GDK_o,
-                                   GDK_CONTROL_MASK,
-                                   GTK_ACCEL_VISIBLE);
-
-        menu_item = get_widget(self, "menu_new_tab");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_open_new_tab),
-                         self);
-        gtk_widget_add_accelerator(menu_item,
-                                   "activate",
-                                   accel_group,
-                                   GDK_t,
-                                   GDK_CONTROL_MASK,
-                                   GTK_ACCEL_VISIBLE);
-        gtk_widget_set_sensitive(menu_item, FALSE);
-
-        menu_item = get_widget(self, "menu_close_tab");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_close_current_tab),
-                         self);
-        gtk_widget_add_accelerator(menu_item,
-                                   "activate",
-                                   accel_group,
-                                   GDK_w,
-                                   GDK_CONTROL_MASK,
-                                   GTK_ACCEL_VISIBLE);
-        gtk_widget_set_sensitive(menu_item, FALSE);
-
-        menu_item = get_widget(self, "menu_setup");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_setup),
-                         self);
-
-        menu_item = get_widget(self, "menu_copy");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_copy),
-                         self);
-        gtk_widget_add_accelerator(menu_item,
-                                   "activate",
-                                   accel_group,
-                                   GDK_c,
-                                   GDK_CONTROL_MASK,
-                                   GTK_ACCEL_VISIBLE);
-
-        menu_item = get_widget(self, "menu_quit");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (destroy_cb),
-                         self);
-        gtk_widget_add_accelerator(menu_item,
-                                   "activate",
-                                   accel_group,
-                                   GDK_q,
-                                   GDK_CONTROL_MASK,
-                                   GTK_ACCEL_VISIBLE);
-
-        menu_item = get_widget(self, "menu_home");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_home),
-                         self);
-        gtk_widget_set_sensitive(menu_item, FALSE);
-
-        menu_item = get_widget(self, "menu_back");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_back),
-                         self);
-        gtk_widget_set_sensitive(menu_item, FALSE);
-
-        menu_item = get_widget(self, "menu_forward");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_forward),
-                         self);
-        gtk_widget_set_sensitive(menu_item, FALSE);
-
-        menu_item = get_widget(self, "menu_fullscreen");
-        g_signal_connect_swapped(G_OBJECT(menu_item),
-        		"toggled",
-        		G_CALLBACK(on_fullscreen_toggled),
-        		self);
-        gtk_widget_add_accelerator(menu_item,
-                                   "activate",
-                                   accel_group,
-                                   GDK_F11,
-                                   0,
-                                   GTK_ACCEL_VISIBLE);
-
-        menu_item = get_widget(self, "menu_sidepane");
-        g_signal_connect_swapped(G_OBJECT(menu_item),
-        		"toggled",
-        		G_CALLBACK(on_sidepane_toggled),
-        		self);
-        gtk_widget_add_accelerator(menu_item,
-                                   "activate",
-                                   accel_group,
-                                   GDK_F9,
-                                   0,
-                                   GTK_ACCEL_VISIBLE);
-
-        menu_item = get_widget(self, "menu_about");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_about),
-                         self);
-
-        /* toolbar buttons */
-        GtkWidget *toolbar_button;
-        GtkWidget *icon_widget;
-
-        toolbar_button = get_widget(self, "toolbar_open");
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "clicked",
-                         G_CALLBACK (on_open),
-                         self);
-
-        toolbar_button = get_widget(self, "toolbar_setup");
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "clicked",
-                         G_CALLBACK (on_setup),
-                         self);
-
-        toolbar_button = get_widget(self, "toolbar_about");
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "clicked",
-                         G_CALLBACK (on_about),
-                         NULL);
-
-        toolbar_button = get_widget(self, "toolbar_hpanes");
-        icon_widget = gtk_image_new_from_file(get_resource_path("show-pane.png"));
-        gtk_widget_show(icon_widget);
-        gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON (toolbar_button), icon_widget);
-        g_object_set(toolbar_button, "active", FALSE, NULL);
-        gtk_widget_set_sensitive(toolbar_button, FALSE);
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "toggled",
-                         G_CALLBACK (hpanes_toggled_cb),
-                         self);
-
-        toolbar_button = get_widget(self, "toolbar_back");
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "clicked",
-                         G_CALLBACK (on_back),
-                         self);
-        gtk_widget_add_accelerator(toolbar_button,
-                                   "clicked",
-                                   accel_group,
-                                   GDK_Left,
-                                   GDK_MOD1_MASK,
-                                   GTK_ACCEL_VISIBLE);
-
-        toolbar_button = get_widget(self, "toolbar_forward");
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "clicked",
-                         G_CALLBACK (on_forward),
-                         self);
-        gtk_widget_add_accelerator(toolbar_button,
-                                   "clicked",
-                                   accel_group,
-                                   GDK_Right,
-                                   GDK_MOD1_MASK,
-                                   GTK_ACCEL_VISIBLE);
-
-        toolbar_button = get_widget(self, "toolbar_home");
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "clicked",
-                         G_CALLBACK (on_home),
-                         self);
-
-        toolbar_button = get_widget(self, "toolbar_zoom_in");
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "clicked",
-                         G_CALLBACK (on_zoom_in),
-                         self);
-        gtk_widget_add_accelerator(toolbar_button,
-                                   "clicked",
-                                   accel_group,
-                                   GDK_plus,
-                                   GDK_CONTROL_MASK,
-                                   GTK_ACCEL_VISIBLE);
-
-
-        toolbar_button = get_widget(self, "toolbar_zoom_reset");
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "clicked",
-                         G_CALLBACK (on_zoom_reset),
-                         self);
-        gtk_widget_add_accelerator(toolbar_button,
-                                   "clicked",
-                                   accel_group,
-                                   GDK_0,
-                                   GDK_CONTROL_MASK,
-                                   GTK_ACCEL_VISIBLE);
-
-        toolbar_button = get_widget(self, "toolbar_zoom_out");
-        g_signal_connect(G_OBJECT (toolbar_button),
-                         "clicked",
-                         G_CALLBACK (on_zoom_out),
-                         self);
-        gtk_widget_add_accelerator(toolbar_button,
-                                   "clicked",
-                                   accel_group,
-                                   GDK_minus,
-                                   GDK_CONTROL_MASK,
-                                   GTK_ACCEL_VISIBLE);
-
         GtkWidget *control_vbox;
 
         control_vbox = get_widget(self, "control_vbox");
@@ -1320,8 +1137,8 @@ populate_window(ChmSee *self)
         update_status_bar(self, _("Ready!"));
 }
 
-static void
-display_book(ChmSee* self, ChmseeIchmfile *book, const gchar *filename)
+void
+chmsee_set_model(ChmSee* self, ChmseeIchmfile *book)
 {
 	GNode *link_tree;
 	GList *bookmarks_list;
@@ -1426,16 +1243,12 @@ display_book(ChmSee* self, ChmseeIchmfile *book, const gchar *filename)
 	/* Toolbar buttons state */
 	GtkWidget *toolbar_button;
 
-	toolbar_button = get_widget(self, "toolbar_hpanes");
-	gtk_widget_set_sensitive(toolbar_button, TRUE);
-	g_object_set(toolbar_button, "active", TRUE, NULL);
+    gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "SidePane"), TRUE);
+    gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "ZoomIn"), TRUE);
+    gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "ZoomReset"), TRUE);
+    gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "ZoomOut"), TRUE);
+	g_object_set(gtk_action_group_get_action(selfp->action_group, "SidePane"), "active", TRUE, NULL);
 
-	toolbar_button = get_widget(self, "toolbar_zoom_in");
-	gtk_widget_set_sensitive(toolbar_button, TRUE);
-	toolbar_button = get_widget(self, "toolbar_zoom_reset");
-	gtk_widget_set_sensitive(toolbar_button, TRUE);
-	toolbar_button = get_widget(self, "toolbar_zoom_out");
-	gtk_widget_set_sensitive(toolbar_button, TRUE);
 
 	/* Window title */
 	gchar *window_title;
@@ -1444,7 +1257,8 @@ display_book(ChmSee* self, ChmseeIchmfile *book, const gchar *filename)
 			&& g_ascii_strcasecmp(chmsee_ichmfile_get_title(selfp->book), "(null)") != 0 ) {
 		window_title = g_strdup_printf("%s - ChmSee", chmsee_ichmfile_get_title(selfp->book));
 	} else {
-		window_title = g_strdup_printf("%s - ChmSee", filename);
+		window_title = g_strdup_printf("%s - ChmSee",
+				g_path_get_basename(chmsee_ichmfile_get_filename(book)));
 	}
 
 	gtk_window_set_title(GTK_WINDOW (self), window_title);
@@ -1456,25 +1270,16 @@ display_book(ChmSee* self, ChmseeIchmfile *book, const gchar *filename)
 			chmsee_ichmfile_get_fixed_font(selfp->book));
 
 	if (chmsee_ichmfile_get_home(selfp->book)) {
-		GtkWidget *menu_item;
-
 		open_homepage(self);
 
-		menu_item = get_widget(self, "menu_new_tab");
-		gtk_widget_set_sensitive(menu_item, TRUE);
-
-		menu_item = get_widget(self, "menu_close_tab");
-		gtk_widget_set_sensitive(menu_item, TRUE);
-
-		menu_item = get_widget(self, "menu_home");
-		gtk_widget_set_sensitive(menu_item, TRUE);
-
-		gtk_widget_set_sensitive(get_widget(self, "menu_sidepane"), TRUE);
-
-		toolbar_button = get_widget(self, "toolbar_home");
-		gtk_widget_set_sensitive(toolbar_button, TRUE);
+	    gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "NewTab"), TRUE);
+	    gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "CloseTab"), TRUE);
+	    gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Home"), TRUE);
 	}
 	selfp->state = CHMSEE_STATE_NORMAL;
+
+    selfp->last_dir = g_strdup_printf("%s", g_path_get_dirname(
+    		chmsee_ichmfile_get_filename(book)));
 }
 
 static void
@@ -1678,23 +1483,16 @@ get_active_html(ChmSee *self)
 }
 
 static void
-check_history(ChmSee *chmsee, ChmseeIhtml *html)
+check_history(ChmSee *self, ChmseeIhtml *html)
 {
-        GtkWidget *menu_item, *toolbar_button;
-        gboolean back_state, forward_state;
+	gboolean back_state, forward_state;
 
-        back_state = chmsee_ihtml_can_go_back(html);
-        forward_state = chmsee_ihtml_can_go_forward(html);
+	back_state = chmsee_ihtml_can_go_back(html);
+	forward_state = chmsee_ihtml_can_go_forward(html);
 
-        menu_item = get_widget(chmsee, "menu_back");
-        gtk_widget_set_sensitive(menu_item, back_state);
-        menu_item = get_widget(chmsee, "menu_forward");
-        gtk_widget_set_sensitive(menu_item, forward_state);
 
-        toolbar_button = get_widget(chmsee, "toolbar_back");
-        gtk_widget_set_sensitive(toolbar_button, back_state);
-        toolbar_button = get_widget(chmsee, "toolbar_forward");
-        gtk_widget_set_sensitive(toolbar_button, forward_state);
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Back"), back_state);
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Forward"), forward_state);
 }
 
 static void
@@ -1778,39 +1576,6 @@ chmsee_new(const gchar* filename)
 
         self = g_object_new(TYPE_CHMSEE, NULL);
 
-        /* Quit event handle */
-        g_signal_connect(G_OBJECT (self),
-                         "delete_event",
-                         G_CALLBACK (delete_cb),
-                         self);
-        g_signal_connect(G_OBJECT (self),
-                         "destroy",
-                         G_CALLBACK (destroy_cb),
-                         self);
-
-        /* Widget size changed event handle */
-        g_signal_connect(G_OBJECT (self),
-                         "configure-event",
-                         G_CALLBACK (on_configure_event),
-                         self);
-
-        /* Init gecko */
-        chmsee_html_init_system();
-        chmsee_html_set_default_lang(selfp->lang);
-
-        populate_window(self);
-        chmsee_load_config(self);
-        if (selfp->pos_x >= 0 && selfp->pos_y >= 0)
-                gtk_window_move(GTK_WINDOW (self), selfp->pos_x, selfp->pos_y);
-
-        if (selfp->width > 0 && selfp->height > 0)
-                gtk_window_resize(GTK_WINDOW (self), selfp->width, selfp->height);
-        else
-                gtk_window_resize(GTK_WINDOW (self), 800, 600);
-
-        gtk_window_set_title(GTK_WINDOW (self), "ChmSee");
-        gtk_window_set_icon_from_file(GTK_WINDOW (self), get_resource_path("chmsee-icon.png"), NULL);
-
         if(filename != NULL) {
         	chmsee_open_file(self, filename);
         }
@@ -1829,9 +1594,7 @@ chmsee_open_file(ChmSee *self, const gchar *filename)
         book = chmsee_chmfile_new(filename);
 
         if (book) {
-                display_book(self, book, g_path_get_basename(filename));
-
-                selfp->last_dir = g_strdup_printf("%s", g_path_get_dirname(filename));
+                chmsee_set_model(self, book);
         } else {
                 /* Popup an error message dialog */
                 GtkWidget *msg_dialog;
@@ -1941,27 +1704,15 @@ void set_sidepane_state(ChmSee* self, gboolean state) {
 		gtk_widget_hide(get_widget(self, "control_vbox"));
 	}
 
-	gboolean menu_state = gtk_check_menu_item_get_active(
-			GTK_CHECK_MENU_ITEM(get_widget(self, "menu_sidepane")));
-	if(menu_state != state) {
-		gtk_check_menu_item_set_active(
-				GTK_CHECK_MENU_ITEM(get_widget(self, "menu_sidepane")), state);
-	}
-
-	gboolean toolbar_state = gtk_toggle_tool_button_get_active(
-			GTK_TOGGLE_TOOL_BUTTON(get_widget(self, "toolbar_hpanes")));
-	if(toolbar_state != state) {
-		gtk_toggle_tool_button_set_active(
-				GTK_TOGGLE_TOOL_BUTTON(get_widget(self, "toolbar_hpanes")), state);
-	}
-
     if (state) {
             icon_widget = gtk_image_new_from_file(get_resource_path("hide-pane.png"));
     } else {
             icon_widget = gtk_image_new_from_file(get_resource_path("show-pane.png"));
     }
     gtk_widget_show(icon_widget);
-    gtk_tool_button_set_icon_widget(GTK_TOOL_BUTTON (get_widget(self, "toolbar_hpanes")), icon_widget);
+    gtk_tool_button_set_icon_widget(
+    		GTK_TOOL_BUTTON(gtk_ui_manager_get_widget(selfp->ui_manager, "/toolbar/sidepane")),
+    		icon_widget);
 };
 
 void show_sidepane(ChmSee* self) {

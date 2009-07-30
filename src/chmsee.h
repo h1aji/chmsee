@@ -30,10 +30,6 @@
 #ifndef __CHMSEE_H__
 #define __CHMSEE_H__
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <glib-object.h>
 #include <gtk/gtkwindow.h>
 #include <gtk/gtk.h>
@@ -71,6 +67,7 @@ struct _ChmSeeClass {
 
 GType chmsee_get_type(void);
 ChmSee * chmsee_new(const gchar* fname);
+void chmsee_set_model(ChmSee* self, ChmseeIchmfile *book);
 gboolean chmsee_jump_index_by_name(ChmSee* self, const gchar* name);
 /* void chmsee_open_file(ChmSee *, const gchar *); */
 int chmsee_get_hpaned_position(ChmSee* self);

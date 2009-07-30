@@ -531,7 +531,7 @@ chmfile_system_info(struct chmFile *cfd, ChmFile *chmfile)
 ChmFile *
 chmfile_new(const gchar *filename)
 {
-  ChmFile *chmfile;
+  ChmFile *self;
   gchar *bookmark_file;
   gchar *md5;
 
@@ -541,51 +541,51 @@ chmfile_new(const gchar *filename)
     return NULL;
   }
 
-  chmfile = g_object_new(TYPE_CHMFILE, NULL);
+  self = g_object_new(TYPE_CHMFILE, NULL);
+  self->filename = g_strdup(filename);
 
 
-  chmfile->dir = g_build_filename(g_getenv("HOME"),
+  self->dir = g_build_filename(g_getenv("HOME"),
                                   ".chmsee",
                                   "bookshelf",
                                   md5,
                                   NULL);
-  g_debug("book dir = %s", chmfile->dir);
+  g_debug("book dir = %s", self->dir);
 
   /* If this chm file extracted before, load it's bookinfo */
-  if (!g_file_test(chmfile->dir, G_FILE_TEST_IS_DIR)) {
-    if (!extract_chm(filename, chmfile)) {
+  if (!g_file_test(self->dir, G_FILE_TEST_IS_DIR)) {
+    if (!extract_chm(filename, self)) {
       g_debug("extract_chm failed: %s", filename);
       return NULL;
     }
 
-    chmfile->filename = g_strdup(filename);
-    g_debug("chmfile->filename = %s", chmfile->filename);
+    g_debug("chmfile->filename = %s", self->filename);
 
-    chmfile_file_info(chmfile);
-    save_fileinfo(chmfile);
+    chmfile_file_info(self);
+    save_fileinfo(self);
   } else {
-    load_fileinfo(chmfile);
+    load_fileinfo(self);
   }
 
-  g_debug("chmfile->hhc = %s", chmfile->hhc);
-  g_debug("chmfile->hhk = %s", chmfile->hhk);
-  g_debug("chmfile->home = %s", chmfile->home);
-  g_debug("chmfile->title = %s", chmfile->title);
-  g_debug("chmfile->endcoding = %s", chmfile->encoding);
+  g_debug("chmfile->hhc = %s", self->hhc);
+  g_debug("chmfile->hhk = %s", self->hhk);
+  g_debug("chmfile->home = %s", self->home);
+  g_debug("chmfile->title = %s", self->title);
+  g_debug("chmfile->endcoding = %s", self->encoding);
 
   /* Parse hhc and store result to tree view */
-  if (chmfile->hhc != NULL && g_ascii_strcasecmp(chmfile->hhc, "(null)") != 0) {
+  if (self->hhc != NULL && g_ascii_strcasecmp(self->hhc, "(null)") != 0) {
     gchar *hhc;
 
-    hhc = g_strdup_printf("%s%s", chmfile->dir, chmfile->hhc);
+    hhc = g_strdup_printf("%s%s", self->dir, self->hhc);
 
     if (g_file_test(hhc, G_FILE_TEST_EXISTS)) {
-      chmfile->link_tree = hhc_load(hhc, chmfile->encoding);
+      self->link_tree = hhc_load(hhc, self->encoding);
     } else {
       gchar *hhc_ncase;
 
       hhc_ncase = file_exist_ncase(hhc);
-      chmfile->link_tree = hhc_load(hhc_ncase, chmfile->encoding);
+      self->link_tree = hhc_load(hhc_ncase, self->encoding);
       g_free(hhc_ncase);
     }
 
@@ -595,11 +595,11 @@ chmfile_new(const gchar *filename)
   }
 
   /* Load bookmarks */
-  bookmark_file = g_build_filename(chmfile->dir, CHMSEE_BOOKMARK_FILE, NULL);
-  chmfile->bookmarks_list = bookmarks_load(bookmark_file);
+  bookmark_file = g_build_filename(self->dir, CHMSEE_BOOKMARK_FILE, NULL);
+  self->bookmarks_list = bookmarks_load(bookmark_file);
   g_free(bookmark_file);
 
-  return chmfile;
+  return self;
 }
 void
 load_fileinfo(ChmFile *book)
@@ -721,6 +721,11 @@ static const gchar* chmfile_get_variable_font(ChmFile* self) {
   return self->variable_font;
 }
 
+static const gchar* chmfile_get_filename(ChmseeIchmfile* self_) {
+	ChmFile* self = CHMFILE(self_);
+	return self->filename;
+}
+
 static Hhc* chmfile_get_link_tree(ChmFile* self) {
   return self->link_tree;
 }
@@ -751,6 +756,7 @@ static void chmsee_ichmfile_interface_init (ChmseeIchmfileInterface* iface)
   iface->set_fixed_font = chmfile_set_fixed_font;
   iface->set_variable_font = chmfile_set_variable_font;
   iface->get_index = chmfile_get_index;
+  iface->get_filename = chmfile_get_filename;
 }
 
 void chmfile_set_encoding(ChmFile* self, const char* encoding) {

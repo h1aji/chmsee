@@ -81,6 +81,13 @@ const gchar* chmsee_ichmfile_get_fixed_font(ChmseeIchmfile* self)
   return CHMSEE_ICHMFILE_GET_INTERFACE(self)->get_fixed_font(self);
 }
 
+const gchar* chmsee_ichmfile_get_filename(ChmseeIchmfile* self)
+{
+	g_return_val_if_fail(CHMSEE_IS_ICHMFILE(self), NULL);
+	return CHMSEE_ICHMFILE_GET_INTERFACE(self)->get_filename(self);
+}
+
+
 Hhc* chmsee_ichmfile_get_link_tree(ChmseeIchmfile* self)
 {
   g_return_val_if_fail(CHMSEE_IS_ICHMFILE(self), NULL);

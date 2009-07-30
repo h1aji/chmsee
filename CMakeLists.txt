@@ -56,6 +56,6 @@ add_custom_target(love
 	DEPENDS chmsee
 	)
 add_custom_target(love-gdb
-	COMMAND gdb --args src/chmsee -vvv --datadir=data
+	COMMAND gdb --args src/chmsee --g-fatal-warnings -vvv --datadir=data
 	DEPENDS chmsee
 	)

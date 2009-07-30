@@ -43,6 +43,7 @@ struct _ChmseeIchmfileInterface
   const gchar* (*get_title) (ChmseeIchmfile* self);
   const gchar* (*get_variable_font) (ChmseeIchmfile* self);
   const gchar* (*get_fixed_font) (ChmseeIchmfile* self);
+  const gchar* (*get_filename) (ChmseeIchmfile* self);
   Hhc* (*get_link_tree) (ChmseeIchmfile* self);
   Bookmarks* (*get_bookmarks_list) (ChmseeIchmfile* self);
   ChmIndex* (*get_index) (ChmseeIchmfile* self);
@@ -60,6 +61,7 @@ ChmIndex* chmsee_ichmfile_get_index(ChmseeIchmfile* self);
 const gchar* chmsee_ichmfile_get_title(ChmseeIchmfile* self);
 const gchar* chmsee_ichmfile_get_variable_font(ChmseeIchmfile* self);
 const gchar* chmsee_ichmfile_get_fixed_font(ChmseeIchmfile* self);
+const gchar* chmsee_ichmfile_get_filename(ChmseeIchmfile* self);
 void chmsee_ichmfile_set_variable_font(ChmseeIchmfile* self, const gchar* font);
 void chmsee_ichmfile_set_fixed_font(ChmseeIchmfile* self, const gchar* font);
 
