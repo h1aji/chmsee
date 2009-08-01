@@ -209,6 +209,9 @@ static const GtkActionEntry entries[] = {
   { "ZoomIn", GTK_STOCK_ZOOM_IN, "Zoom _In", "plus", "Zoom into the image", G_CALLBACK(on_zoom_in)},
   { "ZoomReset", GTK_STOCK_ZOOM_100, "Normal Size", NULL, NULL, G_CALLBACK(on_zoom_reset)},
   { "ZoomOut", GTK_STOCK_ZOOM_OUT, "Zoom _Out", "minus", "Zoom away from the image", G_CALLBACK(on_zoom_out)},
+  
+  { "OpenLinkInNewTab", NULL, "Open Link in New _Tab", NULL, NULL, G_CALLBACK(on_context_new_tab)},
+  { "CopyLinkLocation", NULL, "_Copy Link Location", NULL, NULL, G_CALLBACK(on_context_copy_link)}
 };
 
 /* Toggle items */
@@ -261,6 +264,10 @@ static const char *ui_description =
 		"		<toolitem action='Preferences'/>"
 		"		<toolitem action='About'/>"
 		"	</toolbar>"
+                " <popup name='HtmlContextLink'>"
+                "   <menuitem action='OpenLinkInNewTab' name='OpenLinkInNewTab'/>"
+                "   <menuitem action='CopyLinkLocation'/>"
+                " </popup>"
 		"</ui>";
 
 
@@ -726,38 +733,20 @@ html_context_normal_cb(ChmseeIhtml *html, ChmSee *chmsee)
 
 /* Popup html context menu when mouse over hyper link */
 static void
-html_context_link_cb(ChmseeIhtml *html, const gchar *link, ChmSee *chmsee)
+html_context_link_cb(ChmseeIhtml *html, const gchar *link, ChmSee* self)
 {
-        GladeXML *glade;
-        GtkWidget *menu;
-        GtkWidget *menu_item;
-
         g_debug("html context-link event: %s", link);
 
         g_free(context_menu_link);
 
         context_menu_link = g_strdup(link);
 
-        glade = glade_xml_new(get_resource_path(GLADE_FILE), "html_context_link", NULL);
-        menu = glade_xml_get_widget(glade, "html_context_link");
+        gtk_widget_set_sensitive(gtk_ui_manager_get_widget(selfp->ui_manager, "/HtmlContextLink/OpenLinkInNewTab"),
+                                 g_str_has_prefix(context_menu_link, "file://"));
 
-        menu_item = glade_xml_get_widget(glade, "menu_new_tab");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_context_new_tab),
-                         chmsee);
-        if (!g_str_has_prefix(context_menu_link, "file://"))
-                gtk_widget_set_sensitive(menu_item, FALSE);
+        gtk_menu_popup(GTK_MENU(gtk_ui_manager_get_widget(selfp->ui_manager, "/HtmlContextLink")),
+                       NULL, NULL, NULL, NULL, 0, GDK_CURRENT_TIME);
 
-        menu_item = glade_xml_get_widget(glade, "menu_copy_link");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_context_copy_link),
-                         chmsee);
-
-        gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL, 0, GDK_CURRENT_TIME);
-
-	g_object_unref(glade);
 }
 
 static void
@@ -1239,9 +1228,6 @@ chmsee_set_model(ChmSee* self, ChmseeIchmfile *book)
 
 	gtk_notebook_set_current_page(GTK_NOTEBOOK (selfp->control_notebook),
 			g_list_length(bookmarks_list) && selfp->has_toc ? 1 : 0);
-
-	/* Toolbar buttons state */
-	GtkWidget *toolbar_button;
 
     gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "SidePane"), TRUE);
     gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "ZoomIn"), TRUE);
