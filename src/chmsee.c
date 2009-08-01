@@ -211,7 +211,9 @@ static const GtkActionEntry entries[] = {
   { "ZoomOut", GTK_STOCK_ZOOM_OUT, "Zoom _Out", "minus", "Zoom away from the image", G_CALLBACK(on_zoom_out)},
   
   { "OpenLinkInNewTab", NULL, "Open Link in New _Tab", NULL, NULL, G_CALLBACK(on_context_new_tab)},
-  { "CopyLinkLocation", NULL, "_Copy Link Location", NULL, NULL, G_CALLBACK(on_context_copy_link)}
+  { "CopyLinkLocation", NULL, "_Copy Link Location", NULL, NULL, G_CALLBACK(on_context_copy_link)},
+  { "SelectAll", NULL, "Select _All", NULL, NULL, G_CALLBACK(on_select_all)},
+  { "CopyPageLocation", NULL, "Copy Page _Location", NULL, NULL, G_CALLBACK(on_copy_page_location)}
 };
 
 /* Toggle items */
@@ -267,6 +269,13 @@ static const char *ui_description =
                 " <popup name='HtmlContextLink'>"
                 "   <menuitem action='OpenLinkInNewTab' name='OpenLinkInNewTab'/>"
                 "   <menuitem action='CopyLinkLocation'/>"
+                " </popup>"
+                " <popup name='HtmlContextNormal'>"
+                "   <menuitem action='Back'/>"
+                "   <menuitem action='Forward'/>"
+                "   <menuitem action='Copy'/>"
+                "   <menuitem action='SelectAll'/>"
+                "   <menuitem action='CopyPageLocation'/>"
                 " </popup>"
 		"</ui>";
 
@@ -679,56 +688,11 @@ html_title_changed_cb(ChmseeIhtml *html, const gchar *title, ChmSee *self)
 
 /* Popup html context menu */
 static void
-html_context_normal_cb(ChmseeIhtml *html, ChmSee *chmsee)
+html_context_normal_cb(ChmseeIhtml *html, ChmSee *self)
 {
-        GladeXML *glade;
-        GtkWidget *menu;
-        GtkWidget *menu_item;
-
-        gboolean back_state, forward_state;
-
-        g_message("html context-normal event");
-
-        back_state = chmsee_ihtml_can_go_back(html);
-        forward_state = chmsee_ihtml_can_go_forward(html);
-
-        glade = glade_xml_new(get_resource_path(GLADE_FILE), "html_context_normal", NULL);
-        menu = glade_xml_get_widget(glade, "html_context_normal");
-
-        menu_item = glade_xml_get_widget(glade, "menu_back");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_back),
-                         chmsee);
-        gtk_widget_set_sensitive(menu_item, back_state);
-
-        menu_item = glade_xml_get_widget(glade, "menu_forward");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_forward),
-                         chmsee);
-        gtk_widget_set_sensitive(menu_item, forward_state);
-
-        menu_item = glade_xml_get_widget(glade, "menu_copy");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_copy),
-                         chmsee);
-
-        menu_item = glade_xml_get_widget(glade, "menu_select_all");
-        g_signal_connect(G_OBJECT (menu_item),
-                         "activate",
-                         G_CALLBACK (on_select_all),
-                         chmsee);
-
-        g_signal_connect(G_OBJECT(glade_xml_get_widget(glade, "menu_copy_page_location")),
-                         "activate",
-                         G_CALLBACK(on_copy_page_location),
-                         chmsee);
-
-        gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL, 0, GDK_CURRENT_TIME);
-
-	g_object_unref(glade);
+  g_message("html context-normal event");
+  gtk_menu_popup(GTK_MENU(gtk_ui_manager_get_widget(selfp->ui_manager, "/HtmlContextNormal")),
+                 NULL, NULL, NULL, NULL, 0, GDK_CURRENT_TIME);
 }
 
 /* Popup html context menu when mouse over hyper link */
@@ -740,8 +704,7 @@ html_context_link_cb(ChmseeIhtml *html, const gchar *link, ChmSee* self)
         g_free(context_menu_link);
 
         context_menu_link = g_strdup(link);
-
-        gtk_widget_set_sensitive(gtk_ui_manager_get_widget(selfp->ui_manager, "/HtmlContextLink/OpenLinkInNewTab"),
+        gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "OpenLinkInNewTab"),
                                  g_str_has_prefix(context_menu_link, "file://"));
 
         gtk_menu_popup(GTK_MENU(gtk_ui_manager_get_widget(selfp->ui_manager, "/HtmlContextLink")),
