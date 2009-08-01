@@ -9,3 +9,6 @@
 #define PACKAGE "chmsee"
 #define GETTEXT_PACKAGE "chmsee"
 #define PACKAGE_LOCALE_DIR "${CMAKE_INSTALL_PREFIX}/share/locale"
+#cmakedefine XULRUNNER_VERSION "${XULRUNNER_VERSION}"
+#cmakedefine XULRUNNER18 1
+#cmakedefine GECKO_LIB_ROOT "${GECKO_LIB_ROOT}"

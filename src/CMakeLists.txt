@@ -4,7 +4,6 @@ include_directories(
   ${CHMSEE_INCLUDE_DIRS}
   )
 add_definitions(
-  -Wall
   ${CHMSEE_CFLAGS_OTHER}
   )
 add_custom_command(
@@ -49,8 +48,6 @@ set(CHMSEE_SRCS
 add_library(chmseelib STATIC ${CHMSEE_SRCS})
 target_link_libraries(chmseelib
   ${CHMSEE_LIBRARIES}
-  chm
-  gcrypt
   )
 
 add_executable(chmsee main.cpp)

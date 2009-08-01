@@ -5,6 +5,7 @@ Features
 ~~~~~~~~
 
 * issue 47: jump to specify index page from command line.
+* issue 48: support xulrunner 1.8 again.
 
 l10n
 ~~~~

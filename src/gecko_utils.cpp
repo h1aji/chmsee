@@ -53,7 +53,13 @@
 #include <nsMemory.h>
 #include <nsEmbedString.h>
 #include <nsIPrefService.h>
-#include <nsICommandManager.h>
+#if XULRUNNER18
+  #include <commandhandler/nsICommandManager.h>
+  #include <locale/nsILocaleService.h>
+#else
+  #include <nsICommandManager.h>
+  #include <nsILocaleService.h>
+#endif
 #include <nsIInterfaceRequestorUtils.h>
 #include <nsIDOMWindow.h>
 
@@ -65,7 +71,6 @@
 #include <nsILocalFile.h>
 #include <nsIDOMMouseEvent.h>
 #include <nsIWebBrowserFind.h>
-#include <nsILocaleService.h>
 #include <nsStringAPI.h>
 
 #include "utils/utils.h"
