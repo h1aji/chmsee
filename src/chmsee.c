@@ -61,6 +61,8 @@ enum {
 };
 
 struct _ChmSeePrivate {
+  GtkWidget* menubar;
+  GtkWidget* toolbar;
     GtkWidget       *control_notebook;
     GtkWidget       *html_notebook;
 
@@ -93,6 +95,7 @@ struct _ChmSeePrivate {
     gchar           *home;
     gchar           *cache_dir;
     gchar           *last_dir;
+    gchar* context_menu_link;
     gint            state; /* see enum CHMSEE_STATE_* */
 };
 
@@ -108,6 +111,8 @@ static void chmsee_dispose(GObject* self);
 static void chmsee_load_config(ChmSee *self);
 static void chmsee_save_config(ChmSee *self);
 static void chmsee_set_fullscreen(ChmSee* self, gboolean fullscreen);
+static void chmsee_set_context_menu_link(ChmSee* self, const gchar* link);
+
 static void chmsee_refresh_index(ChmSee* self);
 static GtkWidget* chmsee_new_index_page(ChmSee* self);
 static void chmsee_on_ui_index_link_selected(ChmSee* self, Link* link);
@@ -180,7 +185,7 @@ chmsee_drag_data_received (GtkWidget          *widget,
                            guint               info,
                            guint               time);
 
-static gchar *context_menu_link = NULL;
+/* static gchar *context_menu_link = NULL; */
 static const GtkTargetEntry view_drop_targets[] = {
 	{ "text/uri-list", 0, 0 }
 };
@@ -309,6 +314,7 @@ chmsee_init(ChmSee* self)
 
 	selfp->lang = 0;
 	selfp->last_dir = g_strdup(g_get_home_dir());
+	selfp->context_menu_link = NULL;
 
 	selfp->uiIndex = NULL;
 	selfp->book = NULL;
@@ -402,6 +408,9 @@ chmsee_finalize(GObject *object)
 		g_free(selfp->last_dir);
 		selfp->last_dir = NULL;
 	}
+
+	g_free(selfp->context_menu_link);
+	selfp->context_menu_link = NULL;
 	G_OBJECT_CLASS (chmsee_parent_class)->finalize (object);
 }
 
@@ -465,8 +474,8 @@ on_keypress_event_when_fullscreen(GtkWidget *widget, GdkEventKey *event, ChmSee 
 	switch(event->keyval) {
 	case GDK_Escape:
 	case GDK_F11:
-        chmsee_set_fullscreen(self, FALSE);
-        return TRUE;
+        /* chmsee_set_fullscreen(self, FALSE);
+            return TRUE; */
 		break;
 	case GDK_F9:
 		set_sidepane_state(self,
@@ -699,16 +708,13 @@ html_context_normal_cb(ChmseeIhtml *html, ChmSee *self)
 static void
 html_context_link_cb(ChmseeIhtml *html, const gchar *link, ChmSee* self)
 {
-        g_debug("html context-link event: %s", link);
+	g_debug("html context-link event: %s", link);
+	chmsee_set_context_menu_link(self, link);
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "OpenLinkInNewTab"),
+			g_str_has_prefix(selfp->context_menu_link, "file://"));
 
-        g_free(context_menu_link);
-
-        context_menu_link = g_strdup(link);
-        gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "OpenLinkInNewTab"),
-                                 g_str_has_prefix(context_menu_link, "file://"));
-
-        gtk_menu_popup(GTK_MENU(gtk_ui_manager_get_widget(selfp->ui_manager, "/HtmlContextLink")),
-                       NULL, NULL, NULL, NULL, 0, GDK_CURRENT_TIME);
+	gtk_menu_popup(GTK_MENU(gtk_ui_manager_get_widget(selfp->ui_manager, "/HtmlContextLink")),
+			NULL, NULL, NULL, NULL, 0, GDK_CURRENT_TIME);
 
 }
 
@@ -954,25 +960,26 @@ on_close_current_tab(GtkWidget *widget, ChmSee *self)
 }
 
 static void
-on_context_new_tab(GtkWidget *widget, ChmSee *chmsee)
+on_context_new_tab(GtkWidget *widget, ChmSee *self)
 {
-        g_debug("On context open new tab: %s", context_menu_link);
+	g_debug("On context open new tab: %s", selfp->context_menu_link);
 
-        if (context_menu_link != NULL)
-                new_tab(chmsee, context_menu_link);
+	if (selfp->context_menu_link != NULL) {
+		new_tab(self, selfp->context_menu_link);
+	}
 }
 
 static void
-on_context_copy_link(GtkWidget *widget, ChmSee *chmsee)
+on_context_copy_link(GtkWidget *widget, ChmSee *self)
 {
-        g_debug("On context copy link: %s", context_menu_link);
+	g_debug("On context copy link: %s", selfp->context_menu_link);
 
-        if (context_menu_link != NULL) {
-                gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_PRIMARY),
-                                       context_menu_link, -1);
-                gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD),
-                                       context_menu_link, -1);
-        }
+	if (selfp->context_menu_link != NULL) {
+		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_PRIMARY),
+				selfp->context_menu_link, -1);
+		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD),
+				selfp->context_menu_link, -1);
+	}
 }
 
 
@@ -986,8 +993,6 @@ chmsee_quit(ChmSee *self)
   }
 
   chmsee_save_config(self);
-
-  g_free(context_menu_link);
 
   if(get_active_html(self)) {
     chmsee_ihtml_shutdown(get_active_html(self));
@@ -1060,10 +1065,12 @@ populate_window(ChmSee *self)
           }
 
         GtkWidget* menubar = gtk_handle_box_new();
+        selfp->menubar = menubar;
         gtk_container_add(GTK_CONTAINER(menubar), gtk_ui_manager_get_widget (ui_manager, "/MainMenu"));
         gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
 
         GtkWidget* toolbar = gtk_handle_box_new();
+        selfp->toolbar = toolbar;
         gtk_container_add(GTK_CONTAINER(toolbar), gtk_ui_manager_get_widget(ui_manager, "/toolbar"));
         gtk_box_pack_start(GTK_BOX(vbox), toolbar, FALSE, FALSE, 0);
 
@@ -1686,21 +1693,17 @@ void on_map(ChmSee* self) {
 static void on_fullscreen(ChmSee* self) {
 	g_debug("enter on_fullscreen");
 	selfp->fullscreen = TRUE;
-	gtk_widget_hide(get_widget(self, "handlebox_menu"));
-	gtk_widget_hide(get_widget(self, "handlebox_toolbar"));
+	gtk_widget_hide(selfp->menubar);
+	gtk_widget_hide(selfp->toolbar);
 	gtk_widget_hide(get_widget(self, "statusbar"));
-        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(get_widget(self, "menu_fullscreen")),
-                                       TRUE);
 }
 
 static void on_unfullscreen(ChmSee* self) {
 	g_debug("enter on_unfullscreen");
 	selfp->fullscreen = FALSE;
-	gtk_widget_show(get_widget(self, "handlebox_menu"));
-	gtk_widget_show(get_widget(self, "handlebox_toolbar"));
+	gtk_widget_show(selfp->menubar);
+	gtk_widget_show(selfp->toolbar);
 	gtk_widget_show(get_widget(self, "statusbar"));
-        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(get_widget(self, "menu_fullscreen")),
-                                       FALSE);
 }
 
 gboolean on_window_state_event(ChmSee* self, GdkEventWindowState* event) {
@@ -1948,3 +1951,9 @@ gboolean chmsee_jump_index_by_name(ChmSee* self, const gchar* name) {
 	}
 	return res;
 }
+
+static void chmsee_set_context_menu_link(ChmSee* self, const gchar* link) {
+	g_free(selfp->context_menu_link);
+	selfp->context_menu_link = g_strdup(link);
+}
+
