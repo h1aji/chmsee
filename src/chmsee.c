@@ -121,7 +121,6 @@ static gboolean delete_cb(GtkWidget *, GdkEvent *, ChmSee *);
 static void destroy_cb(GtkWidget *, ChmSee *);
 static gboolean on_configure_event(GtkWidget *, GdkEventConfigure *, ChmSee *);
 
-static gboolean on_keypress_event(GtkWidget *, GdkEventKey *, ChmSee *);
 static void open_response_cb(GtkWidget *, gint, ChmSee *);
 static void about_response_cb(GtkDialog *, gint, gpointer);
 static void booktree_link_selected_cb(GObject *, Link *, ChmSee *);
@@ -139,6 +138,7 @@ static void show_sidepane(ChmSee* self);
 static void hide_sidepane(ChmSee* self);
 static void set_sidepane_state(ChmSee* self, gboolean state);
 
+static void on_keyboard_escape(GtkWidget*, ChmSee* self);
 static void on_open(GtkWidget *, ChmSee *);
 static void on_close_tab(GtkWidget *, ChmSee *);
 static void on_setup(GtkWidget *, ChmSee *);
@@ -206,19 +206,22 @@ static const GtkActionEntry entries[] = {
   { "Preferences", GTK_STOCK_PREFERENCES, "_Preferences", NULL, NULL, G_CALLBACK(on_setup)},
 
   { "Home", GTK_STOCK_HOME, "_Home", NULL, NULL, G_CALLBACK(on_home)},
-  { "Back", GTK_STOCK_GO_BACK, "_Back", NULL, NULL, G_CALLBACK(on_back)},
-  { "Forward", GTK_STOCK_GO_FORWARD, "_Forward", NULL, NULL, G_CALLBACK(on_forward)},
+  { "Back", GTK_STOCK_GO_BACK, "_Back", "<alt>Left", NULL, G_CALLBACK(on_back)},
+  { "Forward", GTK_STOCK_GO_FORWARD, "_Forward", "<alt>Right", NULL, G_CALLBACK(on_forward)},
 
   { "About", GTK_STOCK_ABOUT, "_About", NULL, NULL, G_CALLBACK(on_about)},
 
-  { "ZoomIn", GTK_STOCK_ZOOM_IN, "Zoom _In", "plus", "Zoom into the image", G_CALLBACK(on_zoom_in)},
-  { "ZoomReset", GTK_STOCK_ZOOM_100, "Normal Size", NULL, NULL, G_CALLBACK(on_zoom_reset)},
-  { "ZoomOut", GTK_STOCK_ZOOM_OUT, "Zoom _Out", "minus", "Zoom away from the image", G_CALLBACK(on_zoom_out)},
-  
+  { "ZoomIn", GTK_STOCK_ZOOM_IN, "Zoom _In", "<control>plus", NULL, G_CALLBACK(on_zoom_in)},
+  { "ZoomReset", GTK_STOCK_ZOOM_100, "Normal Size", "<control>0", NULL, G_CALLBACK(on_zoom_reset)},
+  { "ZoomOut", GTK_STOCK_ZOOM_OUT, "Zoom _Out", "<control>minus", NULL, G_CALLBACK(on_zoom_out)},
+
   { "OpenLinkInNewTab", NULL, "Open Link in New _Tab", NULL, NULL, G_CALLBACK(on_context_new_tab)},
   { "CopyLinkLocation", NULL, "_Copy Link Location", NULL, NULL, G_CALLBACK(on_context_copy_link)},
   { "SelectAll", NULL, "Select _All", NULL, NULL, G_CALLBACK(on_select_all)},
-  { "CopyPageLocation", NULL, "Copy Page _Location", NULL, NULL, G_CALLBACK(on_copy_page_location)}
+  { "CopyPageLocation", NULL, "Copy Page _Location", NULL, NULL, G_CALLBACK(on_copy_page_location)},
+
+  { "OnKeyboardEscape", NULL, NULL, "Escape", NULL, G_CALLBACK(on_keyboard_escape)},
+  { "OnKeyboardControlEqual", NULL, NULL, "<control>equal", NULL, G_CALLBACK(on_zoom_in)}
 };
 
 /* Toggle items */
@@ -242,17 +245,22 @@ static const char *ui_description =
 		"      <menuitem action='Exit'/>"
 		"    </menu>"
 		"    <menu action='EditMenu'>"
+		"      <menuitem action='SelectAll'/>"
 		"      <menuitem action='Copy'/>"
 		"      <separator/>"
 		"      <menuitem action='Preferences'/>"
 		"    </menu>"
 		"    <menu action='ViewMenu'>"
+		"      <menuitem action='FullScreen'/>"
+		"      <menuitem action='SidePane'/>"
+		"      <separator/>"
 		"      <menuitem action='Home'/>"
 		"      <menuitem action='Back'/>"
 		"      <menuitem action='Forward'/>"
 		"      <separator/>"
-		"      <menuitem action='FullScreen'/>"
-		"      <menuitem action='SidePane'/>"
+		"      <menuitem action='ZoomIn'/>"
+		"      <menuitem action='ZoomReset'/>"
+		"      <menuitem action='ZoomOut'/>"
 		"    </menu>"
 		"    <menu action='HelpMenu'>"
 		"      <menuitem action='About'/>"
@@ -271,17 +279,19 @@ static const char *ui_description =
 		"		<toolitem action='Preferences'/>"
 		"		<toolitem action='About'/>"
 		"	</toolbar>"
-                " <popup name='HtmlContextLink'>"
-                "   <menuitem action='OpenLinkInNewTab' name='OpenLinkInNewTab'/>"
-                "   <menuitem action='CopyLinkLocation'/>"
-                " </popup>"
-                " <popup name='HtmlContextNormal'>"
-                "   <menuitem action='Back'/>"
-                "   <menuitem action='Forward'/>"
-                "   <menuitem action='Copy'/>"
-                "   <menuitem action='SelectAll'/>"
-                "   <menuitem action='CopyPageLocation'/>"
-                " </popup>"
+		" <popup name='HtmlContextLink'>"
+		"   <menuitem action='OpenLinkInNewTab' name='OpenLinkInNewTab'/>"
+		"   <menuitem action='CopyLinkLocation'/>"
+		" </popup>"
+		" <popup name='HtmlContextNormal'>"
+		"   <menuitem action='Back'/>"
+		"   <menuitem action='Forward'/>"
+		"   <menuitem action='Copy'/>"
+		"   <menuitem action='SelectAll'/>"
+		"   <menuitem action='CopyPageLocation'/>"
+		" </popup>"
+		"<accelerator action='OnKeyboardEscape'/>"
+		"<accelerator action='OnKeyboardControlEqual'/>"
 		"</ui>";
 
 
@@ -333,10 +343,6 @@ chmsee_init(ChmSee* self)
 	gtk_widget_add_events(GTK_WIDGET(self),
 			GDK_STRUCTURE_MASK | GDK_BUTTON_PRESS_MASK );
 
-	g_signal_connect(G_OBJECT (self),
-			"key-press-event",
-			G_CALLBACK (on_keypress_event),
-			self);
 	g_signal_connect(G_OBJECT(self),
 			"scroll-event",
 			G_CALLBACK(on_scroll_event),
@@ -467,73 +473,6 @@ on_configure_event(GtkWidget *widget, GdkEventConfigure *event, ChmSee *self)
         }
 
         return FALSE;
-}
-
-static gboolean
-on_keypress_event_when_fullscreen(GtkWidget *widget, GdkEventKey *event, ChmSee *self) {
-	switch(event->keyval) {
-	case GDK_Escape:
-	case GDK_F11:
-        /* chmsee_set_fullscreen(self, FALSE);
-            return TRUE; */
-		break;
-	case GDK_F9:
-		set_sidepane_state(self,
-				!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(get_widget(self, "menu_sidepane"))));
-		return TRUE;
-		break;
-	case GDK_Left:
-		if(event->state & GDK_MOD1_MASK) {
-			on_back(NULL, self);
-			return TRUE;
-		}
-		break;
-	case GDK_Right:
-		if(event->state & GDK_MOD1_MASK) {
-			on_forward(NULL, self);
-			return TRUE;
-		}
-		break;
-	case GDK_minus:
-		if(event->state & GDK_CONTROL_MASK) {
-			on_zoom_out(NULL, self);
-			return TRUE;
-		}
-		break;
-	case GDK_plus:
-		if(event->state & GDK_CONTROL_MASK) {
-			on_zoom_in(NULL, self);
-			return TRUE;
-		}
-		break;
-	default:
-		break;
-	}
-	return FALSE;
-}
-
-static gboolean
-on_keypress_event_when_unfullscreen(GtkWidget *widget, GdkEventKey *event, ChmSee *self) {
-	switch(event->keyval) {
-	case GDK_Escape:
-		gtk_window_iconify(GTK_WINDOW (self));
-		return TRUE;
-		break;
-	default:
-		break;
-	}
-	return FALSE;
-}
-
-static gboolean
-on_keypress_event(GtkWidget *widget, GdkEventKey *event, ChmSee *self)
-{
-	g_debug("enter on_keypress_event with event->keyval = %d and event->state = %d", event->keyval, event->state);
-	if(selfp->fullscreen) {
-		return on_keypress_event_when_fullscreen(widget, event, self);
-	} else {
-		return on_keypress_event_when_unfullscreen(widget, event, self);
-	}
 }
 
 static void
@@ -1955,5 +1894,13 @@ gboolean chmsee_jump_index_by_name(ChmSee* self, const gchar* name) {
 static void chmsee_set_context_menu_link(ChmSee* self, const gchar* link) {
 	g_free(selfp->context_menu_link);
 	selfp->context_menu_link = g_strdup(link);
+}
+
+static void on_keyboard_escape(GtkWidget* widget, ChmSee* self) {
+	if(selfp->fullscreen) {
+		chmsee_set_fullscreen(self, FALSE);
+	} else {
+		gtk_window_iconify(GTK_WINDOW(self));
+	}
 }
 
