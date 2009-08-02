@@ -8,25 +8,10 @@ pkg_search_module(XULRUNNER REQUIRED libxul-embedding-unstable>=1.9 xulrunner-gt
 set(CHMSEE_INCLUDE_DIRS ${CHMSEE_INCLUDE_DIRS} ${XULRUNNER_INCLUDE_DIRS})
 set(CHMSEE_CFLAGS_OTHER ${CHMSEE_CFLAGS_OTHER} ${XULRUNNER_CFLAGS_OTHER} -Wall)
 set(CHMSEE_LIBRARY_DIRS ${CHMSEE_LIBRARY_DIRS} ${XULRUNNER_LIBRARY_DIRS})
+set(CHMSEE_LIBRARIES ${CHMSEE_LIBRARIES} ${XULRUNNER_LIBRARIES} chm gcrypt)
 
-
-if(HAVE_MD5_H)
-	set(CHMSEE_LIBRARIES ${CHMSEE_LIBRARIES} ${XULRUNNER_LIBRARIES} chm md)
-endif()
-
-if(NOT HAVE_MD5_H)
-	find_library(LIBGCRYPT gcrypt)
-	if(${LIBGCRYPT} STREQUAL "LIBGCRYPT-NOTFOUND")
-		message(FATAL_ERROR "libgcrypt not found, you can find one in ftp://ftp.gnupg.org/gcrypt/libgcrypt/")
-	endif()
-	set(CHMSEE_LIBRARIES ${CHMSEE_LIBRARIES} ${XULRUNNER_LIBRARIES} chm gcrypt)
-endif()
-
-
-
-if(XULRUNNER_VERSION STRLESS "1.9")
-	set(XULRUNNER18 1)
-	set(GECKO_LIB_ROOT "${XULRUNNER_LIBDIR}")
+if(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+	set(CHMSEE_LIBRARIES ${CHMSEE_LIBRARIES} md)
 endif()
 
 set(CHMSEE_BOOKMARK_FILE "chmsee_bookmarks")
@@ -49,6 +34,11 @@ endif()
 find_library(LIBCHM chm)
 if(${LIBCHM} STREQUAL "LIBCHM-NOTFOUND")
   message(FATAL_ERROR "libchm not found, you can find one in http://www.jedrea.com/chmlib/")
+endif()
+
+find_library(LIBGCRYPT gcrypt)
+if(${LIBGCRYPT} STREQUAL "LIBGCRYPT-NOTFOUND")
+	message(FATAL_ERROR "libgcrypt not found, you can find one in ftp://ftp.gnupg.org/gcrypt/libgcrypt/")
 endif()
 
 
