@@ -2,12 +2,28 @@ project(chmsee)
 cmake_minimum_required(VERSION 2.6.2 FATAL_ERROR)
 set(PACKAGE_VERSION "1.0.7" )
 find_package(PkgConfig)
+
 pkg_check_modules (CHMSEE REQUIRED gthread-2.0 glib-2.0 libxml-2.0 gtk+-2.0 libglade-2.0)
 pkg_search_module(XULRUNNER REQUIRED libxul-embedding-unstable>=1.9 xulrunner-gtkmozembed>=1.8)
 set(CHMSEE_INCLUDE_DIRS ${CHMSEE_INCLUDE_DIRS} ${XULRUNNER_INCLUDE_DIRS})
 set(CHMSEE_CFLAGS_OTHER ${CHMSEE_CFLAGS_OTHER} ${XULRUNNER_CFLAGS_OTHER} -Wall)
 set(CHMSEE_LIBRARY_DIRS ${CHMSEE_LIBRARY_DIRS} ${XULRUNNER_LIBRARY_DIRS})
-set(CHMSEE_LIBRARIES ${CHMSEE_LIBRARIES} ${XULRUNNER_LIBRARIES} chm gcrypt)
+
+
+if(HAVE_MD5_H)
+	set(CHMSEE_LIBRARIES ${CHMSEE_LIBRARIES} ${XULRUNNER_LIBRARIES} chm md)
+endif()
+
+if(NOT HAVE_MD5_H)
+	find_library(LIBGCRYPT gcrypt)
+	if(${LIBGCRYPT} STREQUAL "LIBGCRYPT-NOTFOUND")
+		message(FATAL_ERROR "libgcrypt not found, you can find one in ftp://ftp.gnupg.org/gcrypt/libgcrypt/")
+	endif()
+	set(CHMSEE_LIBRARIES ${CHMSEE_LIBRARIES} ${XULRUNNER_LIBRARIES} chm gcrypt)
+endif()
+
+
+
 if(XULRUNNER_VERSION STRLESS "1.9")
 	set(XULRUNNER18 1)
 	set(GECKO_LIB_ROOT "${XULRUNNER_LIBDIR}")
@@ -35,10 +51,6 @@ if(${LIBCHM} STREQUAL "LIBCHM-NOTFOUND")
   message(FATAL_ERROR "libchm not found, you can find one in http://www.jedrea.com/chmlib/")
 endif()
 
-find_library(LIBGCRYPT gcrypt)
-if(${LIBGCRYPT} STREQUAL "LIBGCRYPT-NOTFOUND")
-  message(FATAL_ERROR "libgcrypt not found, you can find one in ftp://ftp.gnupg.org/gcrypt/libgcrypt/")
-endif()
 
 add_subdirectory(src)
 add_subdirectory(data)
