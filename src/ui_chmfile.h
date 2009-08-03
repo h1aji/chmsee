@@ -36,6 +36,7 @@
 #include <gtk/gtk.h>
 
 #include "models/ichmfile.h"
+#include "ihtml.h"
 
 G_BEGIN_DECLS
 
@@ -63,6 +64,10 @@ struct _ChmseeUiChmfileClass {
 GType chmsee_ui_chmfile_get_type(void);
 GtkWidget* chmsee_ui_chmfile_new(void);
 void chmsee_ui_chmfile_set_model(ChmseeUiChmfile* self, ChmseeIchmfile* model);
+ChmseeIhtml* chmsee_ui_chmfile_get_active_html(ChmseeUiChmfile* self);
+gboolean chmsee_ui_chmfile_jump_index_by_name(ChmseeUiChmfile* self, const gchar* name);
+void chmsee_ui_chmfile_new_tab(ChmseeUiChmfile *self, const gchar *location);
+void chmsee_ui_chmfile_close_current_tab(ChmseeUiChmfile* self);
 
 G_END_DECLS
 

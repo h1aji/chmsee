@@ -143,8 +143,6 @@ static void on_sidepane_toggled(GtkWidget*, ChmseeUiChmfile* self);
 
 static void chmsee_ui_chmfile_populate_window(ChmseeUiChmfile *);
 static void chmsee_ui_chmfile_close_current_book(ChmseeUiChmfile *);
-static void new_tab(ChmseeUiChmfile *, const gchar *);
-static ChmseeIhtml *get_active_html(ChmseeUiChmfile *);
 static void check_history(ChmseeUiChmfile *, ChmseeIhtml *);
 static void update_tab_title(ChmseeUiChmfile *, ChmseeIhtml *);
 static void tab_set_title(ChmseeUiChmfile *, ChmseeIhtml *, const gchar *);
@@ -287,7 +285,7 @@ booktree_link_selected_cb(GObject *ignored, Link *link, ChmseeUiChmfile *self)
         if (!g_ascii_strcasecmp(CHMSEE_NO_LINK, link->uri))
                 return;
 
-        html = get_active_html(self);
+        html = chmsee_ui_chmfile_get_active_html(self);
 
         g_signal_handlers_block_by_func(html, html_open_uri_cb, self);
 
@@ -302,8 +300,8 @@ booktree_link_selected_cb(GObject *ignored, Link *link, ChmseeUiChmfile *self)
 static void
 bookmarks_link_selected_cb(GObject *ignored, Link *link, ChmseeUiChmfile *chmsee)
 {
-  chmsee_ihtml_open_uri(get_active_html(chmsee), link->uri);
-  check_history(chmsee, get_active_html(chmsee));
+  chmsee_ihtml_open_uri(chmsee_ui_chmfile_get_active_html(chmsee), link->uri);
+  check_history(chmsee, chmsee_ui_chmfile_get_active_html(chmsee));
 }
 
 static void
@@ -358,7 +356,7 @@ html_location_changed_cb(ChmseeIhtml *html, const gchar *location, ChmseeUiChmfi
 {
         g_debug("html location changed cb: %s", location);
 
-        if (html == get_active_html(chmsee))
+        if (html == chmsee_ui_chmfile_get_active_html(chmsee))
                 check_history(chmsee, html);
 }
 
@@ -393,7 +391,7 @@ html_open_uri_cb(ChmseeIhtml* html, const gchar *uri, ChmseeUiChmfile *self)
     }
   }
 
-  if ((html == get_active_html(self)) && selfp->has_toc)
+  if ((html == chmsee_ui_chmfile_get_active_html(self)) && selfp->has_toc)
     booktree_select_uri(BOOKTREE (selfp->ui_topic), uri);
 
   return FALSE;
@@ -406,7 +404,7 @@ html_title_changed_cb(ChmseeIhtml *html, const gchar *title, ChmseeUiChmfile *se
 
         g_debug("html title changed cb %s", title);
 
-        update_tab_title(self, get_active_html(self));
+        update_tab_title(self, chmsee_ui_chmfile_get_active_html(self));
 
         location = chmsee_ihtml_get_location(html);
 
@@ -449,7 +447,7 @@ html_open_new_tab_cb(ChmseeIhtml *html, const gchar *location, ChmseeUiChmfile *
 {
         g_debug("html open new tab callback: %s", location);
 
-        new_tab(chmsee, location);
+        chmsee_ui_chmfile_new_tab(chmsee, location);
 }
 
 static void
@@ -504,12 +502,12 @@ on_copy(GtkWidget *widget, ChmseeUiChmfile *self)
 
         g_return_if_fail(GTK_IS_NOTEBOOK (selfp->html_notebook));
 
-        chmsee_ihtml_copy_selection(get_active_html(self));
+        chmsee_ihtml_copy_selection(chmsee_ui_chmfile_get_active_html(self));
 }
 
 static void
 on_copy_page_location(GtkWidget* widget, ChmseeUiChmfile* chmsee) {
-  ChmseeIhtml* html = get_active_html(chmsee);
+  ChmseeIhtml* html = chmsee_ui_chmfile_get_active_html(chmsee);
   const gchar* location = chmsee_ihtml_get_location(html);
   if(!location) return;
 
@@ -532,20 +530,20 @@ on_select_all(GtkWidget *widget, ChmseeUiChmfile *self)
 
         g_return_if_fail(GTK_IS_NOTEBOOK (selfp->html_notebook));
 
-        html = get_active_html(self);
+        html = chmsee_ui_chmfile_get_active_html(self);
         chmsee_ihtml_select_all(html);
 }
 
 static void
 on_back(GtkWidget *widget, ChmseeUiChmfile *chmsee)
 {
-  chmsee_ihtml_go_back(get_active_html(chmsee));
+  chmsee_ihtml_go_back(chmsee_ui_chmfile_get_active_html(chmsee));
 }
 
 static void
 on_forward(GtkWidget *widget, ChmseeUiChmfile *chmsee)
 {
-  chmsee_ihtml_go_forward(get_active_html(chmsee));
+  chmsee_ihtml_go_forward(chmsee_ui_chmfile_get_active_html(chmsee));
 }
 
 static void
@@ -559,7 +557,7 @@ on_home(GtkWidget *widget, ChmseeUiChmfile *self)
 static void
 on_zoom_in(GtkWidget *widget, ChmseeUiChmfile *self)
 {
-	ChmseeIhtml* html = get_active_html(self);
+	ChmseeIhtml* html = chmsee_ui_chmfile_get_active_html(self);
 	if(html != NULL) {
 		chmsee_ihtml_increase_size(html);
 	}
@@ -568,13 +566,13 @@ on_zoom_in(GtkWidget *widget, ChmseeUiChmfile *self)
 static void
 on_zoom_reset(GtkWidget *widget, ChmseeUiChmfile *chmsee)
 {
-  chmsee_ihtml_reset_size(get_active_html(chmsee));
+  chmsee_ihtml_reset_size(chmsee_ui_chmfile_get_active_html(chmsee));
 }
 
 static void
 on_zoom_out(GtkWidget *widget, ChmseeUiChmfile *self)
 {
-	ChmseeIhtml* html = get_active_html(self);
+	ChmseeIhtml* html = chmsee_ui_chmfile_get_active_html(self);
 	if(html != NULL) {
 		chmsee_ihtml_decrease_size(html);
 	}
@@ -590,17 +588,21 @@ on_open_new_tab(GtkWidget *widget, ChmseeUiChmfile *self)
 
         g_return_if_fail(GTK_IS_NOTEBOOK (selfp->html_notebook));
 
-        html = get_active_html(self);
+        html = chmsee_ui_chmfile_get_active_html(self);
         location = chmsee_ihtml_get_location(html);
 
         if (location != NULL) {
-          new_tab(self, location);
+          chmsee_ui_chmfile_new_tab(self, location);
         }
 }
 
 static void
 on_close_current_tab(GtkWidget *widget, ChmseeUiChmfile *self)
 {
+	chmsee_ui_chmfile_close_current_tab(self);
+}
+
+void chmsee_ui_chmfile_close_current_tab(ChmseeUiChmfile* self) {
         g_return_if_fail(GTK_IS_NOTEBOOK (selfp->html_notebook));
 
         if (gtk_notebook_get_n_pages(GTK_NOTEBOOK (selfp->html_notebook)) == 1) {
@@ -621,7 +623,7 @@ on_context_new_tab(GtkWidget *widget, ChmseeUiChmfile *self)
 	g_debug("On context open new tab: %s", selfp->context_menu_link);
 
 	if (selfp->context_menu_link != NULL) {
-		new_tab(self, selfp->context_menu_link);
+		chmsee_ui_chmfile_new_tab(self, selfp->context_menu_link);
 	}
 }
 
@@ -717,7 +719,7 @@ chmsee_ui_chmfile_populate_window(ChmseeUiChmfile *self)
 	selfp->ui_topic = booktree;
 	selfp->topic_page = topic_page;
 
-	new_tab(self, NULL);
+	chmsee_ui_chmfile_new_tab(self, NULL);
 
     GtkActionGroup* action_group = gtk_action_group_new ("UiChmfileActions");
     selfp->action_group = action_group;
@@ -731,7 +733,8 @@ chmsee_ui_chmfile_populate_window(ChmseeUiChmfile *self)
     gtk_ui_manager_insert_action_group (ui_manager, action_group, 0);
 
     GtkAccelGroup* accel_group = gtk_ui_manager_get_accel_group (ui_manager);
-    gtk_window_add_accel_group (GTK_WINDOW (self), accel_group);
+    /* TODO: how to install shortcut for this widget */
+    /*  gtk_window_add_accel_group (GTK_WINDOW (self), accel_group); */
 
     GError* error = NULL;
     if (!gtk_ui_manager_add_ui_from_string (ui_manager, ui_description, -1, &error))
@@ -782,9 +785,9 @@ chmsee_ui_chmfile_set_model(ChmseeUiChmfile* self, ChmseeIchmfile *book)
 	gtk_notebook_set_current_page(GTK_NOTEBOOK (selfp->control_notebook),
 			g_list_length(bookmarks_list) && selfp->has_toc ? 1 : 0);
 
-	chmsee_ihtml_set_variable_font(get_active_html(self),
+	chmsee_ihtml_set_variable_font(chmsee_ui_chmfile_get_active_html(self),
 			chmsee_ichmfile_get_variable_font(selfp->model));
-	chmsee_ihtml_set_fixed_font(get_active_html(self),
+	chmsee_ihtml_set_fixed_font(chmsee_ui_chmfile_get_active_html(self),
 			chmsee_ichmfile_get_fixed_font(selfp->model));
 
 	if (chmsee_ichmfile_get_home(selfp->model)) {
@@ -843,8 +846,8 @@ new_tab_content(ChmseeUiChmfile *chmsee, const gchar *str)
         return widget;
 }
 
-static void
-new_tab(ChmseeUiChmfile *self, const gchar *location)
+void
+chmsee_ui_chmfile_new_tab(ChmseeUiChmfile *self, const gchar *location)
 {
         ChmseeIhtml  *html;
         GtkWidget    *frame;
@@ -927,7 +930,7 @@ open_homepage(ChmseeUiChmfile *self)
 {
         ChmseeIhtml *html;
 
-        html = get_active_html(self);
+        html = chmsee_ui_chmfile_get_active_html(self);
 
         /* g_signal_handlers_block_by_func(html, html_open_uri_cb, self); */
 
@@ -954,7 +957,7 @@ reload_current_page(ChmseeUiChmfile *self)
 
         g_return_if_fail(GTK_IS_NOTEBOOK (selfp->html_notebook));
 
-        html = get_active_html(self);
+        html = chmsee_ui_chmfile_get_active_html(self);
         location = chmsee_ihtml_get_location(html);
 
         if (location != NULL) {
@@ -962,8 +965,8 @@ reload_current_page(ChmseeUiChmfile *self)
         }
 }
 
-static ChmseeIhtml *
-get_active_html(ChmseeUiChmfile *self)
+ChmseeIhtml *
+chmsee_ui_chmfile_get_active_html(ChmseeUiChmfile *self)
 {
         GtkWidget *frame;
         gint page_num;

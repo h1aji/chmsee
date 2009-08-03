@@ -11,32 +11,6 @@
       <widget class="GtkVBox" id="main_vbox">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkHPaned" id="hpaned1">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="border_width">2</property>
-            <property name="position">200</property>
-            <child>
-              <widget class="GtkVBox" id="control_vbox">
-                <property name="visible">True</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </widget>
-              <packing>
-                <property name="resize">False</property>
-                <property name="shrink">False</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </widget>
-          <packing>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
           <widget class="GtkStatusbar" id="statusbar">
             <property name="visible">True</property>
           </widget>
