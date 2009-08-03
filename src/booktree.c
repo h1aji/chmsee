@@ -23,6 +23,7 @@
 
 static void booktree_class_init(BookTreeClass *);
 static void booktree_init(BookTree *);
+static void booktree_dispose(GObject *);
 static void booktree_finalize(GObject *);
 
 static void booktree_selection_changed_cb(GtkTreeSelection *, BookTree *);
@@ -51,31 +52,7 @@ enum {
 static GtkTreeViewClass *parent_class = NULL;
 static gint              signals[LAST_SIGNAL] = { 0 };
 
-GType
-booktree_get_type (void)
-{
-        static GType type = 0;
-
-        if (!type) {
-                static const GTypeInfo info = {
-                        sizeof (BookTreeClass),
-                        NULL,
-                        NULL,
-                        (GClassInitFunc)booktree_class_init,
-                        NULL,
-                        NULL,
-                        sizeof (BookTree),
-                        0,
-                        (GInstanceInitFunc)booktree_init,
-                };
-
-                type = g_type_register_static(GTK_TYPE_TREE_VIEW,
-                                              "BookTree",
-                                              &info, 0);
-        }
-
-        return type;
-}
+G_DEFINE_TYPE (BookTree, booktree, GTK_TYPE_TREE_VIEW);
 
 static void
 booktree_class_init(BookTreeClass *klass)
@@ -85,6 +62,7 @@ booktree_class_init(BookTreeClass *klass)
         object_class = (GObjectClass *)klass;
         parent_class = g_type_class_peek_parent(klass);
 
+        object_class->dispose = booktree_dispose;
         object_class->finalize = booktree_finalize;
 
         signals[LINK_SELECTED] =
@@ -124,18 +102,38 @@ booktree_init(BookTree *self)
 }
 
 static void
+booktree_dispose(GObject* object) {
+	BookTree* self = BOOKTREE(object);
+
+	if(self->store) {
+		g_object_unref(self->store);
+		self->store = NULL;
+	}
+
+	if(self->pixbufs->pixbuf_opened) {
+		g_object_unref(self->pixbufs->pixbuf_opened);
+		self->pixbufs->pixbuf_opened = NULL;
+	}
+
+	if(self->pixbufs->pixbuf_closed) {
+		g_object_unref(self->pixbufs->pixbuf_closed);
+		self->pixbufs->pixbuf_closed = NULL;
+	}
+
+	if(self->pixbufs->pixbuf_doc) {
+		g_object_unref(self->pixbufs->pixbuf_doc);
+		self->pixbufs->pixbuf_doc = NULL;
+	}
+}
+
+static void
 booktree_finalize(GObject *object)
 {
-        BookTree *tree;
+        BookTree *self;
 
-        tree = BOOKTREE (object);
+        self = BOOKTREE (object);
 
-        g_object_unref(tree->store);
-
-        g_object_unref(tree->pixbufs->pixbuf_opened);
-        g_object_unref(tree->pixbufs->pixbuf_closed);
-        g_object_unref(tree->pixbufs->pixbuf_doc);
-        g_free(tree->pixbufs);
+        g_free(self->pixbufs);
 
         if (G_OBJECT_CLASS (parent_class)->finalize)
                 G_OBJECT_CLASS (parent_class)->finalize(object);
@@ -321,6 +319,16 @@ booktree_new(GNode *link_tree)
 }
 
 void booktree_set_model(BookTree* self, GNode* model) {
+	g_object_unref(self->store);
+	self->store = gtk_tree_store_new(N_COLUMNS,
+			GDK_TYPE_PIXBUF,
+			GDK_TYPE_PIXBUF,
+			G_TYPE_STRING,
+			G_TYPE_POINTER);
+	gtk_tree_view_set_model(GTK_TREE_VIEW (self),
+			GTK_TREE_MODEL (self->store));
+
+
 	self->link_tree = model;
 	booktree_populate_tree(self);
 }
