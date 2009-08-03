@@ -118,24 +118,25 @@ chmfile_init(ChmFile *self)
 static void
 chmfile_finalize(GObject *object)
 {
-  ChmFile *chmfile;
+  ChmFile *self;
 
-  chmfile = CHMFILE (object);
+  self = CHMFILE (object);
 
   g_message("chmfile finalize");
 
-  save_fileinfo(chmfile);
-  g_free(chmfile->encoding);
-  g_free(chmfile->filename);
-  g_free(chmfile->hhc);
-  g_free(chmfile->hhk);
-  g_free(chmfile->home);
-  g_free(chmfile->title);
-  g_free(chmfile->variable_font);
-  g_free(chmfile->fixed_font);
+  save_fileinfo(self);
+  g_free(self->dir);
+  g_free(self->encoding);
+  g_free(self->filename);
+  g_free(self->hhc);
+  g_free(self->hhk);
+  g_free(self->home);
+  g_free(self->title);
+  g_free(self->variable_font);
+  g_free(self->fixed_font);
 
-  if(chmfile->link_tree) {
-    g_node_destroy(chmfile->link_tree);
+  if(self->link_tree) {
+    g_node_destroy(self->link_tree);
   }
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -598,6 +599,7 @@ chmfile_new(const gchar *filename)
   bookmark_file = g_build_filename(self->dir, CHMSEE_BOOKMARK_FILE, NULL);
   self->bookmarks_list = bookmarks_load(bookmark_file);
   g_free(bookmark_file);
+  g_free(md5);
 
   return self;
 }
@@ -655,6 +657,7 @@ load_fileinfo(ChmFile *book)
   }
 
   free_config_list(pairs);
+  g_free(path);
 }
 
 void

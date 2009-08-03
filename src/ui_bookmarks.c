@@ -372,6 +372,12 @@ ui_bookmarks_new(GList *links)
         return GTK_WIDGET(bookmarks);
 }
 
+void ui_bookmarks_set_model(UiBookmarks* self, GList* model) {
+	self->links = model;
+	update_bookmarks_treeview(self, NULL);
+}
+
+
 void
 ui_bookmarks_set_current_link(UiBookmarks *bookmarks, const gchar *name,
                            const gchar *uri)

@@ -70,7 +70,9 @@ struct _BookTreeClass {
 };
 
 GType booktree_get_type(void);
-GtkWidget *booktree_new(GNode *);
+
+GtkWidget* booktree_new(GNode* model);
+void booktree_set_model(BookTree* self, GNode* model);
 
 void booktree_select_uri(BookTree *, const gchar *);
 const gchar *booktree_get_selected_book_title(BookTree *);

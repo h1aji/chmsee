@@ -320,6 +320,12 @@ booktree_new(GNode *link_tree)
         return GTK_WIDGET (tree);
 }
 
+void booktree_set_model(BookTree* self, GNode* model) {
+	self->link_tree = model;
+	booktree_populate_tree(self);
+}
+
+
 void
 booktree_select_uri(BookTree *tree, const gchar *uri)
 {

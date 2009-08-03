@@ -37,7 +37,7 @@ chmindex_init(ChmIndex* self)
 
 ChmIndex* chmindex_new(const char* filename, const char* encoding) {
 	GNode* node = hhc_load(filename, encoding);
-	if(node == NULL) {
+	if(g_node_first_child(node) == NULL) {
 		return NULL;
 	}
 

@@ -61,7 +61,8 @@ struct _UiBookmarksClass {
 };
 
 GType ui_bookmarks_get_type(void);
-GtkWidget *ui_bookmarks_new(GList *);
+GtkWidget *ui_bookmarks_new(GList* model);
+void ui_bookmarks_set_model(UiBookmarks* self, GList* model);
 
 void ui_bookmarks_set_current_link(UiBookmarks *, const gchar *, const gchar *);
 void ui_bookmarks_grab_focus(UiBookmarks *);

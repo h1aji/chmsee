@@ -30,6 +30,7 @@ set(CHMSEE_SRCS
   ihtml.h ihtml.c
   html-factory.h html-factory.c
   ui_index.h ui_index.c
+  ui_chmfile.h ui_chmfile.c
   )
 set(CHMSEE_SRCS
   ${CHMSEE_SRCS}
@@ -54,5 +55,10 @@ add_executable(chmsee main.cpp)
 target_link_libraries(chmsee
   chmseelib
   )
+  
+add_executable(test-ui-chmfile test-ui-chmfile.cpp)
+target_link_libraries(test-ui-chmfile
+	chmseelib
+	)
 
 install(TARGETS chmsee DESTINATION bin)

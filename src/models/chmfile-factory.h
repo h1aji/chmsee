@@ -22,6 +22,10 @@
 
 #include "ichmfile.h"
 
+G_BEGIN_DECLS
+
 ChmseeIchmfile* chmsee_chmfile_new(const gchar* fname);
+
+G_END_DECLS
 
 #endif
