@@ -21,8 +21,6 @@
 #include "booktree.h"
 #include "utils/utils.h"
 
-static void booktree_class_init(BookTreeClass *);
-static void booktree_init(BookTree *);
 static void booktree_dispose(GObject *);
 static void booktree_finalize(GObject *);
 
@@ -49,7 +47,6 @@ enum {
         N_COLUMNS
 };
 
-static GtkTreeViewClass *parent_class = NULL;
 static gint              signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BookTree, booktree, GTK_TYPE_TREE_VIEW);
@@ -60,7 +57,6 @@ booktree_class_init(BookTreeClass *klass)
         GObjectClass *object_class;
 
         object_class = (GObjectClass *)klass;
-        parent_class = g_type_class_peek_parent(klass);
 
         object_class->dispose = booktree_dispose;
         object_class->finalize = booktree_finalize;
@@ -135,8 +131,7 @@ booktree_finalize(GObject *object)
 
         g_free(self->pixbufs);
 
-        if (G_OBJECT_CLASS (parent_class)->finalize)
-                G_OBJECT_CLASS (parent_class)->finalize(object);
+        G_OBJECT_CLASS (booktree_parent_class)->finalize(object);
 }
 
 /* internal functions */
