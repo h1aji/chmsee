@@ -67,6 +67,12 @@ enum {
 };
 static gint signals[LAST_SIGNAL] = { 0 };
 
+enum {
+	PROP_0,
+
+	PROP_SIDEPANE_VISIBLE
+};
+
 struct _ChmseeUiChmfilePrivate {
 	GtkWidget* control_notebook;
 
@@ -109,9 +115,17 @@ struct _ChmseeUiChmfilePrivate {
 #define selfp (self->priv)
 #define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CHMSEE_TYPE_UI_CHMFILE, ChmseeUiChmfilePrivate))
 
-static void chmsee_ui_chmfile_init(ChmseeUiChmfile *);
 static void chmsee_ui_chmfile_finalize(GObject *);
 static void chmsee_ui_chmfile_dispose(GObject* self);
+static void chmsee_ui_chmfile_set_property(GObject* self,
+		guint property_id,
+		const GValue* value,
+		GParamSpec* pspec);
+static void chmsee_ui_chmfile_get_property(GObject* self,
+		guint property_id,
+		GValue* value,
+		GParamSpec* pspec);
+
 static void chmsee_set_context_menu_link(ChmseeUiChmfile* self, const gchar* link);
 
 static void chmsee_refresh_index(ChmseeUiChmfile* self);
@@ -194,9 +208,13 @@ G_DEFINE_TYPE (ChmseeUiChmfile, chmsee_ui_chmfile, GTK_TYPE_HPANED);
 void
 chmsee_ui_chmfile_class_init(ChmseeUiChmfileClass *klass)
 {
+	GParamSpec* pspec;
+
 	g_type_class_add_private(klass, sizeof(ChmseeUiChmfilePrivate));
 	G_OBJECT_CLASS(klass)->finalize = chmsee_ui_chmfile_finalize;
 	G_OBJECT_CLASS(klass)->dispose = chmsee_ui_chmfile_dispose;
+	G_OBJECT_CLASS(klass)->set_property = chmsee_ui_chmfile_set_property;
+	G_OBJECT_CLASS(klass)->get_property = chmsee_ui_chmfile_get_property;
 
     signals[MODEL_CHANGED] =
             g_signal_new ("model_changed",
@@ -209,6 +227,9 @@ chmsee_ui_chmfile_class_init(ChmseeUiChmfileClass *klass)
             		G_TYPE_NONE,
             		1,
             		G_TYPE_POINTER);
+
+    pspec = g_param_spec_boolean("sidepane-visible", NULL, NULL, TRUE, G_PARAM_READWRITE);
+    g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_SIDEPANE_VISIBLE, pspec);
 }
 
 static void
@@ -247,6 +268,7 @@ chmsee_ui_chmfile_init(ChmseeUiChmfile* self)
     chmsee_html_set_default_lang(selfp->lang);
 
     chmsee_ui_chmfile_populate_window(self);
+
 }
 
 static void
@@ -1221,4 +1243,39 @@ static void chmsee_set_context_menu_link(ChmseeUiChmfile* self, const gchar* lin
 
 GtkWidget* chmsee_ui_chmfile_new() {
 	return GTK_WIDGET(g_object_new(CHMSEE_TYPE_UI_CHMFILE, NULL));
+}
+
+void chmsee_ui_chmfile_set_property(GObject* object,
+		guint property_id,
+		const GValue* value,
+		GParamSpec* pspec) {
+	ChmseeUiChmfile* self = CHMSEE_UI_CHMFILE(object);
+
+	switch(property_id) {
+	case PROP_SIDEPANE_VISIBLE:
+		if(g_value_get_boolean(value)) {
+			gtk_widget_show(gtk_paned_get_child1(GTK_PANED(self)));
+		} else {
+			gtk_widget_hide(gtk_paned_get_child1(GTK_PANED(self)));
+		}
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
+}
+void chmsee_ui_chmfile_get_property(GObject* object,
+		guint property_id,
+		GValue* value,
+		GParamSpec* pspec) {
+	ChmseeUiChmfile* self = CHMSEE_UI_CHMFILE(object);
+
+	switch(property_id) {
+	case PROP_SIDEPANE_VISIBLE:
+		g_value_set_boolean(value, GTK_WIDGET_VISIBLE(gtk_paned_get_child1(GTK_PANED(self))));
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+		break;
+	}
 }

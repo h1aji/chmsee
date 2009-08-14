@@ -1084,12 +1084,9 @@ void on_sidepane_toggled(GtkWidget* menu, ChmSee* self) {
 
 void set_sidepane_state(ChmSee* self, gboolean state) {
 	GtkWidget* icon_widget;
-
-	if(state) {
-		gtk_widget_show(get_widget(self, "control_vbox"));
-	} else {
-		gtk_widget_hide(get_widget(self, "control_vbox"));
-	}
+	g_object_set(selfp->ui_chmfile,
+			"sidepane-visible", state,
+			NULL);
 
     if (state) {
             icon_widget = gtk_image_new_from_file(get_resource_path("hide-pane.png"));
