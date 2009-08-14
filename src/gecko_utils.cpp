@@ -210,10 +210,17 @@ gecko_utils_init(void)
 #ifdef XPCOM_GLUE
 	NS_LogInit();
 
+#if XULRUNNER191
+        static const GREVersionRange greVersion = {
+                "1.9.1", PR_TRUE,
+                "1.9.2", PR_FALSE
+        };
+#else
         static const GREVersionRange greVersion = {
                 "1.9a", PR_TRUE,
                 "1.9.1", PR_FALSE
         };
+#endif
 
         char xpcomLocation[4096];
         rv = GRE_GetGREPathWithProperties(&greVersion, 1, nsnull, 0, xpcomLocation, 4096);
