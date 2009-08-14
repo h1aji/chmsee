@@ -1,5 +1,6 @@
 /*
  *  Copyright (c) 2006           Ji YongGang <jungle@soforge-studio.com>
+ *  Copyright (C) 2009 LI Daobing <lidaobing@gmail.com>
  *
  *  ChmSee is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,14 +18,13 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#ifndef __BOOKTREE_H__
-#define __BOOKTREE_H__
+#ifndef __CHMSEE_BOOKTREE_H__
+#define __CHMSEE_BOOKTREE_H__
 
 #include <glib.h>
 #include <gtk/gtk.h>
 
 #include "models/link.h"
-#include "models/hhc.h"
 
 #define TYPE_BOOKTREE \
         (booktree_get_type())
@@ -37,29 +37,14 @@
 #define IS_BOOKTREE_CLASS(k) \
         (G_TYPE_CHECK_CLASS_TYPE ((o), TYPE_BOOKTREE))
 
-typedef struct {
-        GdkPixbuf *pixbuf_opened;
-        GdkPixbuf *pixbuf_closed;
-        GdkPixbuf *pixbuf_doc;
-} BookTreePixbufs;
-
-typedef struct {
-        const gchar *uri;
-        gboolean     found;
-        GtkTreeIter  iter;
-        GtkTreePath *path;
-} FindURIData;
 
 typedef struct _BookTree       BookTree;
+typedef struct _BookTreePrivate BookTreePrivate;
 typedef struct _BookTreeClass  BookTreeClass;
 
 struct _BookTree {
         GtkTreeView      parent;
-
-        GtkTreeStore    *store;
-
-        BookTreePixbufs *pixbufs;
-        Hhc             *link_tree;
+        BookTreePrivate* priv;
 };
 
 struct _BookTreeClass {

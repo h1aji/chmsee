@@ -68,6 +68,13 @@ static void
 chmsee_ui_index_init(ChmseeUiIndex* self) {
 	self->priv = CHMSEE_UI_INDEX_GET_PRIVATE(self);
 	selfp->chmIndex = NULL;
+        GtkWidget* widget = booktree_new(NULL);
+        gtk_container_add(GTK_CONTAINER(self),
+                          widget);
+        g_signal_connect_swapped(widget,
+                                 "link_selected",
+                                 G_CALLBACK(chmsee_ui_index_on_link_selected),
+                                 self);
 }
 
 GtkWidget* chmsee_ui_index_new(ChmIndex* chmIndex) {
@@ -104,25 +111,14 @@ void chmsee_ui_index_set_model(ChmseeUiIndex* self, ChmIndex* chmIndex) {
 
 
 void chmsee_ui_index_refresh(ChmseeUiIndex* self) {
-	GtkWidget* widget = NULL;
-	if(selfp->chmIndex != NULL) {
-		GNode* node = chmindex_get_data(selfp->chmIndex);
-		if(node != NULL) {
-			widget = booktree_new(node);
-		}
-	}
+  GNode* node = NULL;
 
-	GtkWidget* child = gtk_bin_get_child(GTK_BIN(self));
-	if(child != NULL) {
-		gtk_widget_destroy(child);
-	}
+  if(selfp->chmIndex != NULL) {
+    node = chmindex_get_data(selfp->chmIndex);
+  }
 
-	if(widget != NULL) {
-		gtk_container_add(GTK_CONTAINER(self), widget);
-		g_signal_connect_swapped(widget, "link_selected", (GCallback)chmsee_ui_index_on_link_selected, self);
-	} else {
-		gtk_container_add(GTK_CONTAINER(self), gtk_tree_view_new());
-	}
+  booktree_set_model(BOOKTREE(gtk_bin_get_child(GTK_BIN(self))),
+                     node);
 }
 
 void chmsee_ui_index_on_link_selected(ChmseeUiIndex* self, Link* link) {
