@@ -59,6 +59,14 @@ enum {
 	CHMSEE_STATE_NORMAL   /* normal state, one book is loaded */
 };
 
+
+/* Signals */
+enum {
+	MODEL_CHANGED,
+	LAST_SIGNAL
+};
+static gint signals[LAST_SIGNAL] = { 0 };
+
 struct _ChmseeUiChmfilePrivate {
 	GtkWidget* control_notebook;
 
@@ -189,6 +197,18 @@ chmsee_ui_chmfile_class_init(ChmseeUiChmfileClass *klass)
 	g_type_class_add_private(klass, sizeof(ChmseeUiChmfilePrivate));
 	G_OBJECT_CLASS(klass)->finalize = chmsee_ui_chmfile_finalize;
 	G_OBJECT_CLASS(klass)->dispose = chmsee_ui_chmfile_dispose;
+
+    signals[MODEL_CHANGED] =
+            g_signal_new ("model_changed",
+            		G_TYPE_FROM_CLASS (klass),
+            		G_SIGNAL_RUN_LAST,
+                          0,
+            		NULL,
+            		NULL,
+            		g_cclosure_marshal_VOID__POINTER,
+            		G_TYPE_NONE,
+            		1,
+            		G_TYPE_POINTER);
 }
 
 static void
@@ -747,12 +767,10 @@ chmsee_ui_chmfile_populate_window(ChmseeUiChmfile *self)
 }
 
 void
-chmsee_ui_chmfile_set_model(ChmseeUiChmfile* self, ChmseeIchmfile *book)
+chmsee_ui_chmfile_set_model2(ChmseeUiChmfile* self, ChmseeIchmfile *book)
 {
 	GNode *link_tree;
 	GList *bookmarks_list;
-
-	GtkWidget *booktree_sw;
 
 	g_debug("display book");
 	selfp->state = CHMSEE_STATE_LOADING;
@@ -779,7 +797,7 @@ chmsee_ui_chmfile_set_model(ChmseeUiChmfile* self, ChmseeIchmfile *book)
 
 	/* Bookmarks */
 	bookmarks_list = chmsee_ichmfile_get_bookmarks_list(selfp->model);
-	ui_bookmarks_set_model(selfp->bookmark_page, bookmarks_list);
+	ui_bookmarks_set_model(UIBOOKMARKS(selfp->bookmark_page), bookmarks_list);
 
 
 	gtk_notebook_set_current_page(GTK_NOTEBOOK (selfp->control_notebook),
@@ -799,6 +817,15 @@ chmsee_ui_chmfile_set_model(ChmseeUiChmfile* self, ChmseeIchmfile *book)
     selfp->last_dir = g_strdup_printf("%s", g_path_get_dirname(
     		chmsee_ichmfile_get_filename(book)));
 }
+
+void
+chmsee_ui_chmfile_set_model(ChmseeUiChmfile* self, ChmseeIchmfile *book)
+{
+	chmsee_ui_chmfile_set_model2(self, book);
+	g_signal_emit(self, signals[MODEL_CHANGED], 0, book);
+}
+
+
 
 static void
 chmsee_ui_chmfile_close_current_book(ChmseeUiChmfile *self)

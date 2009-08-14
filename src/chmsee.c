@@ -97,8 +97,6 @@ struct _ChmSeePrivate {
 #define selfp (self->priv)
 #define CHMSEE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), TYPE_CHMSEE, ChmSeePrivate))
 
-static void chmsee_class_init(ChmSeeClass *);
-static void chmsee_init(ChmSee *);
 static void chmsee_finalize(GObject *);
 static void chmsee_dispose(GObject* self);
 static void chmsee_load_config(ChmSee *self);
@@ -146,6 +144,8 @@ static void on_sidepane_toggled(GtkWidget*, ChmSee* self);
 static void on_map(ChmSee* self);
 static gboolean on_window_state_event(ChmSee* self, GdkEventWindowState* event);
 static gboolean on_scroll_event(ChmSee* self, GdkEventScroll* event);
+
+static void on_ui_chmfile_model_changed(ChmSee* self, ChmseeIchmfile* chm_file);
 
 static void chmsee_quit(ChmSee *);
 static void chmsee_open_uri(ChmSee *chmsee, const gchar *uri);
@@ -826,6 +826,10 @@ populate_window(ChmSee *self)
         selfp->ui_chmfile = ui_chmfile;
         gtk_box_pack_start(GTK_BOX(vbox), ui_chmfile, TRUE, TRUE, 0);
         gtk_container_set_focus_child(GTK_CONTAINER(vbox), ui_chmfile);
+        g_signal_connect_swapped(ui_chmfile,
+                                 "model_changed",
+                                 G_CALLBACK(on_ui_chmfile_model_changed),
+                                 self);
 
         gtk_tool_button_set_icon_widget(
         		GTK_TOOL_BUTTON(gtk_ui_manager_get_widget(ui_manager, "/toolbar/sidepane")),
@@ -1350,3 +1354,15 @@ static void new_tab(ChmSee * self, const gchar * location) {
 static void on_close_current_tab(GtkWidget* widget, ChmSee* self) {
 	chmsee_ui_chmfile_close_current_tab(CHMSEE_UI_CHMFILE(selfp->ui_chmfile));
 }
+
+void on_ui_chmfile_model_changed(ChmSee* self, ChmseeIchmfile* chm_file) {
+	gboolean has_model = (chm_file != NULL);
+
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "NewTab"), has_model);
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "CloseTab"), has_model);
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Home"), has_model);
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "SidePane"), has_model);
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "ZoomIn"), has_model);
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "ZoomOut"), has_model);
+	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "ZoomReset"), has_model);
+}  
