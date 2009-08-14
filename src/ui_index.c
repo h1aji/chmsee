@@ -37,8 +37,6 @@ struct _ChmseeUiIndexPrivate {
 	ChmIndex* chmIndex;
 };
 
-static GtkViewportClass* parent_class;
-
 #define CHMSEE_UI_INDEX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE((obj), CHMSEE_TYPE_UI_INDEX, ChmseeUiIndexPrivate))
 
 G_DEFINE_TYPE(ChmseeUiIndex, chmsee_ui_index, GTK_TYPE_VIEWPORT);
@@ -52,8 +50,6 @@ chmsee_ui_index_class_init(ChmseeUiIndexClass* klass) {
 	g_type_class_add_private(klass, sizeof(ChmseeUiIndexPrivate));
 	G_OBJECT_CLASS(klass)->dispose = chmsee_ui_index_dispose;
 	G_OBJECT_CLASS(klass)->finalize = chmsee_ui_index_finalize;
-
-	parent_class = g_type_class_peek_parent(klass);
 
     signals[LINK_SELECTED] =
             g_signal_new ("link_selected",
@@ -86,11 +82,11 @@ static void chmsee_ui_index_dispose(GObject* object) {
 		g_object_unref(selfp->chmIndex);
 		selfp->chmIndex = NULL;
 	}
-	G_OBJECT_CLASS(parent_class)->dispose(object);
+	G_OBJECT_CLASS(chmsee_ui_index_parent_class)->dispose(object);
 }
 
 static void chmsee_ui_index_finalize(GObject* object) {
-	G_OBJECT_CLASS(parent_class)->finalize(object);
+	G_OBJECT_CLASS(chmsee_ui_index_parent_class)->finalize(object);
 }
 
 void chmsee_ui_index_set_model(ChmseeUiIndex* self, ChmIndex* chmIndex) {
