@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6.2 FATAL_ERROR)
 set(PACKAGE_VERSION "1.0.7" )
 find_package(PkgConfig)
 
-pkg_check_modules (CHMSEE REQUIRED gthread-2.0 glib-2.0 libxml-2.0 gtk+-2.0 libglade-2.0)
+pkg_check_modules (CHMSEE REQUIRED gthread-2.0 glib-2.0 libxml-2.0 gtk+-2.0 libglade-2.0 nspr)
 pkg_search_module(XULRUNNER REQUIRED libxul-embedding-unstable>=1.9 xulrunner-gtkmozembed>=1.8)
 set(CHMSEE_INCLUDE_DIRS ${CHMSEE_INCLUDE_DIRS} ${XULRUNNER_INCLUDE_DIRS})
 set(CHMSEE_CFLAGS_OTHER ${CHMSEE_CFLAGS_OTHER} ${XULRUNNER_CFLAGS_OTHER} -Wall)
