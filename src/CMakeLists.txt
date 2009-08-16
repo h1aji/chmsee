@@ -56,9 +56,4 @@ target_link_libraries(chmsee
   chmseelib
   )
   
-add_executable(test-ui-chmfile test-ui-chmfile.cpp)
-target_link_libraries(test-ui-chmfile
-	chmseelib
-	)
-
 install(TARGETS chmsee DESTINATION bin)
