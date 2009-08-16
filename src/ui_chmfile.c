@@ -133,19 +133,18 @@ static void chmsee_set_context_menu_link(ChmseeUiChmfile* self, const gchar* lin
 
 static void chmsee_refresh_index(ChmseeUiChmfile* self);
 static GtkWidget* chmsee_new_index_page(ChmseeUiChmfile* self);
-static void chmsee_on_ui_index_link_selected(ChmseeUiChmfile* self, Link* link);
+static void on_ui_index_link_selected(ChmseeUiChmfile* self, Link* link);
 
-static void booktree_link_selected_cb(GObject *, Link *, ChmseeUiChmfile *);
-static void bookmarks_link_selected_cb(GObject *, Link *, ChmseeUiChmfile *);
-static void control_switch_page_cb(GtkNotebook *, GtkNotebookPage *, guint , ChmseeUiChmfile *);
-static void html_switch_page_cb(GtkNotebook *, GtkNotebookPage *, guint , ChmseeUiChmfile *);
-static void html_location_changed_cb(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
-static gboolean html_open_uri_cb(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
-static void html_title_changed_cb(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
-static void html_context_normal_cb(ChmseeIhtml *, ChmseeUiChmfile *);
-static void html_context_link_cb(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
-static void html_open_new_tab_cb(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
-static void html_link_message_cb(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
+static void on_booktree_link_selected(GObject *, Link *, ChmseeUiChmfile *);
+static void on_bookmarks_link_selected(GObject *, Link *, ChmseeUiChmfile *);
+static void on_html_notebook_switch_page(GtkNotebook *, GtkNotebookPage *, guint , ChmseeUiChmfile *);
+static void on_html_location_changed(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
+static gboolean on_html_open_uri(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
+static void on_html_title_changed(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
+static void on_html_context_normal(ChmseeIhtml *, ChmseeUiChmfile *);
+static void on_html_context_link(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
+static void on_html_open_new_tab(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
+static void on_html_link_message(ChmseeIhtml *, const gchar *, ChmseeUiChmfile *);
 
 static void on_close_tab(GtkWidget *, ChmseeUiChmfile *);
 static void on_copy(GtkWidget *, ChmseeUiChmfile *);
@@ -327,7 +326,7 @@ static void chmsee_ui_chmfile_dispose(GObject* gobject)
 }
 
 static void
-booktree_link_selected_cb(GObject *ignored, Link *link, ChmseeUiChmfile *self)
+on_booktree_link_selected(GObject *ignored, Link *link, ChmseeUiChmfile *self)
 {
         ChmseeIhtml* html;
 
@@ -337,28 +336,22 @@ booktree_link_selected_cb(GObject *ignored, Link *link, ChmseeUiChmfile *self)
 
         html = chmsee_ui_chmfile_get_active_html(self);
 
-        g_signal_handlers_block_by_func(html, html_open_uri_cb, self);
+        g_signal_handlers_block_by_func(html, on_html_open_uri, self);
 
         chmsee_ihtml_open_uri(html, g_build_filename(
                         chmsee_ichmfile_get_dir(selfp->model), link->uri, NULL));
 
-        g_signal_handlers_unblock_by_func(html, html_open_uri_cb, self);
+        g_signal_handlers_unblock_by_func(html, on_html_open_uri, self);
 }
 
 static void
-bookmarks_link_selected_cb(GObject *ignored, Link *link, ChmseeUiChmfile *chmsee)
+on_bookmarks_link_selected(GObject *ignored, Link *link, ChmseeUiChmfile *chmsee)
 {
   chmsee_ihtml_open_uri(chmsee_ui_chmfile_get_active_html(chmsee), link->uri);
 }
 
 static void
-control_switch_page_cb(GtkNotebook *notebook, GtkNotebookPage *page, guint new_page_num, ChmseeUiChmfile *chmsee)
-{
-        g_debug("switch page : current page = %d", gtk_notebook_get_current_page(notebook));
-}
-
-static void
-html_switch_page_cb(GtkNotebook *notebook, GtkNotebookPage *page, guint new_page_num, ChmseeUiChmfile *self)
+on_html_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *page, guint new_page_num, ChmseeUiChmfile *self)
 {
   GtkWidget *new_page;
 
@@ -397,14 +390,14 @@ html_switch_page_cb(GtkNotebook *notebook, GtkNotebookPage *page, guint new_page
 }
 
 static void
-html_location_changed_cb(ChmseeIhtml *html, const gchar *location, ChmseeUiChmfile* self)
+on_html_location_changed(ChmseeIhtml *html, const gchar *location, ChmseeUiChmfile* self)
 {
   g_debug("%s:%d:html location changed cb: %s", __FILE__, __LINE__, location);
   g_signal_emit(self, signals[HTML_CHANGED], 0, chmsee_ui_chmfile_get_active_html(self));
 }
 
 static gboolean
-html_open_uri_cb(ChmseeIhtml* html, const gchar *uri, ChmseeUiChmfile *self)
+on_html_open_uri(ChmseeIhtml* html, const gchar *uri, ChmseeUiChmfile *self)
 {
 	g_debug("enter html_open_uri_cb with uri = %s", uri);
   static const char* prefix = "file://";
@@ -441,7 +434,7 @@ html_open_uri_cb(ChmseeIhtml* html, const gchar *uri, ChmseeUiChmfile *self)
 }
 
 static void
-html_title_changed_cb(ChmseeIhtml *html, const gchar *title, ChmseeUiChmfile *self)
+on_html_title_changed(ChmseeIhtml *html, const gchar *title, ChmseeUiChmfile *self)
 {
         const gchar *location;
 
@@ -465,16 +458,16 @@ html_title_changed_cb(ChmseeIhtml *html, const gchar *title, ChmseeUiChmfile *se
 
 /* Popup html context menu */
 static void
-html_context_normal_cb(ChmseeIhtml *html, ChmseeUiChmfile *self)
+on_html_context_normal(ChmseeIhtml *html, ChmseeUiChmfile *self)
 {
-  g_message("html context-normal event");
-   gtk_menu_popup(GTK_MENU(gtk_ui_manager_get_widget(selfp->ui_manager, "/HtmlContextNormal")),
-                 NULL, NULL, NULL, NULL, 0, GDK_CURRENT_TIME);
+	g_debug("html context-normal event");
+	gtk_menu_popup(GTK_MENU(gtk_ui_manager_get_widget(selfp->ui_manager, "/HtmlContextNormal")),
+			NULL, NULL, NULL, NULL, 0, GDK_CURRENT_TIME);
 }
 
 /* Popup html context menu when mouse over hyper link */
 static void
-html_context_link_cb(ChmseeIhtml *html, const gchar *link, ChmseeUiChmfile* self)
+on_html_context_link(ChmseeIhtml *html, const gchar *link, ChmseeUiChmfile* self)
 {
 	g_debug("html context-link event: %s", link);
 	chmsee_set_context_menu_link(self, link);
@@ -486,7 +479,7 @@ html_context_link_cb(ChmseeIhtml *html, const gchar *link, ChmseeUiChmfile* self
 }
 
 static void
-html_open_new_tab_cb(ChmseeIhtml *html, const gchar *location, ChmseeUiChmfile *chmsee)
+on_html_open_new_tab(ChmseeIhtml *html, const gchar *location, ChmseeUiChmfile *chmsee)
 {
         g_debug("html open new tab callback: %s", location);
 
@@ -494,11 +487,11 @@ html_open_new_tab_cb(ChmseeIhtml *html, const gchar *location, ChmseeUiChmfile *
 }
 
 static void
-html_link_message_cb(ChmseeIhtml *html, const gchar *url, ChmseeUiChmfile *self)
+on_html_link_message(ChmseeIhtml *html, const gchar *url, ChmseeUiChmfile *self)
 {
   g_free(selfp->link_message);
   selfp->link_message = g_strdup(url);
-  g_object_notify(self, "link-message");
+  g_object_notify(G_OBJECT(self), "link-message");
 }
 
 static void
@@ -652,10 +645,6 @@ chmsee_ui_chmfile_populate_window(ChmseeUiChmfile *self)
 			TRUE,
 			TRUE,
 			2);
-	g_signal_connect(G_OBJECT(control_notebook),
-			"switch-page",
-			G_CALLBACK (control_switch_page_cb),
-			self);
 	gtk_widget_show(control_notebook);
 
 
@@ -676,7 +665,7 @@ chmsee_ui_chmfile_populate_window(ChmseeUiChmfile *self)
 
 	g_signal_connect(G_OBJECT (booktree),
 			"link-selected",
-			G_CALLBACK (booktree_link_selected_cb),
+			G_CALLBACK (on_booktree_link_selected),
 			self);
 
 	gtk_notebook_append_page(GTK_NOTEBOOK (control_notebook),
@@ -691,7 +680,7 @@ chmsee_ui_chmfile_populate_window(ChmseeUiChmfile *self)
 
 	g_signal_connect(G_OBJECT (selfp->bookmark_page),
 			"link-selected",
-			G_CALLBACK (bookmarks_link_selected_cb),
+			G_CALLBACK (on_bookmarks_link_selected),
 			self);
 
 	gtk_paned_add1(GTK_PANED(self), control_vbox);
@@ -700,7 +689,7 @@ chmsee_ui_chmfile_populate_window(ChmseeUiChmfile *self)
 	GtkWidget* html_notebook = gtk_notebook_new();
 	g_signal_connect(G_OBJECT (html_notebook),
 			"switch-page",
-			G_CALLBACK (html_switch_page_cb),
+			G_CALLBACK (on_html_notebook_switch_page),
 			self);
 
 	gtk_widget_show(html_notebook);
@@ -709,7 +698,7 @@ chmsee_ui_chmfile_populate_window(ChmseeUiChmfile *self)
 
 	g_signal_connect(G_OBJECT (html_notebook),
 			"switch-page",
-			G_CALLBACK (html_switch_page_cb),
+			G_CALLBACK (on_html_notebook_switch_page),
 			self);
 
 
@@ -881,31 +870,31 @@ chmsee_ui_chmfile_new_tab(ChmseeUiChmfile *self, const gchar *location)
 
   g_signal_connect(G_OBJECT (html),
                    "title-changed",
-                   G_CALLBACK (html_title_changed_cb),
+                   G_CALLBACK (on_html_title_changed),
                    self);
   g_signal_connect(G_OBJECT (html),
                    "open-uri",
-                   G_CALLBACK (html_open_uri_cb),
+                   G_CALLBACK (on_html_open_uri),
                    self);
   g_signal_connect(G_OBJECT (html),
                    "location-changed",
-                   G_CALLBACK (html_location_changed_cb),
+                   G_CALLBACK (on_html_location_changed),
                    self);
   g_signal_connect(G_OBJECT (html),
                    "context-normal",
-                   G_CALLBACK (html_context_normal_cb),
+                   G_CALLBACK (on_html_context_normal),
                    self);
   g_signal_connect(G_OBJECT (html),
                    "context-link",
-                   G_CALLBACK (html_context_link_cb),
+                   G_CALLBACK (on_html_context_link),
                    self);
   g_signal_connect(G_OBJECT (html),
                    "open-new-tab",
-                   G_CALLBACK (html_open_new_tab_cb),
+                   G_CALLBACK (on_html_open_new_tab),
                    self);
   g_signal_connect(G_OBJECT (html),
                    "link-message",
-                   G_CALLBACK (html_link_message_cb),
+                   G_CALLBACK (on_html_link_message),
                    self);
   num = gtk_notebook_append_page(GTK_NOTEBOOK (selfp->html_notebook),
                                  frame, tab_content);
@@ -977,7 +966,7 @@ update_tab_title(ChmseeUiChmfile *self, ChmseeIhtml *html)
   const gchar* tab_title;
   const gchar* book_title;
 
-        html_title = chmsee_ihtml_get_title(html);
+        html_title = g_strdup(chmsee_ihtml_get_title(html));
 
         if (selfp->has_toc)
                 book_title = booktree_get_selected_book_title(BOOKTREE (selfp->ui_topic));
@@ -1107,7 +1096,7 @@ static GtkWidget* chmsee_new_index_page(ChmseeUiChmfile* self) {
 	gtk_container_add(GTK_CONTAINER (booktree_sw), uiIndex);
 	g_signal_connect_swapped(uiIndex,
 			"link-selected",
-			G_CALLBACK (chmsee_on_ui_index_link_selected),
+			G_CALLBACK (on_ui_index_link_selected),
 			self);
 
 	selfp->index_page = booktree_sw;
@@ -1115,8 +1104,8 @@ static GtkWidget* chmsee_new_index_page(ChmseeUiChmfile* self) {
 	return GTK_WIDGET(booktree_sw);
 }
 
-void chmsee_on_ui_index_link_selected(ChmseeUiChmfile* self, Link* link) {
-	booktree_link_selected_cb(NULL, link, self);
+void on_ui_index_link_selected(ChmseeUiChmfile* self, Link* link) {
+	on_booktree_link_selected(NULL, link, self);
 }
 
 
