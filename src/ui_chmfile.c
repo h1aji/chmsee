@@ -71,7 +71,8 @@ static gint signals[LAST_SIGNAL] = { 0 };
 enum {
 	PROP_0,
 
-	PROP_SIDEPANE_VISIBLE
+	PROP_SIDEPANE_VISIBLE,
+        PROP_LINK_MESSAGE
 };
 
 struct _ChmseeUiChmfilePrivate {
@@ -109,6 +110,7 @@ struct _ChmseeUiChmfilePrivate {
     gchar           *last_dir;
     gchar* context_menu_link;
     gint            state; /* see enum CHMSEE_STATE_* */
+  gchar* link_message;
 };
 
 
@@ -232,6 +234,9 @@ chmsee_ui_chmfile_class_init(ChmseeUiChmfileClass *klass)
 
     pspec = g_param_spec_boolean("sidepane-visible", NULL, NULL, TRUE, G_PARAM_READWRITE);
     g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_SIDEPANE_VISIBLE, pspec);
+
+    pspec = g_param_spec_string("link-message", NULL, NULL, "", G_PARAM_READABLE);
+    g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_LINK_MESSAGE, pspec);
 }
 
 static void
@@ -263,6 +268,7 @@ chmsee_ui_chmfile_init(ChmseeUiChmfile* self)
 	selfp->has_toc = FALSE;
 	selfp->has_index = FALSE;
 	selfp->state = CHMSEE_STATE_INIT;
+        selfp->link_message = NULL;
 
 
     /* Init gecko */
@@ -488,8 +494,11 @@ html_open_new_tab_cb(ChmseeIhtml *html, const gchar *location, ChmseeUiChmfile *
 }
 
 static void
-html_link_message_cb(ChmseeIhtml *html, const gchar *url, ChmseeUiChmfile *chmsee)
+html_link_message_cb(ChmseeIhtml *html, const gchar *url, ChmseeUiChmfile *self)
 {
+  g_free(selfp->link_message);
+  selfp->link_message = g_strdup(url);
+  g_object_notify(self, "link-message");
 }
 
 static void
@@ -1137,34 +1146,39 @@ GtkWidget* chmsee_ui_chmfile_new() {
 void chmsee_ui_chmfile_set_property(GObject* object,
 		guint property_id,
 		const GValue* value,
-		GParamSpec* pspec) {
-	ChmseeUiChmfile* self = CHMSEE_UI_CHMFILE(object);
+		GParamSpec* pspec)
+{
+  ChmseeUiChmfile* self = CHMSEE_UI_CHMFILE(object);
 
-	switch(property_id) {
-	case PROP_SIDEPANE_VISIBLE:
-		if(g_value_get_boolean(value)) {
-			gtk_widget_show(gtk_paned_get_child1(GTK_PANED(self)));
-		} else {
-			gtk_widget_hide(gtk_paned_get_child1(GTK_PANED(self)));
-		}
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  switch(property_id) {
+  case PROP_SIDEPANE_VISIBLE:
+    if(g_value_get_boolean(value)) {
+      gtk_widget_show(gtk_paned_get_child1(GTK_PANED(self)));
+    } else {
+      gtk_widget_hide(gtk_paned_get_child1(GTK_PANED(self)));
+    }
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    break;
+  }
 }
 void chmsee_ui_chmfile_get_property(GObject* object,
 		guint property_id,
 		GValue* value,
-		GParamSpec* pspec) {
-	ChmseeUiChmfile* self = CHMSEE_UI_CHMFILE(object);
+		GParamSpec* pspec)
+{
+  ChmseeUiChmfile* self = CHMSEE_UI_CHMFILE(object);
 
-	switch(property_id) {
-	case PROP_SIDEPANE_VISIBLE:
-		g_value_set_boolean(value, GTK_WIDGET_VISIBLE(gtk_paned_get_child1(GTK_PANED(self))));
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
+  switch(property_id) {
+  case PROP_SIDEPANE_VISIBLE:
+    g_value_set_boolean(value, GTK_WIDGET_VISIBLE(gtk_paned_get_child1(GTK_PANED(self))));
+    break;
+  case PROP_LINK_MESSAGE:
+    g_value_set_string(value, selfp->link_message);
+    break;
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    break;
+  }
 }

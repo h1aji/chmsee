@@ -138,7 +138,8 @@ static gboolean on_scroll_event(ChmSee* self, GdkEventScroll* event);
 
 static void on_ui_chmfile_model_changed(ChmSee* self, ChmseeIchmfile* chm_file);
 static void on_ui_chmfile_html_changed(ChmSee* self, ChmseeIhtml* html);
-
+static void on_ui_chmfile_html_link_message_notify(ChmSee* self, GParamSpec* pspec, ChmseeUiChmfile* ui_chmfile);
+                                                   
 static void chmsee_quit(ChmSee *);
 static void chmsee_open_uri(ChmSee *chmsee, const gchar *uri);
 static void chmsee_open_file(ChmSee *self, const gchar *filename);
@@ -816,6 +817,10 @@ populate_window(ChmSee *self)
                                  "html_changed",
                                  G_CALLBACK(on_ui_chmfile_html_changed),
                                  self);
+        g_signal_connect_swapped(ui_chmfile,
+                                 "notify::link-message",
+                                 G_CALLBACK(on_ui_chmfile_html_link_message_notify),
+                                 self);
 
         gtk_tool_button_set_icon_widget(
         		GTK_TOOL_BUTTON(gtk_ui_manager_get_widget(ui_manager, "/toolbar/sidepane")),
@@ -1343,4 +1348,14 @@ void on_ui_chmfile_html_changed(ChmSee* self, ChmseeIhtml* html) {
 
   gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Back"), back_state);
   gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Forward"), forward_state);
+}
+
+void on_ui_chmfile_html_link_message_notify(ChmSee* self, GParamSpec* pspec, ChmseeUiChmfile* ui_chmfile) {
+  gchar* link_message;
+  g_object_get(ui_chmfile,
+               "link-message", &link_message,
+               NULL);
+
+  update_status_bar(self, link_message);
+  g_free(link_message);
 }
