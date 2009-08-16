@@ -102,7 +102,6 @@ static void chmsee_dispose(GObject* self);
 static void chmsee_load_config(ChmSee *self);
 static void chmsee_save_config(ChmSee *self);
 static void chmsee_set_fullscreen(ChmSee* self, gboolean fullscreen);
-static void chmsee_set_context_menu_link(ChmSee* self, const gchar* link);
 
 static gboolean delete_cb(GtkWidget *, GdkEvent *, ChmSee *);
 static void destroy_cb(GtkWidget *, ChmSee *);
@@ -110,20 +109,12 @@ static gboolean on_configure_event(GtkWidget *, GdkEventConfigure *, ChmSee *);
 
 static void open_response_cb(GtkWidget *, gint, ChmSee *);
 static void about_response_cb(GtkDialog *, gint, gpointer);
-static void html_location_changed_cb(ChmseeIhtml *, const gchar *, ChmSee *);
-static gboolean html_open_uri_cb(ChmseeIhtml *, const gchar *, ChmSee *);
-static void html_title_changed_cb(ChmseeIhtml *, const gchar *, ChmSee *);
-static void html_context_normal_cb(ChmseeIhtml *, ChmSee *);
-static void html_context_link_cb(ChmseeIhtml *, const gchar *, ChmSee *);
-static void html_open_new_tab_cb(ChmseeIhtml *, const gchar *, ChmSee *);
-static void html_link_message_cb(ChmseeIhtml *, const gchar *, ChmSee *);
 static void show_sidepane(ChmSee* self);
 static void hide_sidepane(ChmSee* self);
 static void set_sidepane_state(ChmSee* self, gboolean state);
 
 static void on_keyboard_escape(GtkWidget*, ChmSee* self);
 static void on_open(GtkWidget *, ChmSee *);
-static void on_close_tab(GtkWidget *, ChmSee *);
 static void on_setup(GtkWidget *, ChmSee *);
 static void on_copy(GtkWidget *, ChmSee *);
 static void on_copy_page_location(GtkWidget*, ChmSee*);
@@ -146,6 +137,7 @@ static gboolean on_window_state_event(ChmSee* self, GdkEventWindowState* event);
 static gboolean on_scroll_event(ChmSee* self, GdkEventScroll* event);
 
 static void on_ui_chmfile_model_changed(ChmSee* self, ChmseeIchmfile* chm_file);
+static void on_ui_chmfile_html_changed(ChmSee* self, ChmseeIhtml* html);
 
 static void chmsee_quit(ChmSee *);
 static void chmsee_open_uri(ChmSee *chmsee, const gchar *uri);
@@ -154,10 +146,6 @@ static GtkWidget *get_widget(ChmSee *, gchar *);
 static void populate_window(ChmSee *);
 static void new_tab(ChmSee *, const gchar *);
 static ChmseeIhtml *get_active_html(ChmSee *);
-static void check_history(ChmSee *, ChmseeIhtml *);
-static void update_tab_title(ChmSee *, ChmseeIhtml *);
-static void tab_set_title(ChmSee *, ChmseeIhtml *, const gchar *);
-static void open_homepage(ChmSee *);
 static void reload_current_page(ChmSee *);
 static void update_status_bar(ChmSee *, const gchar *);
 static void
@@ -473,15 +461,6 @@ open_response_cb(GtkWidget *widget, gint response_id, ChmSee *chmsee)
         g_free(filename);
 }
 
-static void
-html_location_changed_cb(ChmseeIhtml *html, const gchar *location, ChmSee *chmsee)
-{
-        g_debug("html location changed cb: %s", location);
-
-        if (html == get_active_html(chmsee))
-                check_history(chmsee, html);
-}
-
 #if 0
 static gboolean
 html_open_uri_cb(ChmseeIhtml* html, const gchar *uri, ChmSee *self)
@@ -520,6 +499,7 @@ html_open_uri_cb(ChmseeIhtml* html, const gchar *uri, ChmSee *self)
 }
 #endif
 
+#if 0
 /* Popup html context menu */
 static void
 html_context_normal_cb(ChmseeIhtml *html, ChmSee *self)
@@ -542,12 +522,14 @@ html_context_link_cb(ChmseeIhtml *html, const gchar *link, ChmSee* self)
 			NULL, NULL, NULL, NULL, 0, GDK_CURRENT_TIME);
 
 }
-
+#endif
+#if 0
 static void
 html_link_message_cb(ChmseeIhtml *html, const gchar *url, ChmSee *chmsee)
 {
         update_status_bar(chmsee, url);
 }
+#endif
 
 /* Toolbar button events */
 
@@ -830,6 +812,10 @@ populate_window(ChmSee *self)
                                  "model_changed",
                                  G_CALLBACK(on_ui_chmfile_model_changed),
                                  self);
+        g_signal_connect_swapped(ui_chmfile,
+                                 "html_changed",
+                                 G_CALLBACK(on_ui_chmfile_html_changed),
+                                 self);
 
         gtk_tool_button_set_icon_widget(
         		GTK_TOOL_BUTTON(gtk_ui_manager_get_widget(ui_manager, "/toolbar/sidepane")),
@@ -926,19 +912,6 @@ static ChmseeIhtml *
 get_active_html(ChmSee *self)
 {
 	return chmsee_ui_chmfile_get_active_html(CHMSEE_UI_CHMFILE(selfp->ui_chmfile));
-}
-
-static void
-check_history(ChmSee *self, ChmseeIhtml *html)
-{
-	gboolean back_state, forward_state;
-
-	back_state = chmsee_ihtml_can_go_back(html);
-	forward_state = chmsee_ihtml_can_go_forward(html);
-
-
-	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Back"), back_state);
-	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Forward"), forward_state);
 }
 
 static void
@@ -1331,11 +1304,6 @@ gboolean chmsee_jump_index_by_name(ChmSee* self, const gchar* name) {
 	return chmsee_ui_chmfile_jump_index_by_name(CHMSEE_UI_CHMFILE(selfp->ui_chmfile), name);
 }
 
-static void chmsee_set_context_menu_link(ChmSee* self, const gchar* link) {
-	g_free(selfp->context_menu_link);
-	selfp->context_menu_link = g_strdup(link);
-}
-
 static void on_keyboard_escape(GtkWidget* widget, ChmSee* self) {
 	if(selfp->fullscreen) {
 		chmsee_set_fullscreen(self, FALSE);
@@ -1363,3 +1331,16 @@ void on_ui_chmfile_model_changed(ChmSee* self, ChmseeIchmfile* chm_file) {
 	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "ZoomOut"), has_model);
 	gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "ZoomReset"), has_model);
 }  
+
+void on_ui_chmfile_html_changed(ChmSee* self, ChmseeIhtml* html) {
+  gboolean back_state, forward_state;
+
+  g_debug("%s:%d:recieve html_changed signal from %p", __FILE__, __LINE__, html);
+
+  back_state = chmsee_ihtml_can_go_back(html);
+  forward_state = chmsee_ihtml_can_go_forward(html);
+
+
+  gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Back"), back_state);
+  gtk_action_set_sensitive(gtk_action_group_get_action(selfp->action_group, "Forward"), forward_state);
+}
