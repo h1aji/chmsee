@@ -27,8 +27,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __SETUP_H__
-#define __SETUP_H__
+#ifndef __CHMSEE_SETUP_H__
+#define __CHMSEE_SETUP_H__
 
 #include "chmsee.h"
 
