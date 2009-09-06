@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: chmsee\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-10 22:47+0800\n"
-"PO-Revision-Date: 2009-07-19 00:16+0100\n"
-"Last-Translator: Eckhard M. jäger <bart@neeneenee.de>\n"
+"POT-Creation-Date: 2009-07-14 21:48+0800\n"
+"PO-Revision-Date: 2009-07-28 15:41+0000\n"
+"Last-Translator: Moritz Baumann <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-07-04 04:44+0000\n"
+"X-Launchpad-Export-Date: 2009-09-06 10:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../data/chmsee.glade.h:1
@@ -47,15 +47,17 @@ msgstr "Zurück"
 
 #: ../data/chmsee.glade.h:8
 msgid ""
-"CHM files extracted in this cache folder, you can press Clear button to free disk space.\n"
+"CHM files extracted in this cache folder, you can press Clear button to free "
+"disk space.\n"
 "\n"
 "NOTE: If you are viewing a CHM file, you need reopen it after cleaning."
 msgstr ""
-"Die CHM-Dateien wurden in den Cache-Ordner extrahiert, Sie können den \"Löschen\"-Knopf drücken um Speicherplatz zu sparen\n"
-" Hinweis: Wenn Sie gerade eine CHM-Datei betrachten müssen Sie diese danach noch einmal öffnen."
+"Die CHM-Dateien wurden in den Cache-Ordner extrahiert, Sie können den "
+"\"Löschen\"-Knopf drücken um Speicherplatz zu sparen\n"
+" Hinweis: Wenn Sie gerade eine CHM-Datei betrachten müssen Sie diese danach "
+"noch einmal öffnen."
 
-#: ../data/chmsee.glade.h:11
-#: ../data/chmsee.desktop.in.h:1
+#: ../data/chmsee.glade.h:11 ../data/chmsee.desktop.in.h:1
 msgid "ChmSee"
 msgstr "ChmSee"
 
@@ -66,6 +68,10 @@ msgstr "Adresse der Seite kopieren"
 #: ../data/chmsee.glade.h:13
 msgid "Fixed Width:"
 msgstr "Dicktengleich:"
+
+#: ../data/chmsee.glade.h:14
+msgid "Forward"
+msgstr "Weiter"
 
 #: ../data/chmsee.glade.h:15
 msgid "Home"
@@ -99,6 +105,10 @@ msgstr "Einstellungen"
 msgid "Show/Hide Panel"
 msgstr "Seitenleiste anzeigen/verbergen"
 
+#: ../data/chmsee.glade.h:23
+msgid "Side _Pane"
+msgstr "Seitenleiste"
+
 #: ../data/chmsee.glade.h:24
 msgid "The HTML Help(CHM) viewer for Unix/Linux"
 msgstr "Der HTML-Hilfe(CHM) Betrachter für Unix/Linux"
@@ -107,19 +117,12 @@ msgstr "Der HTML-Hilfe(CHM) Betrachter für Unix/Linux"
 msgid ""
 "Universal\n"
 "Simplified Chinese\n"
-"Tradtional Chinese\n"
+"Traditional Chinese\n"
 "Japanese\n"
 "Korean\n"
 "Russian\n"
-"Ukrainain"
+"Ukrainian"
 msgstr ""
-"Universell\n"
-"Vereinfachtes Chinesisch\n"
-"Tradtionelles Chinesisch\n"
-"Japanisch\n"
-"Koreanisch\n"
-"Russisch\n"
-"Ukrainainisch"
 
 #: ../data/chmsee.glade.h:32
 msgid "Variable Width:"
@@ -157,6 +160,14 @@ msgstr "_Bearbeiten"
 msgid "_File"
 msgstr "_Datei"
 
+#: ../data/chmsee.glade.h:41
+msgid "_Forward"
+msgstr "Weiter"
+
+#: ../data/chmsee.glade.h:42
+msgid "_Full Screen"
+msgstr "Vollbild"
+
 #: ../data/chmsee.glade.h:43
 msgid "_Help"
 msgstr "_Hilfe"
@@ -176,111 +187,122 @@ msgstr "http://code.google.com/p/chmsee"
 #. TRANSLATORS: Replace this string with your names, one name per line.
 #: ../data/chmsee.glade.h:48
 msgid "translator-credits"
-msgstr "Überstzungen von"
+msgstr ""
+"Überstzungen von\n"
+"\n"
+"Launchpad Contributions:\n"
+"  Bart https://launchpad.net/~bart-neeneenee\n"
+"  Moritz Baumann https://launchpad.net/~mo-germany"
 
 #: ../data/chmsee.desktop.in.h:2
 msgid "HTML Help(CHM) viewer"
-msgstr "HTML-Hilfe(CHM) Betrachter"
+msgstr "HTML-Hilfe(CHM)-Betrachter"
 
-#: ../src/chmsee.c:610
+#: ../src/chmsee.c:506
+#, c-format
+msgid "URI redirect: \"%s\" -> \"%s\""
+msgstr "URI-Weiterleitung: »%s« -> »%s«"
+
+#: ../src/chmsee.c:671
 msgid "CHM Files"
 msgstr "CHM-Dateien"
 
-#: ../src/chmsee.c:615
+#: ../src/chmsee.c:676
 msgid "All Files"
 msgstr "Alle Dateien"
 
-#: ../src/chmsee.c:1135
+#: ../src/chmsee.c:1196
 msgid "Ready!"
 msgstr "Fertig!"
 
-#: ../src/chmsee.c:1191
+#: ../src/chmsee.c:1253
 msgid "Topics"
 msgstr "Inhalt"
 
-#: ../src/chmsee.c:1208
+#: ../src/chmsee.c:1267
+msgid "Index"
+msgstr ""
+
+#: ../src/chmsee.c:1276
 msgid "Bookmarks"
 msgstr "Lesezeichen"
 
 #. Custom label widget, with a close button
-#: ../src/chmsee.c:1370
-#: ../src/chmsee.c:1545
+#: ../src/chmsee.c:1440 ../src/chmsee.c:1615
 msgid "No Title"
 msgstr "Unbenannt"
 
-#: ../src/chmsee.c:1649
+#: ../src/chmsee.c:1719
 #, c-format
 msgid "Error loading file '%s'"
 msgstr "Fehler beim Laden der Datei '%s'"
 
-#: ../src/models/chmfile.c:239
+#: ../src/models/chmfile.c:253
 #, c-format
 msgid "cannot open chmfile: %s"
 msgstr "Die CHM-Datei %s kann nicht geöffnet werden."
 
-#: ../src/models/chmfile.c:246
+#: ../src/models/chmfile.c:260
 #, c-format
 msgid "Extract chmfile failed: %s"
 msgstr "Extrahieren der CHM-Datei %s ist gescheitert."
 
-#: ../src/models/chmfile.c:272
+#: ../src/models/chmfile.c:286
 #, c-format
 msgid "open \"%s\" failed: %s"
 msgstr "\"%s\" zu öffnen ist gescheitert: %s"
+
+#: ../src/models/chmfile.c:336
+#, c-format
+msgid "Can not open chm file %s."
+msgstr "Die CHM-Datei %s kann nicht geöffnet werden."
+
+#: ../src/models/chmfile.c:594
+msgid "Can't found hhc file."
+msgstr "Die hhc-Datei wurde nicht gefunden."
 
 #: ../src/ui_bookmarks.c:315
 msgid "Bookmark"
 msgstr "Lesezeichen"
 
-#: ../src/main.cpp:88
+#: ../src/main.cpp:107
 msgid "Display the version and exit"
 msgstr "Die Version anzeigen und beenden"
 
-#: ../src/main.cpp:135
+#: ../src/main.cpp:112
+msgid "be verbose, repeat 3 times to get all info"
+msgstr ""
+"ausführliche Anzeige, 3 mal wiederholen um alle Informationen zu erhalten"
+
+#: ../src/main.cpp:117
+msgid "be quiet, repeat 2 times to disable all info"
+msgstr ""
+"dezente Anzeige, 2 mal wiederholen um alle Informationen zu unterdrücken"
+
+#: ../src/main.cpp:154
 #, c-format
 msgid "more than 1 argument\n"
 msgstr "Mehr als 1 Argument erhalten\n"
 
-#: ../data/chmsee.glade.h:14
-msgid "Forward"
-msgstr "Weiter"
-
-#: ../data/chmsee.glade.h:23
-msgid "Side _Pane"
-msgstr "Seitenleiste"
-
-#: ../data/chmsee.glade.h:41
-msgid "_Forward"
-msgstr "Weiter"
-
-#: ../data/chmsee.glade.h:42
-msgid "_Full Screen"
-msgstr "Vollbild"
-
-#: ../src/chmsee.c:449
-#, c-format
-msgid "URI redirect: \"%s\" -> \"%s\""
-msgstr "URI-Weiterleitung: \"%s\" -> \"%s\""
-
-#: ../src/models/chmfile.c:322
-#, c-format
-msgid "Can not open chm file %s."
-msgstr "Die CHM-Datei %s kann nicht geöffnet werden."
-
-#: ../src/models/chmfile.c:580
-msgid "Can't found hhc file."
-msgstr "Die hhc-Datei wurde nicht gefunden."
-
-#: ../src/main.cpp:93
-msgid "be verbose, repeat 3 times to get all info"
-msgstr "ausführliche Anzeige, 3 mal wiederholen um alle Informationen zu erhalten"
-
-#: ../src/main.cpp:98
-msgid "be quiet, repeat 2 times to disable all info"
-msgstr "dezente Anzeige, 2 mal wiederholen um alle Informationen zu unterdrücken"
+#~ msgid ""
+#~ "Universal\n"
+#~ "Simplified Chinese\n"
+#~ "Tradtional Chinese\n"
+#~ "Japanese\n"
+#~ "Korean\n"
+#~ "Russian\n"
+#~ "Ukrainain"
+#~ msgstr ""
+#~ "Universell\n"
+#~ "Vereinfachtes Chinesisch\n"
+#~ "Tradtionelles Chinesisch\n"
+#~ "Japanisch\n"
+#~ "Koreanisch\n"
+#~ "Russisch\n"
+#~ "Ukrainainisch"
 
 #~ msgid "_Home"
 #~ msgstr "_Home"
+
 #~ msgid "_Setup"
 #~ msgstr "_Setup"
-

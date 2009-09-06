@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ChmSee 1.0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-10 22:47+0800\n"
-"PO-Revision-Date: 2009-06-03 13:28+0000\n"
-"Last-Translator: zhangmiao <mymzhang@gmail.com>\n"
+"POT-Creation-Date: 2009-07-14 21:48+0800\n"
+"PO-Revision-Date: 2009-08-27 03:19+0000\n"
+"Last-Translator: Careone <zzbusagain@yahoo.com.cn>\n"
 "Language-Team: szlug <szlug@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-07-04 04:44+0000\n"
+"X-Launchpad-Export-Date: 2009-09-06 10:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../data/chmsee.glade.h:1
@@ -104,6 +104,10 @@ msgstr "设置"
 msgid "Show/Hide Panel"
 msgstr "显示/隐藏导航栏"
 
+#: ../data/chmsee.glade.h:23
+msgid "Side _Pane"
+msgstr "侧边栏(_P)"
+
 #: ../data/chmsee.glade.h:24
 msgid "The HTML Help(CHM) viewer for Unix/Linux"
 msgstr "Unix/Linux 下的 HTML Help(CHM) 阅读工具"
@@ -112,19 +116,20 @@ msgstr "Unix/Linux 下的 HTML Help(CHM) 阅读工具"
 msgid ""
 "Universal\n"
 "Simplified Chinese\n"
-"Tradtional Chinese\n"
+"Traditional Chinese\n"
 "Japanese\n"
 "Korean\n"
 "Russian\n"
-"Ukrainain"
+"Ukrainian"
 msgstr ""
-"自动选择\n"
-"简体中文\n"
-"繁体中文\n"
-"日语\n"
-"朝鲜语\n"
-"俄语\n"
-"乌克兰语"
+"Copy text   \t\n"
+"Universal (通用)\n"
+"Simplified Chinese (简体中文)\n"
+"Traditional Chinese (繁体中文)\n"
+"Japanese (日语)\n"
+"Korean (朝鲜语)\n"
+"Russian (俄语)\n"
+"Ukrainian (乌克兰语)"
 
 #: ../data/chmsee.glade.h:32
 msgid "Variable Width:"
@@ -166,6 +171,10 @@ msgstr "文件(_F)"
 msgid "_Forward"
 msgstr "前进(_F)"
 
+#: ../data/chmsee.glade.h:42
+msgid "_Full Screen"
+msgstr "全屏(_F)"
+
 #: ../data/chmsee.glade.h:43
 msgid "_Help"
 msgstr "帮助(_H)"
@@ -189,6 +198,7 @@ msgstr ""
 "翻译人员\n"
 "\n"
 "Launchpad Contributions:\n"
+"  Careone https://launchpad.net/~zzbusagain\n"
 "  Ji YongGang https://launchpad.net/~jungle-soforge-studio\n"
 "  LI Daobing https://launchpad.net/~lidaobing\n"
 "  zhangmiao https://launchpad.net/~mymzhang"
@@ -197,62 +207,66 @@ msgstr ""
 msgid "HTML Help(CHM) viewer"
 msgstr "HTML Help(CHM) 文件阅读工具"
 
-#: ../src/chmsee.c:449
+#: ../src/chmsee.c:506
 #, c-format
 msgid "URI redirect: \"%s\" -> \"%s\""
 msgstr "URI 重定向: \"%s\" -> \"%s\""
 
-#: ../src/chmsee.c:610
+#: ../src/chmsee.c:671
 msgid "CHM Files"
 msgstr "CHM 文件"
 
-#: ../src/chmsee.c:615
+#: ../src/chmsee.c:676
 msgid "All Files"
 msgstr "所有文件"
 
-#: ../src/chmsee.c:1135
+#: ../src/chmsee.c:1196
 msgid "Ready!"
 msgstr "就绪！"
 
-#: ../src/chmsee.c:1191
+#: ../src/chmsee.c:1253
 msgid "Topics"
 msgstr "目录"
 
-#: ../src/chmsee.c:1208
+#: ../src/chmsee.c:1267
+msgid "Index"
+msgstr "索引"
+
+#: ../src/chmsee.c:1276
 msgid "Bookmarks"
 msgstr "书签"
 
 #. Custom label widget, with a close button
-#: ../src/chmsee.c:1370 ../src/chmsee.c:1545
+#: ../src/chmsee.c:1440 ../src/chmsee.c:1615
 msgid "No Title"
 msgstr "无标题"
 
-#: ../src/chmsee.c:1649
+#: ../src/chmsee.c:1719
 #, c-format
 msgid "Error loading file '%s'"
 msgstr "打开文件错误 '%s'"
 
-#: ../src/models/chmfile.c:239
+#: ../src/models/chmfile.c:253
 #, c-format
 msgid "cannot open chmfile: %s"
 msgstr "无法打开 chmfile: %s"
 
-#: ../src/models/chmfile.c:246
+#: ../src/models/chmfile.c:260
 #, c-format
 msgid "Extract chmfile failed: %s"
 msgstr "解包 chmfile 失败: %s"
 
-#: ../src/models/chmfile.c:272
+#: ../src/models/chmfile.c:286
 #, c-format
 msgid "open \"%s\" failed: %s"
 msgstr "打开 \"%s\" 失败: %s"
 
-#: ../src/models/chmfile.c:322
+#: ../src/models/chmfile.c:336
 #, c-format
 msgid "Can not open chm file %s."
 msgstr "无法打开 chm 文件 %s。"
 
-#: ../src/models/chmfile.c:580
+#: ../src/models/chmfile.c:594
 msgid "Can't found hhc file."
 msgstr "无法找到 hhc 文件。"
 
@@ -260,33 +274,42 @@ msgstr "无法找到 hhc 文件。"
 msgid "Bookmark"
 msgstr "书签"
 
-#: ../src/main.cpp:88
+#: ../src/main.cpp:107
 msgid "Display the version and exit"
 msgstr "显示版本并退出"
 
-#: ../src/main.cpp:135
+#: ../src/main.cpp:112
+msgid "be verbose, repeat 3 times to get all info"
+msgstr "详细，重复 3 次获得全部信息"
+
+#: ../src/main.cpp:117
+msgid "be quiet, repeat 2 times to disable all info"
+msgstr "安静，重复 2 次关闭全部信息"
+
+#: ../src/main.cpp:154
 #, c-format
 msgid "more than 1 argument\n"
 msgstr "超过 1 个参数\n"
+
+#~ msgid ""
+#~ "Universal\n"
+#~ "Simplified Chinese\n"
+#~ "Tradtional Chinese\n"
+#~ "Japanese\n"
+#~ "Korean\n"
+#~ "Russian\n"
+#~ "Ukrainain"
+#~ msgstr ""
+#~ "自动选择\n"
+#~ "简体中文\n"
+#~ "繁体中文\n"
+#~ "日语\n"
+#~ "朝鲜语\n"
+#~ "俄语\n"
+#~ "乌克兰语"
 
 #~ msgid "_Home"
 #~ msgstr "首页(_H)"
 
 #~ msgid "_Setup"
 #~ msgstr "设置(_S)"
-
-#: ../data/chmsee.glade.h:23
-msgid "Side _Pane"
-msgstr "侧边栏(_P)"
-
-#: ../data/chmsee.glade.h:42
-msgid "_Full Screen"
-msgstr "全屏(_F)"
-
-#: ../src/main.cpp:93
-msgid "be verbose, repeat 3 times to get all info"
-msgstr "详细，重复 3 次获得全部信息"
-
-#: ../src/main.cpp:98
-msgid "be quiet, repeat 2 times to disable all info"
-msgstr "安静，重复 2 次关闭全部信息"
