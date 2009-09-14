@@ -1,10 +1,18 @@
-ChmSee X.X.X
-------------
+ChmSee 1.0.7 2009-09-14
+-----------------------
 
 Features
 ~~~~~~~~
 
 * issue 47: jump to specify index page from command line.
+
+Bugs
+~~~~
+
+* issue 43: honor GTK toolbar settings
+* issue 44: support xulrunner 1.9.1.
+* issue 46: fix compile error (on some system, the xulrunner develop package
+  does not depends on nspr develop package)
 * issue 48: support xulrunner 1.8 again.
 
 l10n
