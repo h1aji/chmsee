@@ -180,15 +180,15 @@ static const GtkRadioActionEntry radio_entries[] = {
 static const char *ui_description =
 		"<ui>"
 		" <popup name='HtmlContextLink'>"
-		"   <menuitem action='OpenLinkInNewTab' name='OpenLinkInNewTab'/>"
 		"   <menuitem action='CopyLinkLocation'/>"
+		"   <menuitem action='OpenLinkInNewTab' name='OpenLinkInNewTab'/>"
 		" </popup>"
 		" <popup name='HtmlContextNormal'>"
+		"   <menuitem action='CopyPageLocation'/>"
 		"   <menuitem action='Back'/>"
 		"   <menuitem action='Forward'/>"
 		"   <menuitem action='Copy'/>"
 		"   <menuitem action='SelectAll'/>"
-		"   <menuitem action='CopyPageLocation'/>"
 		" </popup>"
 		"<accelerator action='OnKeyboardControlEqual'/>"
 		"</ui>";
