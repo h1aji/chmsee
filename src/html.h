@@ -17,8 +17,8 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#ifndef __HTML_H__
-#define __HTML_H__
+#ifndef __CHMSEE_HTML_H__
+#define __CHMSEE_HTML_H__
 
 #include <glib-object.h>
 #include <gtk/gtk.h>

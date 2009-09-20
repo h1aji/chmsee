@@ -27,8 +27,8 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __STARTUP_H__
-#define __STARTUP_H__
+#ifndef __CHMSEE_STARTUP_H__
+#define __CHMSEE_STARTUP_H__
 
 #include <glib.h>
 

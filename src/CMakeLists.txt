@@ -51,7 +51,7 @@ target_link_libraries(chmseelib
   ${CHMSEE_LIBRARIES}
   )
 
-add_executable(chmsee main.cpp)
+add_executable(chmsee main.c)
 target_link_libraries(chmsee
   chmseelib
   )

@@ -17,8 +17,8 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#ifndef _CHMSEE_UI_INDEX_H_
-#define _CHMSEE_UI_INDEX_H_
+#ifndef __CHMSEE_UI_INDEX_H__
+#define __CHMSEE_UI_INDEX_H__
 
 #include <gtk/gtk.h>
 

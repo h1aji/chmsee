@@ -17,8 +17,8 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#ifndef __LINK_H__ 
-#define __LINK_H__ 
+#ifndef __CHMSEE_LINK_H__
+#define __CHMSEE_LINK_H__
 
 #include <glib.h>
 

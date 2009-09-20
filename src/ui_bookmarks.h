@@ -17,8 +17,8 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#ifndef __UI_BOOKMARKS_H__
-#define __UI_BOOKMARKS_H__
+#ifndef __CHMSEE_UI_BOOKMARKS_H__
+#define __CHMSEE_UI_BOOKMARKS_H__
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
