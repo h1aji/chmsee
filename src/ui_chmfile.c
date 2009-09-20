@@ -272,10 +272,7 @@ chmsee_ui_chmfile_init(ChmseeUiChmfile* self)
 
     /* Init gecko */
     chmsee_html_init_system();
-    chmsee_html_set_default_lang(selfp->lang);
-
     chmsee_ui_chmfile_populate_window(self);
-
 }
 
 static void
