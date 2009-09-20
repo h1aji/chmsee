@@ -129,6 +129,8 @@ static void chmsee_ui_chmfile_get_property(GObject* self,
 		GValue* value,
 		GParamSpec* pspec);
 
+static void chmsee_ui_chmfile_html_changed(ChmseeUiChmfile* self, ChmseeIhtml* html);
+
 static void chmsee_set_context_menu_link(ChmseeUiChmfile* self, const gchar* link);
 
 static void chmsee_refresh_index(ChmseeUiChmfile* self);
@@ -383,14 +385,14 @@ on_html_notebook_switch_page(GtkNotebook *notebook, GtkNotebookPage *page, guint
   } else {
     gtk_window_set_title(GTK_WINDOW (self), "ChmseeUiChmfile");
   }
-  g_signal_emit(self, signals[HTML_CHANGED], 0, chmsee_ui_chmfile_get_active_html(self));
+  chmsee_ui_chmfile_html_changed(self, chmsee_ui_chmfile_get_active_html(self));
 }
 
 static void
 on_html_location_changed(ChmseeIhtml *html, const gchar *location, ChmseeUiChmfile* self)
 {
-  g_debug("%s:%d:html location changed cb: %s", __FILE__, __LINE__, location);
-  g_signal_emit(self, signals[HTML_CHANGED], 0, chmsee_ui_chmfile_get_active_html(self));
+	g_debug("%s:%d:html location changed cb: %s", __FILE__, __LINE__, location);
+	chmsee_ui_chmfile_html_changed(self, chmsee_ui_chmfile_get_active_html(self));
 }
 
 static gboolean
@@ -1168,3 +1170,17 @@ void chmsee_ui_chmfile_get_property(GObject* object,
     break;
   }
 }
+
+void chmsee_ui_chmfile_html_changed(ChmseeUiChmfile* self, ChmseeIhtml* html)
+{
+	gtk_action_set_sensitive(
+			gtk_action_group_get_action(selfp->action_group, "Back"),
+			chmsee_ihtml_can_go_back(html)
+			);
+	gtk_action_set_sensitive(
+			gtk_action_group_get_action(selfp->action_group, "Forward"),
+			chmsee_ihtml_can_go_forward(html)
+			);
+	g_signal_emit(self, signals[HTML_CHANGED], 0, html);
+}
+
