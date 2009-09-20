@@ -1,3 +1,11 @@
+ChmSee 1.1.0 XXXX-XX-XX
+-----------------------
+
+Features
+~~~~~~~~
+
+* issue 50: switch from xulrunner to webkit. (thanks patches from cjacker)
+
 ChmSee 1.0.7 2009-09-14
 -----------------------
 

@@ -28,8 +28,8 @@
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/chmsee/src}&quot;"/>
 <listOptionValue builtIn="false" value="/usr/include/libglade-2.0"/>
 <listOptionValue builtIn="false" value="/usr/include/gtk-2.0"/>
-<listOptionValue builtIn="false" value="/usr/include/xulrunner-1.9.0.8/unstable"/>
 <listOptionValue builtIn="false" value="/usr/include/libxml2"/>
+<listOptionValue builtIn="false" value="/usr/include/webkit-1.0"/>
 </option>
 <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1566535710" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 </tool>
@@ -46,8 +46,8 @@
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/chmsee/src}&quot;"/>
 <listOptionValue builtIn="false" value="/usr/include/libglade-2.0"/>
 <listOptionValue builtIn="false" value="/usr/include/gtk-2.0"/>
-<listOptionValue builtIn="false" value="/usr/include/xulrunner-1.9.0.8/unstable"/>
 <listOptionValue builtIn="false" value="/usr/include/libxml2"/>
+<listOptionValue builtIn="false" value="/usr/include/webkit-1.0"/>
 </option>
 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.2060702548" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 </tool>

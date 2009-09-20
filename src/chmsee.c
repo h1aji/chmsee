@@ -1172,6 +1172,7 @@ const gchar* chmsee_get_variable_font(ChmSee* self) {
 
 void chmsee_set_variable_font(ChmSee* self, const gchar* font_name) {
 	g_return_if_fail(selfp->book);
+    chmsee_ihtml_set_variable_font(get_active_html(self),font_name);
     chmsee_ichmfile_set_variable_font(selfp->book, font_name);
 }
 
@@ -1182,6 +1183,7 @@ const gchar* chmsee_get_fixed_font(ChmSee* self) {
 
 void chmsee_set_fixed_font(ChmSee* self, const gchar* font_name) {
 	g_return_if_fail(selfp->book);
+    chmsee_ihtml_set_fixed_font(get_active_html(self),font_name);
     chmsee_ichmfile_set_fixed_font(selfp->book, font_name);
 }
 

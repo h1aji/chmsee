@@ -22,7 +22,7 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
-#include <gtkmozembed.h>
+#include <webkit/webkit.h>
 
 #define TYPE_HTML \
         (html_get_type())
@@ -40,7 +40,8 @@ typedef struct _HtmlClass   HtmlClass;
 
 struct _Html {
         GObject parent;
-        GtkMozEmbed *gecko;
+        WebKitWebView *webview;
+		GtkWidget *scrolled;
 };
 
 struct _HtmlClass {
