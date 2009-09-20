@@ -28,6 +28,8 @@
 
 static void html_class_init(HtmlClass *);
 static void html_init(Html *);
+static void html_location_changed(Html* self);
+
 
 static gboolean webkit_web_view_mouse_click_cb(WebKitWebView *, gpointer, Html *);
 
@@ -170,12 +172,12 @@ static void
 webkit_web_view_title_changed_cb (WebKitWebView*  web_view,
                                   WebKitWebFrame* web_frame,
                                   const gchar*    title,
-                                  Html*     html)
+                                  Html*     self)
 {
 	const gchar *uri;
 	uri = webkit_web_frame_get_uri(web_frame);
-	g_signal_emit(html, signals[TITLE_CHANGED], 0, g_strdup(title));
-	g_signal_emit(html, signals[LOCATION_CHANGED], 0,g_strdup(uri) );
+	g_signal_emit(self, signals[TITLE_CHANGED], 0, g_strdup(title));
+	html_location_changed(self);
 }
 
 static void
@@ -312,17 +314,19 @@ html_can_go_back(Html *html)
 }
 
 void
-html_go_forward(Html *html)
+html_go_forward(Html* self)
 {
-        g_return_if_fail(IS_HTML (html));
-        webkit_web_view_go_forward(html->webview);
+        g_return_if_fail(IS_HTML (self));
+        webkit_web_view_go_forward(self->webview);
+    	html_location_changed(self);
 }
 
 void
-html_go_back(Html *html)
+html_go_back(Html * self)
 {
-        g_return_if_fail(IS_HTML (html));
-        webkit_web_view_go_back(html->webview);
+	g_return_if_fail(IS_HTML (self));
+	webkit_web_view_go_back(self->webview);
+	html_location_changed(self);
 }
 
 gchar *
@@ -512,4 +516,10 @@ void chmsee_ihtml_interface_init (ChmseeIhtmlInterface *iface) {
 
   iface->clear = html_clear;
   iface->shutdown = html_shutdown;
+}
+
+static void html_location_changed(Html* self) {
+	gchar* uri = g_strdup(webkit_web_view_get_uri(self->webview));
+	g_signal_emit(self, signals[LOCATION_CHANGED], 0, uri);
+	g_free(uri);
 }
