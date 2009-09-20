@@ -51,6 +51,7 @@ struct _ChmseeIhtmlInterface
   void (*reset_size) (ChmseeIhtml* self);
   void (*set_variable_font) (ChmseeIhtml* self, const gchar* font);
   void (*set_fixed_font) (ChmseeIhtml* self, const gchar* font);
+  void (*set_lang) (ChmseeIhtml* self, gint langindex);
   void (*clear) (ChmseeIhtml* self);
   void (*shutdown) (ChmseeIhtml* self);
 
@@ -75,6 +76,7 @@ void chmsee_ihtml_decrease_size(ChmseeIhtml* self);
 void chmsee_ihtml_shutdown(ChmseeIhtml* self);
 void chmsee_ihtml_set_variable_font(ChmseeIhtml* self, const gchar* font);
 void chmsee_ihtml_set_fixed_font(ChmseeIhtml* self, const gchar* font);
+void chmsee_ihtml_set_lang(ChmseeIhtml* self, gint langindex);
 void chmsee_ihtml_clear(ChmseeIhtml* self);
 GtkWidget* chmsee_ihtml_get_widget(ChmseeIhtml* self);
 

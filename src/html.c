@@ -394,8 +394,8 @@ html_increase_size(Html *html)
 void
 html_reset_size(Html *html)
 {
-        g_return_if_fail(IS_HTML (html));
-		webkit_web_view_set_zoom_level(html->webview,1.0);
+	g_return_if_fail(IS_HTML (html));
+	webkit_web_view_set_zoom_level(html->webview,1.0);
 }
 
 void
@@ -419,21 +419,22 @@ void html_init_system(void) {
 }
 
 static const gchar *encoding_list[] = {
-        "UTF-8",
+        "AUTO",
         "GBK",
-        "Big5",
+        "BIG5",
         "EUC-JP",
         "EUC-KR",
         "KOI8-R",
         "ISO-8859-5"
 };
 
-void html_set_default_lang(gint lang_index) {
-    /*WebKitWebSettings *settings;
-    settings = webkit_web_view_get_settings (WEBKIT_WEB_VIEW (html->webview));
-    g_object_set (settings,
-            "default-encoding", encoding_list[lang_index],
-            NULL);*/
+void html_set_default_lang(Html *html, gint lang_index) {
+	fprintf(stderr,"%s %s\n",__func__, encoding_list[lang_index]);
+	if(lang_index==0) //auto
+		g_object_set(html->webview,"custom-encoding",NULL,NULL);
+	else
+		g_object_set(html->webview,"custom-encoding",encoding_list[lang_index],NULL);
+
 }
 
 
@@ -466,6 +467,7 @@ split_font_string(const gchar *font_name, gchar **name, gint *size)
 }
 
 void html_set_variable_font(Html* html, const gchar* font) {
+
     gint size;
     gchar *name;
     split_font_string(font,&name,&size);
@@ -506,6 +508,8 @@ void chmsee_ihtml_interface_init (ChmseeIhtmlInterface *iface) {
   iface->select_all = html_select_all;
   iface->set_variable_font = html_set_variable_font;
   iface->set_fixed_font = html_set_fixed_font;
+  iface->set_lang = html_set_default_lang;
+
   iface->clear = html_clear;
   iface->shutdown = html_shutdown;
 }

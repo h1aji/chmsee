@@ -78,6 +78,6 @@ void html_shutdown(Html*);
 void html_set_variable_font(Html*, const gchar*);
 void html_set_fixed_font(Html*, const gchar*);
 void html_init_system(void);
-void html_set_default_lang(gint);
+void html_set_default_lang(Html*, gint);
 
 #endif /* !__HTML_H__ */

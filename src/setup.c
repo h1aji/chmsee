@@ -89,6 +89,8 @@ cmb_lang_changed_cb(GtkWidget *widget, ChmSee *chmsee)
 	index = gtk_combo_box_get_active(combobox);
 
 	if (index >= 0) {
+
+		fprintf(stderr,"%s %d\n",__func__,index);
 		g_debug("select lang: %d", index);
 		//gecko_utils_set_default_lang(index);
 		chmsee_set_lang(chmsee, index);

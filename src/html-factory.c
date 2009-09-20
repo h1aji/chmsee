@@ -30,9 +30,4 @@ void chmsee_html_init_system() {
   html_init_system();
 }
 
-void chmsee_html_set_default_lang(int lang) {
-  html_set_default_lang(lang);
-}
-
-
 

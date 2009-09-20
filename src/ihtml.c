@@ -134,6 +134,12 @@ void chmsee_ihtml_set_fixed_font(ChmseeIhtml* self, const gchar* font) {
   CHMSEE_IHTML_GET_INTERFACE (self)->set_fixed_font(self, font);
 
 }
+
+void chmsee_ihtml_set_lang(ChmseeIhtml* self, gint langindex) {
+  g_return_if_fail (CHMSEE_IS_IHTML(self));
+  CHMSEE_IHTML_GET_INTERFACE (self)->set_lang(self, langindex);
+}
+
 void chmsee_ihtml_clear(ChmseeIhtml* self)
   {
   g_return_if_fail (CHMSEE_IS_IHTML(self));

@@ -349,7 +349,7 @@ chmsee_init(ChmSee* self)
 
     /* Init gecko */
     chmsee_html_init_system();
-    chmsee_html_set_default_lang(selfp->lang);
+    //chmsee_html_set_default_lang(selfp->lang);
 
     populate_window(self);
     chmsee_load_config(self);
@@ -1192,6 +1192,7 @@ int chmsee_get_lang(ChmSee* self) {
 }
 void chmsee_set_lang(ChmSee* self, int lang) {
 	selfp->lang = lang;
+    chmsee_ihtml_set_lang(get_active_html(self),lang);
 }
 
 gboolean chmsee_has_book(ChmSee* self) {
