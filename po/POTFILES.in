@@ -1,26 +1,21 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/chmsee.glade
+[type: gettext/glade]data/about-dialog.ui
 data/chmsee.desktop.in
-src/booktree.c
+[type: gettext/glade]data/openfile-dialog.ui
+[type: gettext/glade]data/setup-window.ui
 src/chmsee.c
-src/html.c
-src/html-factory.c
-src/ihtml.c
-src/marshal.c
-src/marshal_main.c
+src/main.c
 src/setup.c
-src/startup.c
-src/ui_bookmarks.c
-src/ui_chmfile.c
-src/ui_index.c
-src/gecko_utils.cpp
-src/main.cpp
-src/models/bookmarks.c
+src/utils.c
+src/components/book.c
+src/components/bookmarks.c
+src/components/gecko-utils.cpp
+src/components/html-gecko.c
+src/components/index.c
+src/components/toc.c
+src/components/treeview.c
+src/models/bookmarksfile.c
 src/models/chmfile.c
-src/models/chmfile-factory.c
-src/models/chmindex.c
-src/models/hhc.c
-src/models/ichmfile.c
 src/models/link.c
-src/utils/utils.c
+src/models/parser.c

@@ -1,10 +1,41 @@
-ChmSee 1.1.0 XXXX-XX-XX
+Chmsee 1.4.0 2015-01-28
 -----------------------
+* Webkit port. Switch from xulrunner to webkit
 
-Features
-~~~~~~~~
+ChmSee 1.3.1 2011-05-03
+-----------------------
+* Update Vietnamese po
+* Fix a bug cause of opening an unextracted chm with subpage failure
+* Change Gecko version to support xulrunner 2.0.1
 
-* issue 50: switch from xulrunner to webkit. (thanks patches from cjacker)
+ChmSee 1.3.0 2011-01-16
+-----------------------
+* Use XDG Base Directory Specification for config and bookshelf cache
+* Starup splash screen removed
+* Add global font setting
+* Fix a bug which get homepage from #STRINGS
+* Change Prev&Next page hotkey from Alt to Control
+* Fix filter bug in cs_tree_view
+* Remove extracting progressbar
+
+ChmSee 1.2.0 2010-07-23
+-----------------------
+* Add previous and next page function
+* Improve language charset setting
+* Open specified page in file.chm::page.html format
+* Display progress bar during file extraction
+* Fix hhk keyword parse problem
+* Fix filename case insensitive checking bug
+* Need gtk+ >= 2.20 for gecko multi-threads compatible
+
+ChmSee 1.1.0 2010-04-12
+-----------------------
+* Only support Gecko > 1.9 (Firefox3)
+* Need gtk+ >= 2.16 (for using gtkbuilder and g_uri functions)
+* Add index page filter string (Thanks Mingxi Wu)
+* Add page find function
+* Add Recent Files feature
+* Add loading last file at starup option
 
 ChmSee 1.0.7 2009-09-14
 -----------------------
@@ -75,7 +106,7 @@ Bugs
 ~~~~
 
 * issue 19: Arabic language support in sidebar.
-* issue 25: Double-click on topic title (in sidebar) to open its sub-topics 
+* issue 25: Double-click on topic title (in sidebar) to open its sub-topics
 * a safer hcc parser.
 
 l10n
@@ -133,7 +164,7 @@ ChmSee 1.0.1 2008-05-16
 
 ChmSee 1.0.0 2007-07-23
 ------------------------
-* Add cs2w, written by rae l <crquan@gmail.com>. It's a Python script
+* Add cs2w, written by rae l. It's a Python script
   that can convert CHM file to web browser friendly pages.
 
 ChmSee 1.0.0-beta2 2007-04-07

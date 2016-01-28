@@ -1,5 +1,4 @@
 [Desktop Entry]
-Version=1.0
 _Name=ChmSee
 _Comment=HTML Help(CHM) viewer
 Exec=chmsee %f

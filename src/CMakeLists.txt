@@ -1,59 +1,49 @@
 include_directories(
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR}
-  ${CHMSEE_INCLUDE_DIRS}
-  )
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CHMSEE_INCLUDE_DIRS}
+        )
 add_definitions(
-  ${CHMSEE_CFLAGS_OTHER}
-  )
-add_custom_command(
-  OUTPUT marshal.h
-  COMMAND ${GLIB_GENMARSHAL} --prefix=marshal ${CMAKE_CURRENT_SOURCE_DIR}/marshal.list --header > marshal.h
-  DEPENDS marshal.list
-  )
-
-add_custom_command(
-  OUTPUT marshal.c
-  COMMAND ${GLIB_GENMARSHAL} --prefix=marshal ${CMAKE_CURRENT_SOURCE_DIR}/marshal.list --body > marshal.c
-  DEPENDS marshal.list
-  )
+        ${CHMSEE_CFLAGS_OTHER}
+        )
 
 link_directories(
-  ${CHMSEE_LIBRARY_DIRS}
-  )
+        ${CHMSEE_LIBRARY_DIRS}
+        )
 
 set(CHMSEE_SRCS
-  booktree.c chmsee.c html.c
-  setup.c startup.c ui_bookmarks.c booktree.h chmsee.h
-  html.h setup.h startup.h ui_bookmarks.h
-  marshal.h marshal.c
-  ihtml.h ihtml.c
-  html-factory.h html-factory.c
-  ui_index.h ui_index.c
-  ui_chmfile.h ui_chmfile.c
-  )
+        chmsee.h chmsee.c
+        setup.h setup.c
+        utils.h utils.c
+        )
 set(CHMSEE_SRCS
-  ${CHMSEE_SRCS}
-  utils/utils.h utils/utils.c)
+        ${CHMSEE_SRCS}
+        components/book.h components/book.c
+        components/toc.h components/toc.c
+        components/index.h components/index.c
+        components/bookmarks.h components/bookmarks.c
+        components/treeview.h components/treeview.c
+        components/html-webkit.h components/html-webkit.c
+        )
 set(CHMSEE_SRCS
-  ${CHMSEE_SRCS}
-  models/bookmarks.h models/bookmarks.c
-  models/chmfile.h models/chmfile.c
-  models/hhc.h models/hhc.c
-  models/link.h models/link.c
-  models/ichmfile.h models/ichmfile.c
-  models/chmfile-factory.h models/chmfile-factory.c
-  models/chmindex.h models/chmindex.c
-  )
+        ${CHMSEE_SRCS}
+        models/bookmarksfile.h models/bookmarksfile.c
+        models/chmfile.h models/chmfile.c
+        models/parser.h models/parser.c
+        models/link.h models/link.c
+        )
 
 add_library(chmseelib STATIC ${CHMSEE_SRCS})
 target_link_libraries(chmseelib
-  ${CHMSEE_LIBRARIES}
-  )
+        ${CHMSEE_LIBRARIES}
+        )
 
 add_executable(chmsee main.c)
 target_link_libraries(chmsee
-  chmseelib
-  )
-  
+        chmseelib
+        )
+set_target_properties(chmsee
+        PROPERTIES LINKER_LANGUAGE CXX
+        )
+
 install(TARGETS chmsee DESTINATION bin)

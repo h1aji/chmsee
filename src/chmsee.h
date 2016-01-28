@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2006           Ji YongGang <jungle@soforge-studio.com>
+ *  Copyright (C) 2010 Ji YongGang <jungleji@gmail.com>
  *
  *  ChmSee is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -34,56 +34,64 @@
 #include <gtk/gtkwindow.h>
 #include <gtk/gtk.h>
 
-#include "models/ichmfile.h"
-
 G_BEGIN_DECLS
 
-typedef struct _ChmSee      ChmSee;
-typedef struct _ChmSeePrivate ChmSeePrivate;
-typedef struct _ChmSeeClass ChmSeeClass;
+typedef struct _Chmsee      Chmsee;
+typedef struct _ChmseeClass ChmseeClass;
 
-#define TYPE_CHMSEE \
-        (chmsee_get_type ())
-#define CHMSEE(o) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((o), TYPE_CHMSEE, ChmSee))
-#define CHMSEE_CLASS(k) \
-        (G_TYPE_CHECK_CLASS_CAST ((k), TYPE_CHMSEE, ChmSeeClass))
-#define IS_CHMSEE(o) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((o), TYPE_CHMSEE))
-#define IS_CHMSEE_CLASS(k) \
-        (G_TYPE_CHECK_CLASS_TYPE ((k), TYPE_CHMSEE))
-#define CHMSEE_GET_CLASS(o) \
-        (G_TYPE_INSTANCE_GET_CLASS ((o), TYPE_CHMSEE, ChmSeeClass))
+#define CHMSEE_TYPE         (chmsee_get_type ())
+#define CHMSEE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), CHMSEE_TYPE, Chmsee))
+#define CHMSEE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST    ((k), CHMSEE_TYPE, ChmseeClass))
+#define CHMSEE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), CHMSEE_TYPE, ChmseeClass))
+#define IS_CHMSEE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), CHMSEE_TYPE))
+#define IS_CHMSEE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE    ((k), CHMSEE_TYPE))
 
-
-struct _ChmSee {
-        GtkWindow        parent;
-        ChmSeePrivate*  priv;
+struct _Chmsee {
+        GtkWindow window;
 };
 
-struct _ChmSeeClass {
-        GtkWindowClass   parent_class;
+struct _ChmseeClass {
+        GtkWindowClass parent_class;
 };
 
-GType chmsee_get_type(void);
-ChmSee * chmsee_new(const gchar* fname);
-void chmsee_set_model(ChmSee* self, ChmseeIchmfile *book);
-gboolean chmsee_jump_index_by_name(ChmSee* self, const gchar* name);
-/* void chmsee_open_file(ChmSee *, const gchar *); */
-int chmsee_get_hpaned_position(ChmSee* self);
-void chmsee_set_hpaned_position(ChmSee* self, int hpaned_position);
-const gchar* chmsee_get_cache_dir(ChmSee* self);
+typedef struct _CsConfig CsConfig;
 
-const gchar* chmsee_get_variable_font(ChmSee* self);
-void chmsee_set_variable_font(ChmSee* self, const gchar* font_name);
+struct _CsConfig {
+        gchar   *home;
+        gchar   *bookshelf;
+        gchar   *last_file;
+        gchar   *charset;
+        gchar   *variable_font;
+        gchar   *fixed_font;
 
-const gchar* chmsee_get_fixed_font(ChmSee* self);
-void chmsee_set_fixed_font(ChmSee* self, const gchar* font_name);
+        gint     pos_x;
+        gint     pos_y;
+        gint     height;
+        gint     width;
+        gint     hpaned_pos;
+        gboolean fullscreen;
+        gboolean startup_lastfile;
+};
 
-int chmsee_get_lang(ChmSee* self);
-void chmsee_set_lang(ChmSee* self, int lang);
+GType        chmsee_get_type(void);
+Chmsee      *chmsee_new(CsConfig *);
+void         chmsee_open_file(Chmsee *, const gchar *);
+void         chmsee_close_book(Chmsee *);
 
-gboolean chmsee_has_book(ChmSee* self);
+const gchar *chmsee_get_variable_font(Chmsee *);
+void         chmsee_set_variable_font(Chmsee *, const gchar *);
+
+const gchar *chmsee_get_fixed_font(Chmsee *);
+void         chmsee_set_fixed_font(Chmsee *, const gchar *);
+
+const gchar *chmsee_get_charset(Chmsee *);
+void         chmsee_set_charset(Chmsee *, const gchar *);
+
+gboolean     chmsee_get_startup_lastfile(Chmsee *);
+void         chmsee_set_startup_lastfile(Chmsee *, gboolean);
+
+gboolean     chmsee_has_book(Chmsee *);
+const gchar *chmsee_get_bookshelf(Chmsee *);
 
 G_END_DECLS
 

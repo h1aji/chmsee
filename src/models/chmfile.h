@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2006 Ji YongGang <jungle@soforge-studio.com>
+ *  copyright (C) 2010 Ji YongGang <jungleji@gmail.com>
  *  Copyright (C) 2009 LI Daobing <lidaobing@gmail.com>
  *
  *  ChmSee is free software; you can redistribute it and/or modify
@@ -18,63 +18,52 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#ifndef __CHMFILE_H__
-#define __CHMFILE_H__
+#ifndef __CS_CHMFILE_H__
+#define __CS_CHMFILE_H__
 
 #include <glib.h>
 #include <glib-object.h>
 
-#include "models/bookmarks.h"
-#include "models/hhc.h"
-#include "models/chmindex.h"
+typedef struct _CsChmfile       CsChmfile;
+typedef struct _CsChmfileClass  CsChmfileClass;
 
-typedef struct _ChmFile       ChmFile;
-typedef struct _ChmFileClass  ChmFileClass;
-typedef struct _ChmFilePriv   ChmFilePriv;
+#define CS_TYPE_CHMFILE         (cs_chmfile_get_type ())
+#define CS_CHMFILE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), CS_TYPE_CHMFILE, CsChmfile))
+#define CS_CHMFILE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST    ((k), CS_TYPE_CHMFILE, CsChmfileClass))
+#define IS_CS_CHMFILE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), CS_TYPE_CHMFILE))
+#define IS_CS_CHMFILE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE    ((k), CS_TYPE_CHMFILE))
+#define CS_CHMFILE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), CS_TYPE_CHMFILE, CsChmfileClass))
 
-#define TYPE_CHMFILE \
-        (chmfile_get_type ())
-#define CHMFILE(o) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((o), TYPE_CHMFILE, ChmFile))
-#define CHMFILE_CLASS(k) \
-        (G_TYPE_CHECK_CLASS_CAST ((k), TYPE_CHMFILE, ChmFileClass))
-#define IS_CHMFILE(o) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((o), TYPE_CHMFILE))
-#define IS_CHMFILE_CLASS(k) \
-        (G_TYPE_CHECK_CLASS_TYPE ((k), TYPE_CHMFILE))
-#define CHMFILE_GET_CLASS(o) \
-        (G_TYPE_INSTANCE_GET_CLASS ((o), TYPE_CHMFILE, ChmFileClass))
-
-struct _ChmFile
+struct _CsChmfile
 {
-        GObject         parent;
-
-        gchar          *filename;
-        gchar          *dir;
-        gchar          *home;
-        gchar          *hhc;
-        gchar          *hhk;
-        gchar          *title;
-        gchar    	   *encoding;
-        gchar          *variable_font;
-        gchar          *fixed_font;
-
-        Bookmarks      *bookmarks_list;
-        Hhc            *link_tree;
-        ChmFilePriv    *priv;
+        GObject      object;
 };
 
-struct _ChmFileClass
+struct _CsChmfileClass
 {
-	GObjectClass parent_class;
+        GObjectClass parent_class;
 };
 
-GType chmfile_get_type(void);
-ChmFile *chmfile_new(const gchar *);
+GType       cs_chmfile_get_type(void);
+CsChmfile  *cs_chmfile_new(const gchar *, const gchar *);
 
-/**
- * @return NULL if no index or open index failed.
- */
-ChmIndex* chmfile_get_index(ChmFile* self);
+GNode       *cs_chmfile_get_toc_tree(CsChmfile *);
+GList       *cs_chmfile_get_toc_list(CsChmfile *);
+GList       *cs_chmfile_get_bookmarks_list(CsChmfile *);
+GList       *cs_chmfile_get_index_list(CsChmfile *);
+void         cs_chmfile_update_bookmarks_list(CsChmfile *, GList *);
 
-#endif /* !__CHMFILE_H__ */
+const gchar *cs_chmfile_get_bookfolder(CsChmfile *);
+const gchar *cs_chmfile_get_filename(CsChmfile *);
+const gchar *cs_chmfile_get_bookname(CsChmfile *);
+const gchar *cs_chmfile_get_homepage(CsChmfile *);
+const gchar *cs_chmfile_get_page(CsChmfile *);
+
+const gchar *cs_chmfile_get_variable_font(CsChmfile *);
+void         cs_chmfile_set_variable_font(CsChmfile *, const gchar *);
+const gchar *cs_chmfile_get_fixed_font(CsChmfile *);
+void         cs_chmfile_set_fixed_font(CsChmfile *, const gchar *);
+const gchar *cs_chmfile_get_charset(CsChmfile *);
+void         cs_chmfile_set_charset(CsChmfile *, const gchar *);
+
+#endif /* !__CS_CHMFILE_H__ */

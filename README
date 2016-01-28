@@ -1,38 +1,53 @@
-ChmSee is an HTML Help viewer for Unix/Linux. It is based on CHMLIB
-and use GTK+ as frontend toolkit. Because of using gecko as HTML
-rendering engine, ChmSee can support rich features of modern HTML
-page, such as CSS and JavaScript.
+Introduction
+============
 
-Homepage: http://code.google.com/p/chmsee
+ChmSee is an HTML Help viewer for Unix/Linux. It is based on CHMLIB
+and use GTK+ as its frontend toolkit. Because of using gecko HTML
+rendering engine, ChmSee can support rich features of modern HTML
+page, specially CSS.
+
+Homepage: https://github.com/h1aji/chmsee
 
 
 Dependencies
 ============
 
-Compile ChmSee from source you need following packages:
- * cmake >= 2.6
- * libgtk2.0-dev >= 2.8
- * libglade2-dev >= 2.4
- * xulrunner-dev >= 1.9 < 1.9.1
- * libchm-dev
- * libgcrypt-dev
+To compile ChmSee from source, the following packages should have been
+installed and met their version on your system:
+
+ * cmake >= 2.8
+ * gtk2 >= 2.20
+ * webkit >= 1.0
+ * chmlib >= 0.39
+ * libxml2
+ * libgcrypt
+ * intltool
 
 Installation
 ============
 
-$ cd chmsee-$VERSION
-$ cmake .
+$ tar xzf chmsee-$VERSION.tar.gz
+$ mkdir build
+$ cd build
+$ cmake ../chmsee-$VERSION
 $ make
-$ make install
+# make install
+
+Source code repository
+======================
+
+You can use git command below to retrive develping ChmSee code:
+
+$ git clone git://github.com/h1aji/chmsee.git
 
 Report bug
 ==========
 
-If you find any problem, please file this bug in
-http://code.google.com/p/chmsee/issues/entry, thanks.
+If you encounter any ChmSee problem, please report them to
+https://github.com/h1aji/chmsee
 
-Help translation
-================
+About ChmSee logo
+=================
 
-please view the following site:
-https://translations.launchpad.net/chmsee/trunk/+pots/chmsee
+ChmSee logo comes from Open Clip Art Library. The author is AJ Ashton.
+http://www.openclipart.org/detail/17922

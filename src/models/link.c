@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2006           Ji YongGang <jungle@soforge-studio.com>
+ *  Copyright (C) 2010 Ji YongGang <jungleji@gmail.com>
  *
  *  ChmSee is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 
 #include "config.h"
-#include "link.h"
 
 #include <string.h>
 
-#include "utils/utils.h"
+#include "link.h"
+#include "utils.h"
 
 Link *
 link_new(LinkType type, const gchar *name, const gchar *uri)
@@ -32,23 +32,25 @@ link_new(LinkType type, const gchar *name, const gchar *uri)
         g_return_val_if_fail(name != NULL, NULL);
         g_return_val_if_fail(uri != NULL, NULL);
 
-        link = g_new0(Link, 1);
+        link = g_slice_new(Link);
 
         link->type = type;
 
         link->name = g_strdup(name);
         link->uri  = g_strdup(uri);
-        
+
         return link;
 }
 
-void 
+void
 link_free(Link *link)
 {
-        g_free(link->name);
-        g_free(link->uri);
+        if (link->name)
+                g_free(link->name);
+        if (link->uri)
+                g_free(link->uri);
 
-        g_free(link);
+        g_slice_free(Link, link);
 }
 
 Link *
@@ -63,7 +65,7 @@ link_compare(gconstpointer a, gconstpointer b)
         return ncase_compare_utf8_string(((Link *)a)->uri, ((Link *)b)->uri);
 }
 
-void 
+void
 link_change_type(Link *link, LinkType type)
 {
         link->type = type;
@@ -75,7 +77,7 @@ link_ref(Link *link)
         g_return_val_if_fail(link != NULL, NULL);
 
         link->ref_count++;
-        
+
         return link;
 }
 
@@ -83,10 +85,9 @@ void
 link_unref(Link *link)
 {
         g_return_if_fail(link != NULL);
-        
+
         link->ref_count--;
 
         if (link->ref_count == 0)
                 link_free(link);
 }
-

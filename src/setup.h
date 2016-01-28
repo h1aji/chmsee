@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2006           Ji YongGang <jungle@soforge-studio.com>
+ *  Copyright (C) 2010 Ji YongGang <jungleji@gmail.com>
  *
  *  ChmSee is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,12 +27,15 @@
  *   (at your option) any later version.                                   *
  ***************************************************************************/
 
-#ifndef __CHMSEE_SETUP_H__
-#define __CHMSEE_SETUP_H__
+#ifndef __CS_SETUP_H__
+#define __CS_SETUP_H__
 
 #include "chmsee.h"
 
-void setup_window_new(ChmSee *);
+G_BEGIN_DECLS
 
-#endif /* !__SETUP_H__ */
+void setup_window_new(Chmsee *);
 
+G_END_DECLS
+
+#endif /* !__CS_SETUP_H__ */
