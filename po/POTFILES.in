@@ -1,7 +1,7 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-[type: gettext/glade]data/about-dialog.ui
 data/chmsee.desktop.in
+[type: gettext/glade]data/about-dialog.ui
 [type: gettext/glade]data/openfile-dialog.ui
 [type: gettext/glade]data/setup-window.ui
 src/chmsee.c
@@ -10,8 +10,7 @@ src/setup.c
 src/utils.c
 src/components/book.c
 src/components/bookmarks.c
-src/components/gecko-utils.cpp
-src/components/html-gecko.c
+src/components/html-webkit.c
 src/components/index.c
 src/components/toc.c
 src/components/treeview.c
