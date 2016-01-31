@@ -1,0 +1,730 @@
+# Vietnamese translation for chmsee
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# This file is distributed under the same license as the chmsee package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: chmsee\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-01-23 23:01+0800\n"
+"PO-Revision-Date: 2010-12-07 22:43+0700\n"
+"Last-Translator: Duy Hung Tran <nguyentieuhau@gmail.com>\n"
+"Language-Team: debian-user-vietnamese <debian-user-vietnamese@lists.debian."
+"org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2009-07-04 04:44+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Poedit-Language: Vietnamese\n"
+"X-Poedit-Country: VIET NAM\n"
+
+#: ../data/about-dialog.ui.h:1
+msgid "https://github.com/h1aji/chmsee"
+msgstr "https://github.com/h1aji/chmsee"
+
+#. TRANSLATORS: Replace this string with your names, one name per line.
+#: ../data/about-dialog.ui.h:3
+msgid "translator-credits"
+msgstr ""
+"Dịch thuật:\n"
+"huanctv - https://launchpad.net/~huanctv \n"
+"Duy Hung Tran - nguyentieuhau@gmail.com"
+
+#: ../data/chmsee.desktop.in.h:1
+msgid "ChmSee"
+msgstr "ChmSee"
+
+#: ../data/chmsee.desktop.in.h:2
+msgid "HTML Help(CHM) viewer"
+msgstr "Ứng dụng xem HTML Help(CHM)"
+
+#: ../data/openfile-dialog.ui.h:1
+msgid "Open File"
+msgstr "Mở tập tin"
+
+#: ../data/setup-window.ui.h:1
+msgid "<b>Cache</b>"
+msgstr "<b>Vùng nhớ đệm</b>"
+
+#: ../data/setup-window.ui.h:2
+msgid "<b>Font</b>"
+msgstr "<b>Phông chữ</b>"
+
+#: ../data/setup-window.ui.h:3
+msgid "<b>Language</b>"
+msgstr "<b>Ngôn ngữ</b>"
+
+#: ../data/setup-window.ui.h:4
+msgid "<b>Startup</b>"
+msgstr "<b>Khởi động</b>"
+
+#: ../data/setup-window.ui.h:5
+msgid ""
+"CHM files extracted in this cache folder, you can press Clear button to free "
+"disk space.\n"
+"\n"
+"NOTE: If you are viewing a CHM file, you need reopen it after cleaning."
+msgstr ""
+"Những tập tin CHM được phân rã trong thư mục vùng nhớ đệm này, bạn có thể "
+"nhấn nút Xóa để giải phóng không gian đĩa.\n"
+"\n"
+"LƯU Ý: Nếu bạn đang xem một tập tin CHM, bạn cần phải mở lại nó sau khi xóa "
+"vùng nhớ đệm."
+
+#: ../data/setup-window.ui.h:8
+msgid "Charset:"
+msgstr "Charset:"
+
+#: ../data/setup-window.ui.h:9
+msgid "Fixed Width:"
+msgstr "Cố định độ rộng:"
+
+#: ../data/setup-window.ui.h:10
+msgid "Load last opened file."
+msgstr "Mở tập tin được mở cuối cùng."
+
+#: ../data/setup-window.ui.h:11
+msgid "Setup"
+msgstr "Cài đặt"
+
+#: ../data/setup-window.ui.h:12
+msgid "Variable Width:"
+msgstr "Độ rộng thay đổi:"
+
+#: ../src/chmsee.c:187
+msgid "_File"
+msgstr "_Tập tin"
+
+#: ../src/chmsee.c:188
+msgid "_Edit"
+msgstr "_Hiệu chỉnh"
+
+#: ../src/chmsee.c:189
+msgid "_View"
+msgstr "_Xem"
+
+#: ../src/chmsee.c:190
+msgid "_Help"
+msgstr "Trợ _giúp"
+
+#: ../src/chmsee.c:192
+msgid "_Open"
+msgstr "_Mở"
+
+#: ../src/chmsee.c:192
+msgid "Open a file"
+msgstr "Mở tập tin"
+
+#: ../src/chmsee.c:193
+msgid "_Recent Files"
+msgstr "Tập tin mở _gần đầy"
+
+#: ../src/chmsee.c:195
+msgid "New _Tab"
+msgstr "Thẻ _mới"
+
+#: ../src/chmsee.c:196
+msgid "_Close Tab"
+msgstr "Đón_g thẻ"
+
+#: ../src/chmsee.c:197
+msgid "E_xit"
+msgstr "T_hoát"
+
+#: ../src/chmsee.c:197
+msgid "Exit ChmSee"
+msgstr "Thoát ChmSee"
+
+#: ../src/chmsee.c:199 ../src/components/book.c:121
+msgid "_Copy"
+msgstr "Sao _chép"
+
+#: ../src/chmsee.c:200 ../src/components/book.c:126
+msgid "Select _All"
+msgstr "Chọ_n toàn bộ"
+
+#: ../src/chmsee.c:202
+msgid "_Find"
+msgstr "Tìm _kiếm"
+
+#: ../src/chmsee.c:204
+msgid "_Preferences"
+msgstr "tùy _chỉnh"
+
+#: ../src/chmsee.c:204
+msgid "Preferences"
+msgstr "Tùy chỉnh"
+
+#: ../src/chmsee.c:206
+msgid "_Home"
+msgstr "Trang _chính"
+
+#: ../src/chmsee.c:207 ../src/components/book.c:122
+msgid "_Back"
+msgstr "Hủy _bước"
+
+#: ../src/chmsee.c:208 ../src/components/book.c:123
+msgid "_Forward"
+msgstr "_Làm lại"
+
+#: ../src/chmsee.c:209
+msgid "_Prev"
+msgstr "_Trước"
+
+#: ../src/chmsee.c:210
+msgid "_Next"
+msgstr "_Sau"
+
+#: ../src/chmsee.c:212
+msgid "_About"
+msgstr "_Về Chmsee"
+
+#: ../src/chmsee.c:212
+msgid "About ChmSee"
+msgstr "Về ChmSee"
+
+#: ../src/chmsee.c:214
+msgid "Zoom _In"
+msgstr "Phóng t_o"
+
+#: ../src/chmsee.c:215
+msgid "_Normal Size"
+msgstr "_Kích cỡ bình thường"
+
+#: ../src/chmsee.c:216
+msgid "Zoom _Out"
+msgstr "Thu _nhỏ"
+
+#: ../src/chmsee.c:224
+msgid "Full _Screen"
+msgstr "Toàn _màn hình"
+
+#: ../src/chmsee.c:225
+msgid "Side _Pane"
+msgstr "_Khung bên"
+
+#: ../src/chmsee.c:486
+msgid "CHM Files"
+msgstr "Tập tin CHM"
+
+#: ../src/chmsee.c:491
+msgid "All Files"
+msgstr "Toàn bộ tập tin"
+
+#: ../src/chmsee.c:628
+msgid "(Build with webkit "
+msgstr ""
+
+#: ../src/chmsee.c:628
+msgid ")"
+msgstr ""
+
+#: ../src/chmsee.c:802
+msgid "Ready!"
+msgstr "Sẵn sàng!"
+
+#: ../src/chmsee.c:985
+#, c-format
+msgid "Error: Can not open spectified file '%s'"
+msgstr "Lỗi: Không thể mở tập tin '%s'"
+
+#: ../src/main.c:220
+msgid "Display ChmSee version"
+msgstr "Hiển thị phiên bản của Chmsee"
+
+#: ../src/main.c:225
+#, fuzzy
+msgid "Be verbose, repeat 3 times to get all information"
+msgstr "Lặp lại 3 lần để lấy tất cả thông tin"
+
+#: ../src/main.c:230
+#, fuzzy
+msgid "Be quiet, repeat 2 times to disable all information"
+msgstr "Lặp lại 2 lần để vô hiệu tất cả thông tin"
+
+#: ../src/setup.c:131
+msgid "Auto"
+msgstr "Tự động"
+
+#: ../src/setup.c:132
+msgid "West European"
+msgstr "West European"
+
+#: ../src/setup.c:133
+msgid "East European"
+msgstr "East European"
+
+#: ../src/setup.c:134
+msgid "East Asian"
+msgstr "East Asian"
+
+#: ../src/setup.c:135
+msgid "SE & SW Asian"
+msgstr "SE & SW Asian"
+
+#: ../src/setup.c:136
+msgid "Middle Eastern"
+msgstr "Middle Eastern"
+
+#: ../src/setup.c:137
+msgid "Unicode"
+msgstr "Unicode"
+
+#: ../src/setup.c:141
+msgid "Western (ISO-8859-1)"
+msgstr "Western (ISO-8859-1)"
+
+#. index = 0
+#: ../src/setup.c:142
+msgid "Western (ISO-8859-15)"
+msgstr "Western (ISO-8859-15)"
+
+#: ../src/setup.c:143
+msgid "Western (IBM-850)"
+msgstr "Western (IBM-850)"
+
+#: ../src/setup.c:144
+msgid "Western (MacRoman)"
+msgstr "Western (MacRoman)"
+
+#: ../src/setup.c:145
+msgid "Western (Windows-1252)"
+msgstr "Western (Windows-1252)"
+
+#: ../src/setup.c:146
+msgid "Celtic (ISO-8859-14)"
+msgstr "Celtic (ISO-8859-14)"
+
+#: ../src/setup.c:147
+msgid "Greek (ISO-8859-7)"
+msgstr "Greek (ISO-8859-7)"
+
+#: ../src/setup.c:148
+msgid "Greek (MacGreek)"
+msgstr "Greek (MacGreek)"
+
+#: ../src/setup.c:149
+msgid "Greek (Windows-1253)"
+msgstr "Greek (Windows-1253)"
+
+#: ../src/setup.c:150
+msgid "Icelandic (MacIcelandic)"
+msgstr "Icelandic (MacIcelandic)"
+
+#: ../src/setup.c:151
+msgid "Nordic (ISO-8859-10)"
+msgstr "Nordic (ISO-8859-10)"
+
+#: ../src/setup.c:152
+msgid "South European (ISO-8859-3)"
+msgstr "South European (ISO-8859-3)"
+
+#: ../src/setup.c:153
+msgid "Baltic (ISO-8859-4)"
+msgstr "Baltic (ISO-8859-4)"
+
+#. index = 12
+#: ../src/setup.c:154
+msgid "Baltic (ISO-8859-13)"
+msgstr "Baltic (ISO-8859-13)"
+
+#: ../src/setup.c:155
+msgid "Baltic (Windows-1257)"
+msgstr "Baltic (Windows-1257)"
+
+#: ../src/setup.c:156
+msgid "Central European (IBM-852)"
+msgstr "Central European (IBM-852)"
+
+#: ../src/setup.c:157
+msgid "Central European (ISO-8859-2)"
+msgstr "Central European (ISO-8859-2)"
+
+#: ../src/setup.c:158
+msgid "Central European (MacCE)"
+msgstr "Central European (MacCE)"
+
+#: ../src/setup.c:159
+msgid "Central European (Windows-1250)"
+msgstr "Central European (Windows-1250)"
+
+#: ../src/setup.c:160
+msgid "Croatian (MacCroatian)"
+msgstr "Croatian (MacCroatian)"
+
+#: ../src/setup.c:161
+msgid "Cyrillic (IBM-855)"
+msgstr "Cyrillic (IBM-855)"
+
+#: ../src/setup.c:162
+msgid "Cyrillic (ISO-8895-5)"
+msgstr "Cyrillic (ISO-8895-5)"
+
+#: ../src/setup.c:163
+msgid "Cyrillic (ISO-IR-111)"
+msgstr "Cyrillic (ISO-IR-111)"
+
+#: ../src/setup.c:164
+msgid "Cyrillic (KOI8-R)"
+msgstr "Cyrillic (KOI8-R)"
+
+#: ../src/setup.c:165
+msgid "Cyrillic (MacCyrillic)"
+msgstr "Cyrillic (MacCyrillic)"
+
+#: ../src/setup.c:166
+msgid "Cyrillic (Windows-1251)"
+msgstr "Cyrillic (Windows-1251)"
+
+#: ../src/setup.c:167
+msgid "Cyrillic/Russian (CP-866)"
+msgstr "Cyrillic/Russian (CP-866)"
+
+#: ../src/setup.c:168
+msgid "Cyrillic/Ukrainian (KOI8-U)"
+msgstr "Cyrillic/Ukrainian (KOI8-U)"
+
+#: ../src/setup.c:169
+msgid "Romanian (ISO-8859-16)"
+msgstr "Romanian (ISO-8859-16)"
+
+#: ../src/setup.c:170
+msgid "Romanian (MacRomanian)"
+msgstr "Romanian (MacRomanian)"
+
+#: ../src/setup.c:171
+msgid "Chinese Simplified (GB2312)"
+msgstr "Chinese Simplified (GB2312)"
+
+#. index = 30
+#: ../src/setup.c:172
+msgid "Chinese Simplified (GBK)"
+msgstr "Chinese Simplified (GBK)"
+
+#: ../src/setup.c:173
+msgid "Chinese Simplified (GB18030)"
+msgstr "Chinese Simplified (GB18030)"
+
+#: ../src/setup.c:174
+msgid "Chinese Simplified (HZ)"
+msgstr "Chinese Simplified (HZ)"
+
+#: ../src/setup.c:175
+msgid "Chinese Simplified (ISO-2022-CN)"
+msgstr "Chinese Simplified (ISO-2022-CN)"
+
+#: ../src/setup.c:176
+msgid "Chinese Traditional (Big5)"
+msgstr "Chinese Traditional (Big5)"
+
+#: ../src/setup.c:177
+msgid "Chinese Traditional (Big5-HKSCS)"
+msgstr "Chinese Traditional (Big5-HKSCS)"
+
+#: ../src/setup.c:178
+msgid "Chinese Traditional (EUC-TW)"
+msgstr "Chinese Traditional (EUC-TW)"
+
+#: ../src/setup.c:179
+msgid "Japanese (EUC-JP)"
+msgstr "Japanese (EUC-JP)"
+
+#: ../src/setup.c:180
+msgid "Japanese (ISO-2022-JP)"
+msgstr "Japanese (ISO-2022-JP)"
+
+#: ../src/setup.c:181
+msgid "Japanese (Shift_JIS)"
+msgstr "Japanese (Shift_JIS)"
+
+#: ../src/setup.c:182
+msgid "Korean (EUC-KR)"
+msgstr "Korean (EUC-KR)"
+
+#: ../src/setup.c:183
+msgid "Korean (UHC)"
+msgstr "Korean (UHC)"
+
+#: ../src/setup.c:184
+msgid "Korean (JOHAB)"
+msgstr "Korean (JOHAB)"
+
+#: ../src/setup.c:185
+msgid "Korean (ISO-2022-KR)"
+msgstr "Korean (ISO-2022-KR)"
+
+#: ../src/setup.c:186
+msgid "Armenian (ARMSCII-8)"
+msgstr "Armenian (ARMSCII-8)"
+
+#. index = 45
+#: ../src/setup.c:187
+msgid "Georgian (GEOSTD8)"
+msgstr "Georgian (GEOSTD8)"
+
+#: ../src/setup.c:188
+msgid "Thai (TIS-620)"
+msgstr "Thai (TIS-620)"
+
+#: ../src/setup.c:189
+msgid "Thai (ISO-8859-11)"
+msgstr "Thai (ISO-8859-11)"
+
+#: ../src/setup.c:190
+msgid "Thai (Windows-874)"
+msgstr "Thai (Windows-874)"
+
+#: ../src/setup.c:191
+msgid "Thai (IBM-874)"
+msgstr "Thai (IBM-874)"
+
+#: ../src/setup.c:192
+msgid "Turkish (IBM-857)"
+msgstr "Turkish (IBM-857)"
+
+#: ../src/setup.c:193
+msgid "Turkish (ISO-8859-9)"
+msgstr "Turkish (ISO-8859-9)"
+
+#: ../src/setup.c:194
+msgid "Turkish (MacTurkish)"
+msgstr "Turkish (MacTurkish)"
+
+#: ../src/setup.c:195
+msgid "Turkish (Windows-1254)"
+msgstr "Turkish (Windows-1254)"
+
+#: ../src/setup.c:196
+msgid "Vietnamese (TCVN)"
+msgstr "Vietnamese (TCVN)"
+
+#: ../src/setup.c:197
+msgid "Vietnamese (VISCII)"
+msgstr "Vietnamese (VISCII)"
+
+#: ../src/setup.c:198
+msgid "Vietnamese (VPS)"
+msgstr "Vietnamese (VPS)"
+
+#: ../src/setup.c:199
+msgid "Vietnamese (Windows-1258)"
+msgstr "Vietnamese (Windows-1258)"
+
+#: ../src/setup.c:200
+msgid "Hindi (MacDevanagari)"
+msgstr "Hindi (MacDevanagari)"
+
+#: ../src/setup.c:201
+msgid "Gujarati (MacGujarati)"
+msgstr "Gujarati (MacGujarati)"
+
+#: ../src/setup.c:202
+msgid "Gurmukhi (MacGurmukhi)"
+msgstr "Gurmukhi (MacGurmukhi)"
+
+#: ../src/setup.c:203
+msgid "Arabic (ISO-8859-6)"
+msgstr "Arabic (ISO-8859-6)"
+
+#. index = 62
+#: ../src/setup.c:204
+msgid "Arabic (Windows-1256)"
+msgstr "Arabic (Windows-1256)"
+
+#: ../src/setup.c:205
+msgid "Arabic (IBM-864)"
+msgstr "Arabic (IBM-864)"
+
+#: ../src/setup.c:206
+msgid "Arabic (MacArabic)"
+msgstr "Arabic (MacArabic)"
+
+#: ../src/setup.c:207
+msgid "Farsi (MacFarsi)"
+msgstr "Farsi (MacFarsi)"
+
+#: ../src/setup.c:208
+msgid "Hebrew (ISO-8859-8-I)"
+msgstr "Hebrew (ISO-8859-8-I)"
+
+#: ../src/setup.c:209
+msgid "Hebrew (Windows-1255)"
+msgstr "Hebrew (Windows-1255)"
+
+#: ../src/setup.c:210
+msgid "Hebrew Visual (ISO-8859-8)"
+msgstr "Hebrew Visual (ISO-8859-8)"
+
+#: ../src/setup.c:211
+msgid "Hebrew (IBM-862)"
+msgstr "Hebrew (IBM-862)"
+
+#: ../src/setup.c:212
+msgid "Hebrew (MacHebrew)"
+msgstr "Hebrew (MacHebrew)"
+
+#: ../src/setup.c:213
+msgid "Unicode (UTF-8)"
+msgstr "Unicode (UTF-8)"
+
+#. index = 72
+#: ../src/setup.c:214
+msgid "Unicode (UTF-16LE)"
+msgstr "Unicode (UTF-16LE)"
+
+#: ../src/setup.c:215
+msgid "Unicode (UTF-16BE)"
+msgstr "Unicode (UTF-16BE)"
+
+#: ../src/setup.c:216
+msgid "Unicode (UTF-32)"
+msgstr "Unicode (UTF-32)"
+
+#: ../src/setup.c:217
+msgid "Unicode (UTF-32LE)"
+msgstr "Unicode (UTF-32LE)"
+
+#: ../src/setup.c:218
+msgid "Unicode (UTF-32BE)"
+msgstr "Unicode (UTF-32BE)"
+
+#: ../src/components/book.c:124
+msgid "Open Link in New _Tab"
+msgstr "Mở liên _kết trong thẻ mới"
+
+#: ../src/components/book.c:125
+msgid "_Copy Link Location"
+msgstr "Sao ché_p liên kết"
+
+#: ../src/components/book.c:127
+msgid "Copy Page _Location"
+msgstr "Sao chép _vị trí trang"
+
+#: ../src/components/book.c:246
+msgid "Find:"
+msgstr "Tìm:"
+
+#: ../src/components/book.c:261
+msgid "Previous"
+msgstr "Trước"
+
+#: ../src/components/book.c:271
+msgid "Next"
+msgstr "Sau"
+
+#: ../src/components/book.c:281
+msgid "Match case"
+msgstr "Phân biệt chữ hoa và chữ thường"
+
+#. customized label, add a close button rightmost
+#: ../src/components/book.c:464 ../src/components/book.c:710
+#: ../src/models/parser.c:180
+msgid "No Title"
+msgstr "Không có tiêu đề"
+
+#: ../src/components/book.c:899
+msgid "Topics"
+msgstr "Chủ đề"
+
+#: ../src/components/book.c:916
+msgid "Index"
+msgstr "Mục lục"
+
+#: ../src/components/book.c:932
+msgid "Bookmarks"
+msgstr "Đánh dấu"
+
+#: ../src/components/book.c:1019
+#, c-format
+msgid "Can not find link target file at \"%s\""
+msgstr "Không thể tìm thấy tập tin ở đường dẫn \"%s\""
+
+#: ../src/models/chmfile.c:293
+#, c-format
+msgid "Cannot open chmfile: %s"
+msgstr "Không thể mở tập tin: %s"
+
+#: ../src/models/chmfile.c:303
+#, c-format
+msgid "Extract chmfile failed: %s"
+msgstr "Trích xuất tập tin chm thất bại: %s"
+
+#: ../src/models/chmfile.c:328
+#, c-format
+msgid "Open \"%s\" failed: %s"
+msgstr "Mở \"%s\" thất bại: %s"
+
+#: ../src/models/chmfile.c:519
+#, c-format
+msgid "Can not open chm file %s."
+msgstr "Không thể mở tập tin chm %s."
+
+#~ msgid "The HTML Help(CHM) viewer for Unix/Linux"
+#~ msgstr "Ứng dụng xem HTML Help(CHM) cho Unix/Linux"
+
+#~ msgid "more than 1 argument\n"
+#~ msgstr "nhiều hơn 1 đối số\n"
+
+#~ msgid "Processing... %.0f%% complete"
+#~ msgstr "Đang thực hiện... %.0f%% hoàn tất"
+
+#~ msgid "Processing done. Loading..."
+#~ msgstr "Đã thực hiện xong. Đang tải..."
+
+#~ msgid "Auto-Detect:"
+#~ msgstr "Tự động dò:"
+
+#, fuzzy
+#~ msgid "Copy"
+#~ msgstr "Sao _chép"
+
+#, fuzzy
+#~ msgid "CS_BOOK >>> URI redirect: \"%s\" -> \"%s\""
+#~ msgstr "Tự chuyển URL: \"%s\" -> \"%s\""
+
+#, fuzzy
+#~ msgid "CS_CHMFILE >>> cannot open chmfile: %s"
+#~ msgstr "không thể mở file: %s"
+
+#~ msgid "Error loading file '%s'"
+#~ msgstr "Lỗi trong quá trình tải file '%s'"
+
+#~ msgid "Bookmark"
+#~ msgstr "Đánh dấu"
+
+#~ msgid "Can't found hhc file."
+#~ msgstr "Không tìm thấy file hhc"
+
+#~ msgid "About..."
+#~ msgstr "Thông tin..."
+
+#~ msgid "Back"
+#~ msgstr "Trước đó"
+
+#~ msgid "Forward"
+#~ msgstr "Phần sau đó"
+
+#~ msgid "Panel"
+#~ msgstr "Bảng"
+
+#~ msgid "Show/Hide Panel"
+#~ msgstr "Hiện/Ẩn Bảng"
+
+#~ msgid ""
+#~ "Universal\n"
+#~ "Simplified Chinese\n"
+#~ "Tradtional Chinese\n"
+#~ "Japanese\n"
+#~ "Korean\n"
+#~ "Russian\n"
+#~ "Ukrainain"
+#~ msgstr ""
+#~ "Phổ thông\n"
+#~ "Simplified Chinese\n"
+#~ "Tradtional Chinese\n"
+#~ "Japanese\n"
+#~ "Korean\n"
+#~ "Russian\n"
+#~ "Ukrainain"
