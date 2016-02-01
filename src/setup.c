@@ -299,7 +299,7 @@ setup_window_new(Chmsee *chmsee)
         g_signal_connect_swapped((gpointer) setup_window,
                                  "destroy",
                                  G_CALLBACK (gtk_widget_destroy),
-                                 GTK_OBJECT (setup_window));
+                                 G_OBJECT (setup_window));
 
         /* bookshelf directory */
         GtkWidget *bookshelf_entry = BUILDER_WIDGET (builder, "bookshelf_entry");

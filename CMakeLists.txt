@@ -7,8 +7,8 @@ set(CMAKE_BUILD_TYPE Release)
 
 find_package(PkgConfig)
 
-pkg_check_modules (CHMSEE REQUIRED gthread-2.0>=2.22 glib-2.0>=2.22 libxml-2.0 gtk+-2.0>=2.18 nspr)
-pkg_search_module(WEBKIT REQUIRED webkit-1.0)
+pkg_check_modules (CHMSEE REQUIRED gthread-2.0>=2.22 glib-2.0>=2.22 libxml-2.0 gtk+-3.0 nspr)
+pkg_search_module(WEBKIT REQUIRED webkitgtk-3.0)
 
 set(CHMSEE_INCLUDE_DIRS ${CHMSEE_INCLUDE_DIRS} ${WEBKIT_INCLUDE_DIRS})
 set(CHMSEE_CFLAGS_OTHER ${CHMSEE_CFLAGS_OTHER} ${WEBKIT_CFLAGS_OTHER} -Wall)
@@ -49,7 +49,6 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 add_subdirectory(src)
 add_subdirectory(data)
 add_subdirectory(po)
-#add_subdirectory(gtkmoz)
 
 SET(CPACK_SOURCE_PACKAGE_FILE_NAME "chmsee-1.4.0")
 SET(CPACK_SOURCE_GENERATOR "TGZ")

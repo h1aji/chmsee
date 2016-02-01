@@ -1,24 +1,24 @@
-# chmsee pathced to work with webkit
+# chmsee webkit version
 # contributor: murad ustarkhanov - hm dot ust at live dot com
 
-pkgname=chmsee-git
-pkgbase=chmsee
+_pkgname=chmsee
+pkgname=${_pkgname}-git
 pkgver=1.4.0
 pkgrel=1
 arch=('i686' 'x86_64')
 pkgdesc="A chm (MS HTML help file format) viewer based on webkit."
-url="http://chmsee.googlecode.com/"
+url="https://h1aji.github.io/chmsee"
 license="GPL"
-depends=('gtk2' 'libglade' 'chmlib' 'webkitgtk2')
-makedepends=('intltool' 'cmake')
+depends=('gtk3' 'chmlib' 'webkitgtk')
+makedepends=('intltool' 'cmake' 'libgcrypt' 'libxml2')
 provides=('chmsee')
 conflicts=('chmsee')
-source=(https://chmsee.googlecode.com/files/$pkgbase-$pkgver.tar.gz)
-md5sums=('7c226e6f518284a040ad3b9433d5e218')
+source=("${_pkgname}"::git+https://github.com/h1aji/chmsee.git)
+sha256sums=('SKIP')
 
 build() {
 
-  cd ${srcdir}/$pkgbase-$pkgver
+  cd ${srcdir}/${_pkgname}
 
   mkdir build
   cd build
@@ -28,7 +28,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/$pkgbase-$pkgver/build
+  cd ${srcdir}/$pkgname-$pkgver/build
 
   make DESTDIR="$pkgdir" install
 }

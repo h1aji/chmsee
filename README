@@ -16,8 +16,8 @@ To compile ChmSee from source, the following packages should have been
 installed and met their version on your system:
 
  * cmake >= 2.8
- * gtk2 >= 2.20
- * webkit >= 1.0
+ * gtk3 >= 3.8
+ * webkitgtk >= 3.0
  * chmlib >= 0.39
  * libxml2
  * libgcrypt

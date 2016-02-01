@@ -211,9 +211,6 @@ main(int argc, char *argv[])
         GError *error = NULL;
         gboolean option_version = FALSE;
 
-        if (!g_thread_supported())
-                g_thread_init(NULL);
-
         GOptionEntry options[] = {
                 {"version", 0,
                  0, G_OPTION_ARG_NONE, &option_version,

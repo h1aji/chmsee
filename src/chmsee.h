@@ -31,7 +31,6 @@
 #define __CHMSEE_H__
 
 #include <glib-object.h>
-#include <gtk/gtkwindow.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS

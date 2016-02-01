@@ -84,7 +84,7 @@ static void cs_book_get_property(GObject *, guint, GValue *, GParamSpec *);
 static void find_entry_changed_cb(GtkEntry *, CsBook *);
 static void find_entry_activate_cb(GtkEntry *, CsBook *);
 static void link_selected_cb(GtkWidget *, Link *, CsBook *);
-static void html_notebook_switch_page_cb(GtkNotebook *, GtkNotebookPage *, guint , CsBook *);
+static void html_notebook_switch_page_cb(GtkNotebook *, GtkWidget *, guint , CsBook *);
 static void html_location_changed_cb(CsHtmlWebkit *, const gchar *, CsBook *);
 static gboolean html_open_uri_cb(CsHtmlWebkit *, const gchar *, CsBook *);
 static void html_title_changed_cb(CsHtmlWebkit *, const gchar *, CsBook *);
@@ -171,7 +171,7 @@ cs_book_class_init(CsBookClass *klass)
                              0,
                              NULL,
                              NULL,
-                             gtk_marshal_VOID__POINTER_POINTER,
+                             g_cclosure_marshal_VOID__POINTER,
                              G_TYPE_NONE,
                              2,
                              G_TYPE_POINTER, G_TYPE_POINTER);
@@ -183,7 +183,7 @@ cs_book_class_init(CsBookClass *klass)
                              0,
                              NULL,
                              NULL,
-                             gtk_marshal_VOID__POINTER,
+                             g_cclosure_marshal_VOID__POINTER,
                              G_TYPE_NONE,
                              1,
                              G_TYPE_POINTER);
@@ -214,7 +214,6 @@ cs_book_init(CsBook *self)
         gtk_box_pack_start(GTK_BOX (self), priv->hpaned, TRUE, TRUE, 0);
 
         priv->control_notebook = gtk_notebook_new();
-        gtk_notebook_set_tab_vborder(GTK_NOTEBOOK (priv->control_notebook), 4);
         gtk_notebook_set_show_border(GTK_NOTEBOOK (priv->control_notebook), FALSE);
         gtk_paned_add1(GTK_PANED(priv->hpaned), priv->control_notebook);
 
@@ -224,7 +223,6 @@ cs_book_init(CsBook *self)
                          G_CALLBACK (html_notebook_switch_page_cb),
                          self);
 
-        gtk_notebook_set_tab_vborder(GTK_NOTEBOOK (priv->html_notebook), 0);
         gtk_notebook_set_show_border(GTK_NOTEBOOK (priv->html_notebook), FALSE);
         gtk_paned_add2(GTK_PANED (priv->hpaned), priv->html_notebook);
 
@@ -377,7 +375,7 @@ link_selected_cb(GtkWidget *widget, Link *link, CsBook *self)
 }
 
 static void
-html_notebook_switch_page_cb(GtkNotebook *notebook, GtkNotebookPage *page, guint new_page_num, CsBook *self)
+html_notebook_switch_page_cb(GtkNotebook *notebook, GtkWidget *page, guint new_page_num, CsBook *self)
 {
         g_debug("CS_BOOK >>> enter switch page callback");
         CsBookPrivate *priv = CS_BOOK_GET_PRIVATE (self);
@@ -643,7 +641,7 @@ cs_book_get_property(GObject *object, guint property_id, GValue *value, GParamSp
 
         switch (property_id) {
         case PROP_SIDEPANE_VISIBLE:
-                g_value_set_boolean(value, GTK_WIDGET_VISIBLE (gtk_paned_get_child1(GTK_PANED (priv->hpaned))));
+                g_value_set_boolean(value, gtk_widget_get_visible (gtk_paned_get_child1(GTK_PANED (priv->hpaned))));
                 break;
         case PROP_BOOK_MESSAGE:
                 g_value_set_string(value, priv->book_message);
@@ -712,11 +710,11 @@ new_html_tab(CsBook *self)
         gint page_num = gtk_notebook_append_page(GTK_NOTEBOOK (priv->html_notebook),
                                                  html,
                                                  tab_label);
-        gtk_notebook_set_tab_label_packing(GTK_NOTEBOOK (priv->html_notebook),
+/*        gtk_notebook_set_tab_label_packing(GTK_NOTEBOOK (priv->html_notebook),
                                            html,
                                            TRUE, TRUE,
                                            GTK_PACK_START);
-
+*/
         g_debug("CS_BOOK >>> new tab html_notebook append page = %d", page_num);
 
         return page_num;

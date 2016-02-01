@@ -1,7 +1,7 @@
 /*
  *  Copyright (C) 2010 Ji YongGang <jungleji@gmail.com>
  *  Copyright (C) 2009 LI Daobing <lidaobing@gmail.com>
- *
+ *  Copyright (C) 2003 by zhong <zhongz@163.com> 
  *  ChmSee is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2, or (at your option)
@@ -17,16 +17,6 @@
  *  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *  Boston, MA 02110-1301, USA.
  */
-
-/***************************************************************************
- *   Copyright (C) 2003 by zhong                                           *
- *   zhongz@163.com                                                        *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- ***************************************************************************/
 
 #include "config.h"
 
@@ -614,14 +604,12 @@ static void
 on_about(GtkAction *action)
 {
         GtkBuilder *builder = gtk_builder_new();
+
         gtk_builder_add_from_file(builder, RESOURCE_FILE ("about-dialog.ui"), NULL);
 
         GtkWidget *dialog = BUILDER_WIDGET (builder, "about_dialog");
 
-        g_signal_connect(G_OBJECT (dialog),
-                         "response",
-                         G_CALLBACK (about_response_cb),
-                         NULL);
+        g_signal_connect(G_OBJECT (dialog), "response", G_CALLBACK (about_response_cb), NULL);
 
         gtk_about_dialog_set_version(GTK_ABOUT_DIALOG (dialog), PACKAGE_VERSION);
 
