@@ -7,7 +7,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 find_package(PkgConfig)
 
-pkg_check_modules (CHMSEE REQUIRED gthread-2.0>=2.22 glib-2.0>=2.22 libxml-2.0 gtk+-3.0>=3.10 nspr)
+pkg_check_modules (CHMSEE REQUIRED gthread-2.0>=2.22 glib-2.0>=2.22 libxml-2.0 gtk+-3.0 nspr)
 pkg_search_module(WEBKIT REQUIRED webkitgtk-3.0)
 
 set(CHMSEE_INCLUDE_DIRS ${CHMSEE_INCLUDE_DIRS} ${WEBKIT_INCLUDE_DIRS})
