@@ -18,7 +18,7 @@
  */
 
 #include <string.h>
-#include <webkit2/webkit2.h>
+#include <webkit/webkit.h>
 
 #include "html-webkit.h"
 #include "utils.h"
@@ -73,7 +73,7 @@ cs_html_webkit_class_init(CsHtmlWebkitClass *klass)
                               G_SIGNAL_RUN_LAST,
                               0,
                               NULL, NULL,
-                              gtk_marshal_VOID__STRING,
+                              g_cclosure_marshal_VOID__STRING,
                               G_TYPE_NONE,
                               1, G_TYPE_STRING);
 
@@ -83,7 +83,7 @@ cs_html_webkit_class_init(CsHtmlWebkitClass *klass)
                              G_SIGNAL_RUN_LAST,
                              0,
                              NULL, NULL,
-                             gtk_marshal_VOID__STRING,
+                             g_cclosure_marshal_VOID__STRING,
                              G_TYPE_NONE,
                              1, G_TYPE_STRING);
 
@@ -93,8 +93,8 @@ cs_html_webkit_class_init(CsHtmlWebkitClass *klass)
                              G_SIGNAL_RUN_LAST,
                              0,
                              NULL, NULL,
-                             gtk_marshal_BOOLEAN__POINTER,
-                             G_TYPE_BOOLEAN,
+                             g_cclosure_marshal_VOID__POINTER,
+                             G_TYPE_NONE,
                              1, G_TYPE_POINTER);
 
         signals[CONTEXT_NORMAL] =
@@ -103,7 +103,7 @@ cs_html_webkit_class_init(CsHtmlWebkitClass *klass)
                              G_SIGNAL_RUN_LAST,
                              0,
                              NULL, NULL,
-                             gtk_marshal_VOID__VOID,
+                             g_cclosure_marshal_VOID__VOID,
                              G_TYPE_NONE,
                              0);
 
@@ -113,7 +113,7 @@ cs_html_webkit_class_init(CsHtmlWebkitClass *klass)
                              G_SIGNAL_RUN_LAST,
                              0,
                              NULL, NULL,
-                             gtk_marshal_VOID__STRING,
+                             g_cclosure_marshal_VOID__STRING,
                              G_TYPE_NONE,
                              1, G_TYPE_STRING);
 
@@ -123,7 +123,7 @@ cs_html_webkit_class_init(CsHtmlWebkitClass *klass)
                              G_SIGNAL_RUN_LAST,
                              0,
                              NULL, NULL,
-                             gtk_marshal_VOID__STRING,
+                             g_cclosure_marshal_VOID__STRING,
                              G_TYPE_NONE,
                              1, G_TYPE_STRING);
 
@@ -133,7 +133,7 @@ cs_html_webkit_class_init(CsHtmlWebkitClass *klass)
                              G_SIGNAL_RUN_LAST,
                              0,
                              NULL, NULL,
-                             gtk_marshal_VOID__STRING,
+                             g_cclosure_marshal_VOID__STRING,
                              G_TYPE_NONE,
                              1, G_TYPE_STRING);
 }
@@ -147,7 +147,7 @@ cs_html_webkit_init(CsHtmlWebkit *html)
         gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (priv->scrolled),
                                     GTK_POLICY_AUTOMATIC,
                                     GTK_POLICY_AUTOMATIC);
-        GTK_WIDGET_SET_FLAGS (priv->scrolled, GTK_CAN_FOCUS);
+//        GTK_WIDGET_SET_FLAGS (priv->scrolled, GTK_CAN_FOCUS);
         gtk_container_add(GTK_CONTAINER (priv->scrolled), GTK_WIDGET(priv->webkit));
 
         gtk_widget_show_all(GTK_WIDGET (priv->scrolled));
