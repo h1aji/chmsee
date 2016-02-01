@@ -3,7 +3,7 @@
 
 _pkgname=chmsee
 pkgname=${_pkgname}-git
-pkgver=1.4.0
+pkgver=1.5.0
 pkgrel=1
 arch=('i686' 'x86_64')
 pkgdesc="A chm (MS HTML help file format) viewer based on webkit."
@@ -28,7 +28,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/$pkgname-$pkgver/build
+  cd ${srcdir}/${_pkgname}/build
 
   make DESTDIR="$pkgdir" install
 }
