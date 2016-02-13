@@ -1,3 +1,6 @@
+Chmsee 3.0.0 2015-02-12
+* GTK3 port
+
 Chmsee 1.4.0 2015-01-28
 -----------------------
 * Webkit port. Switch from xulrunner to webkit

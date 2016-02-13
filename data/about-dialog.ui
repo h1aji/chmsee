@@ -14,8 +14,7 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="website">https://github.com/h1aji/chmsee</property>
     <property name="website_label" translatable="yes">ChmSee on Github</property>
-    <property name="authors">Murad Ustarkhanov &lt;hm.ust@live.com&gt;
-Ji YongGang &lt;jungleji@gmail.com&gt;
+    <property name="authors">Ji YongGang &lt;jungleji@gmail.com&gt;
 LI Daobing &lt;lidaobing@gmail.com&gt;
 zhong &lt;iam_zhong@yahoo.com.cn&gt;
 </property>
