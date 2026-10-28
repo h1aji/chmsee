@@ -23,6 +23,12 @@ if(NOT LIBCHM)
         message(FATAL_ERROR "chmlib (libchm) is required")
 endif()
 
+find_path(LIBCHM_INCLUDE_DIR chm_lib.h)
+if(NOT LIBCHM_INCLUDE_DIR)
+        message(FATAL_ERROR "chmlib header (chm_lib.h) is required")
+endif()
+include_directories(${LIBCHM_INCLUDE_DIR})
+
 install(FILES COPYING README DESTINATION share/doc/chmsee)
 install(FILES doc/chmsee.1 DESTINATION share/man/man1)
 

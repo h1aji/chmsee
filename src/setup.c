@@ -338,7 +338,7 @@ setup_window_new(Chmsee *chmsee)
         const gchar *charset = chmsee_get_charset(chmsee);
         g_debug("SETUP >>> chmsee_get_charset = %s", charset);
         if (charset && strlen(charset) && g_strcmp0(charset, "Auto")) {
-                FindCharsetData *data = g_new(FindCharsetData, sizeof(FindCharsetData));
+                FindCharsetData *data = g_new(FindCharsetData, 1);
 
                 data->combobox = GTK_COMBO_BOX (cmb_lang);
                 data->charset = charset;

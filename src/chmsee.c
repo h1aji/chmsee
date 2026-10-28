@@ -596,8 +596,7 @@ on_zoom_reset(GtkAction *action, Chmsee *self)
 static void
 about_response_cb(GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-        if (response_id == GTK_RESPONSE_CANCEL)
-                gtk_widget_destroy(GTK_WIDGET (dialog));
+        gtk_widget_destroy(GTK_WIDGET (dialog));
 }
 
 static void
