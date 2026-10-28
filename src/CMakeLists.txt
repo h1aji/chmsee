@@ -1,14 +1,6 @@
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}
-        ${CHMSEE_INCLUDE_DIRS}
-        )
-add_definitions(
-        ${CHMSEE_CFLAGS_OTHER}
-        )
-
-link_directories(
-        ${CHMSEE_LIBRARY_DIRS}
         )
 
 set(CHMSEE_SRCS
@@ -35,15 +27,12 @@ set(CHMSEE_SRCS
 
 add_library(chmseelib STATIC ${CHMSEE_SRCS})
 target_link_libraries(chmseelib
-        ${CHMSEE_LIBRARIES}
+        PkgConfig::CHMSEE PkgConfig::WEBKIT ${LIBCHM}
         )
 
 add_executable(chmsee main.c)
 target_link_libraries(chmsee
         chmseelib
-        )
-set_target_properties(chmsee
-        PROPERTIES LINKER_LANGUAGE CXX
         )
 
 install(TARGETS chmsee DESTINATION bin)

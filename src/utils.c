@@ -148,8 +148,9 @@ get_real_uri(const gchar *uri)
         p = g_strrstr(real_uri, ";");
 
         if (p != NULL) {
+                gchar *without_suffix = g_strndup(real_uri, p - real_uri);
                 g_free(real_uri);
-                real_uri = g_strndup(real_uri, p - real_uri);
+                real_uri = without_suffix;
         }
 
         return real_uri;

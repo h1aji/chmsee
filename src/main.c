@@ -28,7 +28,6 @@
 #include <glib.h>
 
 #include <errno.h>
-#include <pthread.h>
 
 #include "chmsee.h"
 #include "utils.h"
@@ -83,15 +82,15 @@ load_config()
 
         /* ChmSee's HOME directory, based on $XDG_CONFIG_HOME, defaultly locate in ~/.config/chmsee */
         config->home = g_build_filename(g_get_user_config_dir(), PACKAGE, NULL);
-        if (!g_file_test(config->home, G_FILE_TEST_IS_DIR))
-                mkdir(config->home, 0755);
+        if (g_mkdir_with_parents(config->home, 0755) != 0)
+                g_warning("Cannot create config directory %s: %s", config->home, g_strerror(errno));
 
         /* ChmSee's bookshelf directory, based on $XDG_CACHE_HOME, defaultly locate in ~/.cache/chmsee/bookshelf */
         config->bookshelf = g_build_filename(g_get_user_cache_dir(),
                                              PACKAGE,
                                              CHMSEE_BOOKSHELF_DEFAULT, NULL);
-        if (!g_file_test(config->bookshelf, G_FILE_TEST_IS_DIR))
-                mkdir(config->bookshelf, 0755);
+        if (g_mkdir_with_parents(config->bookshelf, 0755) != 0)
+                g_warning("Cannot create bookshelf directory %s: %s", config->bookshelf, g_strerror(errno));
 
         config->last_file     = NULL;
         config->charset       = NULL;

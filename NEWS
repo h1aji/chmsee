@@ -1,3 +1,9 @@
+ChmSee 3.1.0 2026-10-28
+-----------------------
+* Migrate to WebKit2GTK 4.1 while retaining GTK 3.
+* Update dependencies and build system for modern distributions.
+* Add an Ubuntu GitHub Actions workflow that produces a Debian package.
+
 Chmsee 3.0.0 2015-02-12
 * GTK3 port
 

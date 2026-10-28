@@ -673,6 +673,12 @@ new_html_tab(CsBook *self)
 
         GtkWidget *html = cs_html_webkit_new();
         gtk_widget_show(html);
+        if (priv->model) {
+                cs_html_webkit_set_variable_font(CS_HTML_WEBKIT(html),
+                                                  cs_chmfile_get_variable_font(priv->model));
+                cs_html_webkit_set_fixed_font(CS_HTML_WEBKIT(html),
+                                               cs_chmfile_get_fixed_font(priv->model));
+        }
 
         g_signal_connect(G_OBJECT (html),
                          "title-changed",
@@ -881,9 +887,6 @@ cs_book_set_model(CsBook *self, CsChmfile *model)
 
         priv->model = g_object_ref(model);
 
-        cs_html_webkit_set_variable_font(CS_BOOK_GET_PRIVATE (self)->active_html,cs_chmfile_get_variable_font(model));
-        cs_html_webkit_set_fixed_font(CS_BOOK_GET_PRIVATE (self)->active_html,cs_chmfile_get_fixed_font(model));
-
         gint cur_page = 0;
 
         /* TOC */
@@ -985,9 +988,13 @@ cs_book_load_url(CsBook *self, const gchar *uri, gboolean force_reload)
                 /* search again with case insensitive name */
                 gchar *found = file_exist_ncase(filename);
                 if (found != NULL) {
+                        gchar *suffix = g_strdup(full_uri + strlen(real_uri));
                         g_free(full_uri);
 
-                        full_uri = g_strdup_printf("file://%s%s", found, full_uri+strlen(real_uri));
+                        gchar *found_uri = g_filename_to_uri(found, NULL, NULL);
+                        full_uri = g_strconcat(found_uri, suffix, NULL);
+                        g_free(found_uri);
+                        g_free(suffix);
                         g_free(found);
                         file_exist = TRUE;
                 }

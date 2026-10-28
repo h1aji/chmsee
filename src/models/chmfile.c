@@ -27,7 +27,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
-#include <gcrypt.h>
 #include <chm_lib.h>
 
 #include "chmfile.h"
@@ -313,43 +312,40 @@ static char *
 MD5File(const char *filename, char *buf)
 {
         unsigned char buffer[1024];
-        unsigned char* digest;
-        static const char hex[]="0123456789abcdef";
-
-        gcry_md_hd_t hd;
+        gchar *digest;
+        GChecksum *checksum;
         int f, i;
 
         if (filename == NULL)
                 return NULL;
 
-        gcry_md_open(&hd, GCRY_MD_MD5, 0);
         f = open(filename, O_RDONLY);
         if (f < 0) {
                 g_warning(_("Open \"%s\" failed: %s"), filename, strerror(errno));
                 return NULL;
         }
 
+        checksum = g_checksum_new(G_CHECKSUM_MD5);
         while ((i = read(f, buffer, sizeof(buffer))) > 0)
-                gcry_md_write(hd, buffer, i);
+                g_checksum_update(checksum, buffer, i);
 
         close(f);
 
-        if (i < 0)
+        if (i < 0) {
+                g_checksum_free(checksum);
                 return NULL;
+        }
 
         if (buf == NULL)
                 buf = malloc(33);
-        if (buf == NULL)
+        if (buf == NULL) {
+                g_checksum_free(checksum);
                 return NULL;
-
-        digest = (unsigned char*)gcry_md_read(hd, 0);
-
-        for (i = 0; i < 16; i++) {
-                buf[i+i] = hex[(u_int32_t)digest[i] >> 4];
-                buf[i+i+1] = hex[digest[i] & 0x0f];
         }
 
-        buf[i+i] = '\0';
+        digest = (gchar *)g_checksum_get_string(checksum);
+        memcpy(buf, digest, 33);
+        g_checksum_free(checksum);
         return (buf);
 }
 

@@ -1,10 +1,10 @@
 [Desktop Entry]
-_Name=ChmSee
-_Comment=HTML Help(CHM) viewer
+Name=ChmSee
+Comment=HTML Help (CHM) viewer
 Exec=chmsee %f
 Terminal=false
 Type=Application
 Icon=chmsee-icon
 StartupNotify=true
 Categories=Utility;
-MimeType=application/x-chm;
+MimeType=application/x-chm;application/vnd.ms-htmlhelp;

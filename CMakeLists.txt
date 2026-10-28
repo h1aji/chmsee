@@ -1,19 +1,12 @@
-project(chmsee)
-cmake_minimum_required(VERSION 2.6.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16)
+project(chmsee LANGUAGES C)
 
-set(PACKAGE_VERSION "3.0.0" )
+set(PACKAGE_VERSION "3.1.0")
 
-set(CMAKE_BUILD_TYPE Release)
-
-find_package(PkgConfig)
-
-pkg_check_modules (CHMSEE REQUIRED gthread-2.0>=2.22 glib-2.0>=2.22 libxml-2.0 gtk+-3.0 nspr)
-pkg_search_module(WEBKIT REQUIRED webkitgtk-3.0)
-
-set(CHMSEE_INCLUDE_DIRS ${CHMSEE_INCLUDE_DIRS} ${WEBKIT_INCLUDE_DIRS})
-set(CHMSEE_CFLAGS_OTHER ${CHMSEE_CFLAGS_OTHER} ${WEBKIT_CFLAGS_OTHER} -Wall)
-set(CHMSEE_LIBRARY_DIRS ${CHMSEE_LIBRARY_DIRS} ${WEBKIT_LIBRARY_DIRS})
-set(CHMSEE_LIBRARIES ${CHMSEE_LIBRARIES} ${WEBKIT_LIBRARIES} chm gcrypt)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(CHMSEE REQUIRED IMPORTED_TARGET glib-2.0>=2.56 libxml-2.0 gtk+-3.0>=3.24)
+# WebKitGTK 4.1 is the GTK3 API built against libsoup 3.
+pkg_check_modules(WEBKIT REQUIRED IMPORTED_TARGET webkit2gtk-4.1)
 
 set(CHMSEE_CONFIG_FILE "config")
 set(CHMSEE_BOOKMARKS_FILE "chmsee_bookmarks")
@@ -25,20 +18,13 @@ set(CHMSEE_BOOKSHELF_DEFAULT "bookshelf")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/config.h.in
                ${CMAKE_CURRENT_BINARY_DIR}/src/config.h @ONLY)
 
-find_program(INTLTOOL_MERGE intltool-merge)
-if(${INTLTOOL_MERGE} STREQUAL "INTLTOOL_MERGE-NOTFOUND")
-        message(FATAL_ERROR "intltool-merge not found, you can find one in http://ftp.gnome.org/pub/gnome/sources/intltool/")
-endif()
-
 find_library(LIBCHM chm)
-if(${LIBCHM} STREQUAL "LIBCHM-NOTFOUND")
-        message(FATAL_ERROR "libchm not found, you can find one in http://www.jedrea.com/chmlib/")
+if(NOT LIBCHM)
+        message(FATAL_ERROR "chmlib (libchm) is required")
 endif()
 
-find_library(LIBGCRYPT gcrypt)
-if(${LIBGCRYPT} STREQUAL "LIBGCRYPT-NOTFOUND")
-        message(FATAL_ERROR "libgcrypt not found, you can find one in ftp://ftp.gnupg.org/gcrypt/libgcrypt/")
-endif()
+install(FILES COPYING README DESTINATION share/doc/chmsee)
+install(FILES doc/chmsee.1 DESTINATION share/man/man1)
 
 # Set RPATH for installing
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
@@ -50,8 +36,17 @@ add_subdirectory(src)
 add_subdirectory(data)
 add_subdirectory(po)
 
-SET(CPACK_SOURCE_PACKAGE_FILE_NAME "chmsee-3.0.0")
+SET(CPACK_SOURCE_PACKAGE_FILE_NAME "chmsee-${PACKAGE_VERSION}")
 SET(CPACK_SOURCE_GENERATOR "TGZ")
 SET(CPACK_SOURCE_IGNORE_FILES ".*~;/.git/;.gitignore;ID;TAGS;/gtkmoz/")
+
+set(CPACK_PACKAGE_VERSION "${PACKAGE_VERSION}")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "GTK 3 viewer for compiled HTML Help (CHM) files")
+set(CPACK_PACKAGE_CONTACT "Ji YongGang <jungleji@gmail.com>")
+set(CPACK_DEBIAN_PACKAGE_SECTION "doc")
+set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://github.com/h1aji/chmsee")
+# Generate Depends from the libraries linked by the installed executable.
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
 
 INCLUDE(CPack)
